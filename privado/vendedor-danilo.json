@@ -1,0 +1,156 @@
+{
+  "atualizadoEm": "2026-11-04T17:40:00-03:00",
+  "mes": "Novembro 2026",
+  "vendedor": "Danilo",
+  "iphones": 3,
+  "jbl": 0,
+  "valorPorIphone": 0,
+  "proximaFaixaIphone": {
+    "aPartirDe": 12,
+    "valor": 10,
+    "faltam": 9
+  },
+  "comissaoIphones": 0,
+  "acessorios": 865.83,
+  "pctAcessorios": 0.0,
+  "proximaFaixaAcessorios": {
+    "aPartirDe": 3000,
+    "pct": 3.0,
+    "faltam": 2134.17
+  },
+  "comissaoAcessorios": 0.0,
+  "premios": {
+    "metaIphones": {
+      "valor": 100,
+      "loja": 8,
+      "meta": 110,
+      "batida": false
+    },
+    "metaAcessorios": {
+      "valor": 100,
+      "loja": 1486.78,
+      "meta": 26000,
+      "batida": false
+    },
+    "melhorVendedor": {
+      "valor": 100,
+      "posicao": 1
+    }
+  },
+  "total": 0.0,
+  "faixasIphone": [
+    {
+      "de": 12,
+      "ate": 16,
+      "valor": 10
+    },
+    {
+      "de": 17,
+      "ate": 24,
+      "valor": 15
+    },
+    {
+      "de": 25,
+      "ate": 28,
+      "valor": 20
+    },
+    {
+      "de": 29,
+      "ate": 32,
+      "valor": 25
+    },
+    {
+      "de": 33,
+      "ate": 36,
+      "valor": 30
+    },
+    {
+      "de": 37,
+      "ate": 42,
+      "valor": 35
+    },
+    {
+      "de": 43,
+      "ate": null,
+      "valor": 40
+    }
+  ],
+  "faixasAcessorios": [
+    {
+      "de": 3000,
+      "ate": 4499.99,
+      "pct": 3.0
+    },
+    {
+      "de": 4500,
+      "ate": 6499.99,
+      "pct": 5.0
+    },
+    {
+      "de": 6500,
+      "ate": 9999.99,
+      "pct": 7.5
+    },
+    {
+      "de": 10000,
+      "ate": 14499.99,
+      "pct": 10.0
+    },
+    {
+      "de": 14500,
+      "ate": null,
+      "pct": 12.5
+    }
+  ],
+  "vendas": [
+    {
+      "data": "2026-11-03",
+      "produto": "iPhone 14 Pro Max 128GB Roxo Profundo",
+      "tipo": "iphone",
+      "valor": 0.0,
+      "iphones": 1
+    },
+    {
+      "data": "2026-11-03",
+      "produto": "Película",
+      "tipo": "acessorio",
+      "valor": 135.0,
+      "iphones": 0
+    },
+    {
+      "data": "2026-11-03",
+      "produto": "Capinha",
+      "tipo": "acessorio",
+      "valor": 227.0,
+      "iphones": 0
+    },
+    {
+      "data": "2026-11-03",
+      "produto": "Película",
+      "tipo": "acessorio",
+      "valor": 250.0,
+      "iphones": 0
+    },
+    {
+      "data": "2026-11-03",
+      "produto": "iPhone 17 Pro Max 256GB Azul",
+      "tipo": "iphone",
+      "valor": 0.0,
+      "iphones": 1
+    },
+    {
+      "data": "2026-11-03",
+      "produto": "Película + Capinha",
+      "tipo": "acessorio",
+      "valor": 253.83,
+      "iphones": 0
+    },
+    {
+      "data": "2026-11-01",
+      "produto": "iPhone 14 128GB Midnight",
+      "tipo": "iphone",
+      "valor": 0.0,
+      "iphones": 1
+    }
+  ]
+}

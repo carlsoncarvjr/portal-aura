@@ -3,6 +3,9 @@
 const ADMIN = ['carlsoncarvjr@gmail.com', 'guadariachi0@gmail.com'];
 const PERMISSOES = {
   'tecnico.json': ['maikobarreto16@gmail.com', ...ADMIN],
+  'vendedor-gustavo.json': ['gusthavowork@gmail.com', ...ADMIN],
+  'vendedor-elisa.json': ['elisaprettiferrer@icloud.com', ...ADMIN],
+  'vendedor-danilo.json': [...ADMIN],  // incluir o e-mail do Danilo quando chegar
 };
 
 export async function onRequest(ctx) {
