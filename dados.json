@@ -1,0 +1,99 @@
+{
+  "atualizadoEm": "2026-11-04T00:10:00-03:00",
+  "mes": {
+    "rotulo": "Novembro 2026",
+    "ano": 2026,
+    "mes": 11,
+    "diasNoMes": 30,
+    "metaIphones": 110,
+    "metaAcessorios": 25000,
+    "iphones": 3,
+    "acessorios": 1286.78
+  },
+  "hoje": {
+    "data": "2026-11-04",
+    "iphones": 0,
+    "acessorios": 0,
+    "itens": []
+  },
+  "ontem": {
+    "data": "2026-11-03",
+    "iphones": 2,
+    "acessorios": 865.83,
+    "itens": [
+      {
+        "hora": "13:18",
+        "tipo": "iphone",
+        "produto": "iPhone 14 Pro Max 256GB Gold",
+        "vendedor": "Elisa"
+      },
+      {
+        "hora": "16:33",
+        "tipo": "acessorio",
+        "produto": "Película + capinha",
+        "vendedor": "Danilo"
+      },
+      {
+        "hora": "17:29",
+        "tipo": "iphone",
+        "produto": "iPhone 17 Pro Max 256GB Azul",
+        "vendedor": "Danilo"
+      },
+      {
+        "hora": "18:44",
+        "tipo": "acessorio",
+        "produto": "Película Ultra Safe",
+        "vendedor": "Danilo"
+      },
+      {
+        "hora": "18:52",
+        "tipo": "acessorio",
+        "produto": "Capa Customic",
+        "vendedor": "Danilo"
+      },
+      {
+        "hora": "20:43",
+        "tipo": "acessorio",
+        "produto": "Película privacidade",
+        "vendedor": "Danilo"
+      }
+    ]
+  },
+  "ranking": {
+    "mes": [
+      {
+        "vendedor": "Danilo",
+        "iphones": 2,
+        "acessorios": 865.83,
+        "vendas": 6
+      },
+      {
+        "vendedor": "Elisa",
+        "iphones": 1,
+        "acessorios": 177.68,
+        "vendas": 2
+      },
+      {
+        "vendedor": "Gustavo",
+        "iphones": 0,
+        "acessorios": 243.28,
+        "vendas": 1
+      }
+    ],
+    "hoje": [],
+    "ontem": [
+      {
+        "vendedor": "Danilo",
+        "iphones": 1,
+        "acessorios": 865.83,
+        "vendas": 5
+      },
+      {
+        "vendedor": "Elisa",
+        "iphones": 1,
+        "acessorios": 0,
+        "vendas": 1
+      }
+    ]
+  }
+}

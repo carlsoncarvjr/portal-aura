@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1310">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Aura">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Portal do Vendedor Aura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: coluna única no celular, grade de 2 colunas no computador; faixa de atalhos no topo, metas e vendas do dia em seguida, materiais abaixo. */
+:root {
+  --ground: #0d1310;
+  --surface: #151d18;
+  --surface-2: #1c2620;
+  --line: #2a362e;
+  --ink: #f2f0e6;
+  --ink-soft: #b9c0b3;
+  --ink-mute: #8a9486;
+  --green: #1f8e4d;
+  --lime: #bee828;
+  --grad: linear-gradient(120deg, #1f8e4d, #8fd13a 60%, #bee828);
+  --ok: #8fd13a;
+  --warn: #f2b84b;
+  --late: #ef7b5a;
+  --f-display: "Sora", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --r: 14px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--ground); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 48px;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--ground); }
+.wrap { max-width: 1080px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; border-radius: 6px; }
+
+header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 22px 4px; }
+header.top img { height: 34px; width: auto; display: block; }
+.who { text-align: right; }
+.who .t { font-family: var(--f-display); font-weight: 600; font-size: 15px; }
+.who .u { font-size: 12px; color: var(--ink-mute); font-variant-numeric: tabular-nums; }
+
+nav.jump { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--ground); padding-block: 8px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-inline: -4px; padding-inline: 4px; }
+nav.jump::-webkit-scrollbar { display: none; }
+nav.jump a { flex: none; text-decoration: none; font-size: 13px; font-weight: 600; color: var(--ink-soft); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; }
+nav.jump a:hover { color: var(--ink); border-color: var(--ink-mute); }
+
+h2 { font-family: var(--f-display); font-weight: 600; font-size: 19px; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+.sec-h { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.hint, .sec-h .hint { font-size: 12.5px; color: var(--ink-mute); }
+section { scroll-margin-top: 64px; }
+
+/* Atalhos */
+.apps { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.app { display: flex; flex-direction: column; gap: 10px; padding: 14px; min-height: 104px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); text-decoration: none; transition: border-color .15s, transform .15s; }
+.app:hover { border-color: var(--green); transform: translateY(-1px); }
+.app .ic { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--surface-2); color: var(--lime); }
+.app .ic svg { width: 19px; height: 19px; }
+.app .n { font-weight: 700; font-size: 14.5px; }
+.app .d { font-size: 12px; color: var(--ink-mute); line-height: 1.35; margin-top: -6px; }
+
+/* Metas */
+.grid2 { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 820px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; min-width: 0; }
+.goal .lbl { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-mute); }
+.goal .big { display: flex; align-items: baseline; gap: 8px; margin-top: 6px; font-variant-numeric: tabular-nums; flex-wrap: wrap; }
+.goal .big b { font-family: var(--f-display); font-size: 40px; font-weight: 700; line-height: 1; }
+.goal .big span { color: var(--ink-soft); font-size: 15px; }
+.bar { position: relative; height: 12px; border-radius: 999px; background: var(--surface-2); margin-top: 16px; overflow: visible; }
+.bar .fill { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: var(--grad); min-width: 4px; }
+.bar .tick { position: absolute; top: -5px; bottom: -5px; width: 2px; background: var(--ink); border-radius: 2px; }
+.bar .tick::after { content: attr(data-l); position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-size: 11px; color: var(--ink-soft); white-space: nowrap; }
+.goal .foot { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 30px; font-size: 13px; color: var(--ink-soft); }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.pill.ok { color: var(--ok); } .pill.warn { color: var(--warn); } .pill.late { color: var(--late); }
+.goal .need { margin-top: 10px; font-size: 13.5px; }
+.goal .need b { font-variant-numeric: tabular-nums; }
+
+/* Vendas do dia */
+.today { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 820px) { .today { grid-template-columns: 1.4fr 1fr; } }
+.kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.kpi { background: var(--surface-2); border-radius: 12px; padding: 12px 14px; }
+.kpi .k { font-size: 12px; color: var(--ink-mute); }
+.kpi .v { font-family: var(--f-display); font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+ul.sales { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+ul.sales li { display: grid; grid-template-columns: 48px 1fr auto; gap: 10px; align-items: center; padding: 9px 0; border-top: 1px solid var(--line); font-size: 13.5px; }
+ul.sales li:first-child { border-top: 0; }
+ul.sales .h { color: var(--ink-mute); font-variant-numeric: tabular-nums; }
+ul.sales .p { min-width: 0; overflow-wrap: anywhere; }
+ul.sales .s { color: var(--ink-soft); font-size: 12.5px; }
+.tag { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; margin-right: 6px; vertical-align: 1px; }
+.tag.iphone { background: rgba(190,232,40,.14); color: var(--lime); }
+.tag.acessorio { background: rgba(185,192,179,.12); color: var(--ink-soft); }
+.empty { color: var(--ink-mute); font-size: 13.5px; padding: 6px 0; }
+.sub-h { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-mute); margin: 0 0 8px; }
+
+/* Ranking */
+.rk-ctl { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; margin-bottom: 14px; }
+.seg { display: inline-flex; background: var(--surface-2); border-radius: 999px; padding: 3px; gap: 2px; max-width: 100%; overflow-x: auto; }
+.seg button { border: 0; background: none; color: var(--ink-soft); font: 600 13px var(--f-body); padding: 8px 14px; border-radius: 999px; cursor: pointer; white-space: nowrap; min-height: 36px; }
+.seg button[aria-checked="true"] { background: var(--ink); color: var(--ground); }
+ol.rk { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.rk li { border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); transition: border-color .15s; }
+.rk li.open { border-color: var(--green); }
+.rk .row { width: 100%; display: grid; grid-template-columns: 38px 1fr auto; align-items: center; gap: 12px; padding: 12px 14px; background: none; border: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.rk .pos { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font: 700 14px var(--f-display); background: var(--ground); color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.rk li:nth-child(1) .pos { background: var(--grad); color: var(--ground); }
+.rk li:nth-child(2) .pos { background: #cfd6c9; color: var(--ground); }
+.rk li:nth-child(3) .pos { background: #8a6a3d; color: var(--ink); }
+.rk .who2 { min-width: 0; }
+.rk .nm { font-weight: 700; font-size: 15px; }
+.rk .track { height: 8px; border-radius: 999px; background: var(--ground); margin-top: 7px; overflow: hidden; }
+.rk .track i { display: block; height: 100%; border-radius: 999px; background: var(--grad); width: 0; transition: width .6s cubic-bezier(.2,.8,.2,1); }
+.rk .val { font: 700 18px var(--f-display); font-variant-numeric: tabular-nums; text-align: right; }
+.rk .val small { display: block; font: 500 11.5px var(--f-body); color: var(--ink-mute); }
+.rk .det { display: none; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 14px 14px 64px; }
+.rk li.open .det { display: grid; }
+.rk .det div { background: var(--ground); border-radius: 10px; padding: 8px 10px; }
+.rk .det span { display: block; font-size: 11.5px; color: var(--ink-mute); }
+.rk .det b { font-variant-numeric: tabular-nums; font-size: 14px; }
+@media (max-width: 480px) { .rk .det { padding-left: 14px; } }
+
+/* Tarefas */
+.tasks { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 820px) { .tasks { grid-template-columns: repeat(3, 1fr); } }
+.tasks h3 { font-size: 14px; font-weight: 700; margin: 0 0 10px; display: flex; justify-content: space-between; gap: 8px; }
+.tasks h3 small { font-weight: 600; color: var(--ink-mute); font-variant-numeric: tabular-nums; }
+.chk { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--line); cursor: pointer; font-size: 13.5px; }
+.chk:first-of-type { border-top: 0; }
+.chk input { appearance: none; flex: none; width: 20px; height: 20px; margin: 1px 0 0; border: 1.5px solid var(--ink-mute); border-radius: 6px; display: grid; place-items: center; cursor: pointer; background: transparent; }
+.chk input:checked { background: var(--green); border-color: var(--green); }
+.chk input:checked::after { content: ""; width: 5px; height: 10px; border: solid var(--ink); border-width: 0 2px 2px 0; transform: rotate(45deg) translate(-1px, -1px); }
+.chk input:checked + span { color: var(--ink-mute); text-decoration: line-through; }
+.reset { background: none; border: 1px solid var(--line); color: var(--ink-soft); border-radius: 999px; padding: 6px 12px; font: 600 12.5px var(--f-body); cursor: pointer; }
+.reset:hover { color: var(--ink); border-color: var(--ink-mute); }
+
+/* Documentos */
+.docs { display: grid; grid-template-columns: 1fr; gap: 10px; }
+@media (min-width: 640px) { .docs { grid-template-columns: 1fr 1fr; } }
+.doc { display: flex; gap: 14px; align-items: flex-start; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); text-decoration: none; min-width: 0; }
+.doc:hover { border-color: var(--green); }
+.doc .sheet { flex: none; width: 38px; height: 48px; border-radius: 5px; background: var(--ink); color: var(--ground); display: grid; place-items: end center; padding-bottom: 6px; font: 700 9px var(--f-body); letter-spacing: .06em; position: relative; }
+.doc .sheet::before { content: ""; position: absolute; top: 9px; left: 8px; right: 8px; height: 14px; background: repeating-linear-gradient(var(--ink-mute) 0 2px, transparent 2px 5px); opacity: .7; }
+.doc .n { font-weight: 700; font-size: 14.5px; }
+.doc .w { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+.doc .how { font-size: 12px; color: var(--ink-mute); margin-top: 6px; }
+details.steps { margin-top: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 4px 16px; }
+details.steps summary { cursor: pointer; font-weight: 700; font-size: 14px; padding: 12px 0; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+details.steps summary::-webkit-details-marker { display: none; }
+details.steps summary::after { content: "+"; color: var(--lime); font-size: 18px; line-height: 1; }
+details.steps[open] summary::after { content: "–"; }
+details.steps ol { margin: 0 0 14px; padding-left: 20px; font-size: 13.5px; color: var(--ink-soft); display: flex; flex-direction: column; gap: 6px; }
+details.steps ol b { color: var(--ink); }
+
+/* Regras */
+.rules { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 820px) { .rules { grid-template-columns: repeat(3, 1fr); } }
+.rule h3 { font-size: 14px; font-weight: 700; margin: 0 0 10px; color: var(--lime); }
+.rule ul { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-soft); display: flex; flex-direction: column; gap: 7px; }
+.rule ul b { color: var(--ink); font-weight: 600; }
+.rule .more { display: inline-block; margin-top: 12px; font-size: 13px; font-weight: 600; color: var(--lime); text-decoration: none; }
+.rule .more:hover { text-decoration: underline; }
+
+.conduta { scroll-margin-top: 64px; }
+.conduta .lead { font-size: 14px; color: var(--ink-soft); max-width: 70ch; margin: 0 0 6px; }
+.conduta .lead b { color: var(--ink); }
+.cbody { padding-bottom: 14px; font-size: 13.5px; color: var(--ink-soft); }
+.cbody p { margin: 0 0 10px; max-width: 72ch; }
+.cbody b { color: var(--ink); }
+.cbody ul { margin: 0 0 10px; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.tscroll { overflow-x: auto; margin: 4px 0 12px; }
+table.esc { border-collapse: collapse; width: 100%; min-width: 460px; font-size: 13px; }
+table.esc th, table.esc td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.esc th { color: var(--ink-mute); font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; }
+table.esc td:first-child { color: var(--ink); font-weight: 600; }
+button.app { font: inherit; color: inherit; text-align: left; cursor: pointer; }
+button.app.copied { border-color: var(--green); }
+.shift { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; }
+.shift-h { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.lbl2 { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-mute); }
+.link-btn { background: none; border: 0; color: var(--lime); font: 600 13px var(--f-body); cursor: pointer; padding: 6px 0; }
+.shift-today { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.who-chip { display: inline-flex; align-items: baseline; gap: 8px; background: var(--surface-2); border-radius: 999px; padding: 7px 14px; font-size: 14px; }
+.who-chip b { font-weight: 700; }
+.who-chip span { color: var(--ink-soft); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.who-chip.off { opacity: .55; }
+#shiftWeek { margin-top: 12px; }
+button.doc { font: inherit; color: inherit; text-align: left; cursor: pointer; width: 100%; }
+.viewer { position: fixed; inset: 0; z-index: 50; background: rgba(6,10,8,.94); display: flex; flex-direction: column; }
+.vbar { display: flex; align-items: center; gap: 10px; padding: calc(10px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); background: var(--ground); border-bottom: 1px solid var(--line); }
+.vt { flex: 1; min-width: 0; font-family: var(--f-display); font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vbtn { flex: none; min-height: 40px; min-width: 40px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 700 13px var(--f-body); padding: 0 14px; cursor: pointer; }
+.vbtn.primary { background: var(--grad); color: var(--ground); border: 0; }
+.vmsg { padding: 8px 16px; font-size: 12.5px; color: var(--ink-soft); text-align: center; background: var(--surface); }
+.vpage { flex: 1; overflow: auto; padding: 16px max(16px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.vpage img { display: block; width: 100%; max-width: 820px; margin: 0 auto; border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,.5); background: #fff; }
+footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-top: 8px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <img src="logo-aura.png" alt="aura" width="147" height="34">
+    <div class="who">
+      <div class="t">Portal do Vendedor</div>
+      <div class="u" id="upd">Carregando números…</div>
+    </div>
+  </header>
+
+  <nav class="jump" aria-label="Seções">
+    <a href="#acessos">Acessos</a>
+    <a href="#metas">Metas</a>
+    <a href="#ranking">Ranking</a>
+    <a href="#hoje">Vendas do dia</a>
+    <a href="#tarefas">Tarefas</a>
+    <a href="#documentos">Documentos</a>
+    <a href="#regras">Regras</a>
+  </nav>
+
+  <section id="escala" class="shift">
+    <div class="shift-h"><span class="lbl2" id="shiftDay">Na loja hoje</span><button type="button" class="link-btn" id="shiftToggle" aria-expanded="false" aria-controls="shiftWeek">Ver a semana</button></div>
+    <div class="shift-today" id="shiftToday"></div>
+    <div class="tscroll" id="shiftWeek" hidden>
+      <table class="esc">
+        <thead><tr><th>Vendedor</th><th>Seg a sex</th><th>Sábado</th><th>Folga</th></tr></thead>
+        <tbody>
+          <tr><td>Gustavo</td><td>10h–19h</td><td>10h–14h</td><td>Terça</td></tr>
+          <tr><td>Danilo</td><td>13h–21h</td><td>Reveza manhã / 17h–21h</td><td>Quarta</td></tr>
+          <tr><td>Elisa</td><td>17h–21h (terça de manhã)</td><td>Reveza manhã / 17h–21h</td><td>Segunda</td></tr>
+        </tbody>
+      </table>
+      <p class="hint" style="margin:8px 0 0">Domingo: um vendedor por domingo, conforme escala do grupo da empresa.</p>
+    </div>
+  </section>
+
+  <section id="acessos">
+    <div class="sec-h"><h2>Acesso rápido</h2></div>
+    <div class="apps">
+      <a class="app" href="https://app.mercadophone.tech" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18.5h3"/></svg></span>
+        <span class="n">MercadoPhone</span><span class="d">Vendas, estoque e termos</span>
+      </a>
+      <a class="app" href="https://auraiphone.kommo.com" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z"/></svg></span>
+        <span class="n">Kommo</span><span class="d">Atendimento e funis</span>
+      </a>
+      <a class="app" href="https://web.buscadorpxt.com.br" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/></svg></span>
+        <span class="n">Buscador PXT</span><span class="d">Preços de mercado</span>
+      </a>
+      <button type="button" class="app" id="copyReview" data-link="https://search.google.com/local/writereview?placeid=ChIJS9fA7BmXNgcR_DkfeWCKZuw">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span>
+        <span class="n">Avaliação Google</span><span class="d" id="copyReviewTxt">Toque para copiar o link</span>
+      </button>
+      <a class="app" href="https://www.gov.br/anatel/pt-br/assuntos/celular-legal/consulte-sua-situacao" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2 2 4-4"/></svg></span>
+        <span class="n">Consultar IMEI</span><span class="d">Aparelho impedido (Anatel)</span>
+      </a>
+      <a class="app" href="https://claude.ai/artifact/SzScWVMUENbcmX1Ywn1d92" target="_blank" rel="noopener">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17M9.5 9.5v10"/></svg></span>
+        <span class="n">Tabela de avaliação</span><span class="d">Valores de referência</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="metas">
+    <div class="sec-h"><h2 id="metaTitulo">Meta do mês</h2><span class="hint">A marca branca mostra onde a loja deveria estar hoje</span></div>
+    <div class="grid2">
+      <div class="card goal" id="gIphone">
+        <div class="lbl">iPhones vendidos</div>
+        <div class="big"><b data-v>–</b><span data-of></span></div>
+        <div class="bar"><div class="fill" data-fill style="width:0"></div><div class="tick" data-tick></div></div>
+        <div class="foot"><span data-pct></span><span data-status></span></div>
+        <div class="need" data-need></div>
+      </div>
+      <div class="card goal" id="gAcc">
+        <div class="lbl">Acessórios (valor líquido)</div>
+        <div class="big"><b data-v>–</b><span data-of></span></div>
+        <div class="bar"><div class="fill" data-fill style="width:0"></div><div class="tick" data-tick></div></div>
+        <div class="foot"><span data-pct></span><span data-status></span></div>
+        <div class="need" data-need></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ranking">
+    <div class="sec-h"><h2>Ranking dos vendedores</h2><span class="hint" id="rkHint">Toque num vendedor para ver os detalhes</span></div>
+    <div class="card">
+      <div class="rk-ctl">
+        <div class="seg" role="radiogroup" aria-label="Período">
+          <button type="button" role="radio" data-per="mes" aria-checked="true">Mês</button>
+          <button type="button" role="radio" data-per="hoje" aria-checked="false">Hoje</button>
+          <button type="button" role="radio" data-per="ontem" aria-checked="false">Ontem</button>
+        </div>
+        <div class="seg" role="radiogroup" aria-label="Critério">
+          <button type="button" role="radio" data-met="iphones" aria-checked="true">iPhones</button>
+          <button type="button" role="radio" data-met="acessorios" aria-checked="false">Acessórios</button>
+          <button type="button" role="radio" data-met="vendas" aria-checked="false">Nº de vendas</button>
+        </div>
+      </div>
+      <ol class="rk" id="rkList"></ol>
+    </div>
+  </section>
+
+  <section id="hoje">
+    <div class="sec-h"><h2>Vendas do dia</h2><span class="hint">Atualizado às 12h e às 21h</span></div>
+    <div class="today">
+      <div class="card">
+        <div class="kpis">
+          <div class="kpi"><div class="k">iPhones hoje</div><div class="v" id="hIph">–</div></div>
+          <div class="kpi"><div class="k">Acessórios hoje</div><div class="v" id="hAcc">–</div></div>
+        </div>
+        <p class="sub-h" id="hDate">Hoje</p>
+        <ul class="sales" id="hList"></ul>
+      </div>
+      <div class="card">
+        <p class="sub-h" id="oDate">Ontem</p>
+        <div class="kpis">
+          <div class="kpi"><div class="k">iPhones</div><div class="v" id="oIph">–</div></div>
+          <div class="kpi"><div class="k">Acessórios</div><div class="v" id="oAcc">–</div></div>
+        </div>
+        <ul class="sales" id="oList"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="tarefas">
+    <div class="sec-h"><h2>Tarefas do dia</h2><button class="reset" id="resetTasks" type="button">Desmarcar tudo</button></div>
+    <div class="tasks" id="tasks"></div>
+    <p class="sec-h hint" style="margin-top:10px">As marcações ficam salvas só neste aparelho e recomeçam a cada dia.</p>
+  </section>
+
+  <section id="documentos">
+    <div class="sec-h"><h2>Documentos</h2><span class="hint">Toque para abrir o termo</span></div>
+    <div class="docs">
+      <button type="button" class="doc" data-doc="termo-atendimento-garantia">
+        <span class="sheet">PDF</span>
+        <span><span class="n">Atendimento em garantia</span><span class="w" style="display:block">Aparelho reparado ou trocado na garantia</span><span class="how" style="display:block">Marque Reparado ou Trocado e preencha só o quadro correspondente.</span></span>
+      </button>
+      <button type="button" class="doc" data-doc="termo-emprestimo-reserva">
+        <span class="sheet">PDF</span>
+        <span><span class="n">Empréstimo do aparelho reserva</span><span class="w" style="display:block">Assinar no dia em que o cliente leva o reserva</span><span class="how" style="display:block">IMEI obrigatório. Tire fotos do aparelho antes de entregar.</span></span>
+      </button>
+      <button type="button" class="doc" data-doc="termo-devolucao-reserva">
+        <span class="sheet">PDF</span>
+        <span><span class="n">Devolução do aparelho reserva</span><span class="w" style="display:block">Assinar no dia em que o cliente devolve</span><span class="how" style="display:block">Compare com o estado anotado no empréstimo. Com avaria: duas testemunhas.</span></span>
+      </button>
+      <button type="button" class="doc" data-doc="termo-compra-upgrade">
+        <span class="sheet">PDF</span>
+        <span><span class="n">Compra do aparelho usado (upgrade)</span><span class="w" style="display:block">Versão em branco, para uso fora do sistema</span><span class="how" style="display:block">No dia a dia, gere pelo MercadoPhone (passo a passo abaixo).</span></span>
+      </button>
+    </div>
+    <details class="steps">
+      <summary>Como gerar o termo de compra pelo MercadoPhone</summary>
+      <ol>
+        <li>Lance a venda com o upgrade normalmente. O aparelho do cliente entra no estoque com ele como fornecedor.</li>
+        <li>Vá em <b>Compras / Estoque → Estoque Atual</b> e procure o aparelho pelo IMEI.</li>
+        <li>Em <b>Ações</b>, toque em <b>Termo de compra</b> para imprimir, ou <b>Assinar Termo de compra</b> para assinatura digital.</li>
+        <li>Complete à mão: RG, IMEI 2, número de série, bateria, nota fiscal, número da venda e as conferências.</li>
+        <li>Antes de fechar: consulte o IMEI, fotografe o documento do cliente e o IMEI na tela, confira o Apple ID desvinculado.</li>
+      </ol>
+    </details>
+    <details class="steps">
+      <summary>Termos de garantia na venda</summary>
+      <ol>
+        <li>Seminovos saem com o termo de <b>3, 4 ou 6 meses</b>, escolhido na venda. Lacrados saem com o termo <b>Lacrados</b>.</li>
+        <li>Todos já têm a cláusula de transferência de dados: o cliente marca se fez ou não o backup.</li>
+        <li>O termo é impresso junto com a venda no MercadoPhone.</li>
+      </ol>
+    </details>
+  </section>
+
+  <section id="regras">
+    <div class="sec-h"><h2>Regras da loja</h2></div>
+    <div class="rules">
+      <div class="card rule">
+        <h3>Atendimento no Kommo</h3>
+        <ul>
+          <li>Responder cada nova mensagem em até <b>10 minutos</b>, mesmo durante atendimento presencial. Sem resposta, o lead volta para a fila.</li>
+          <li>Cliente sem resposta só fica com você por <b>24 horas</b> se estiver no funil de remarketing.</li>
+          <li>Todo cliente que comprou vai para o funil de <b>venda ganha</b> (pós-venda: acessórios e avaliação no Google).</li>
+        </ul>
+      </div>
+      <div class="card rule">
+        <h3>Upgrade e documentos</h3>
+        <ul>
+          <li>Todo aparelho recebido em troca precisa do <b>termo de compra assinado</b> e da conferência do IMEI.</li>
+          <li>A NF de entrada do aparelho de troca sai pelo <b>mesmo CNPJ</b> em que a venda foi lançada.</li>
+          <li>Aparelho reserva só sai com o <b>termo de empréstimo</b> assinado e fotos.</li>
+        </ul>
+      </div>
+      <div class="card rule">
+        <h3>Rotina e conduta</h3>
+        <ul>
+          <li>Limpeza (pia, chão e lixo) no <b>início e no fim</b> do expediente, para não atrapalhar as vendas.</li>
+          <li>Siga o código de conduta e vestimenta da Aura, logo abaixo.</li>
+        </ul>
+        <a class="more" href="#conduta">Ler o código de conduta ↓</a>
+      </div>
+    </div>
+
+    <div class="conduta" id="conduta">
+      <div class="sec-h" style="margin-top:22px"><h2>Código de Conduta e Vestimenta</h2><span class="hint">Toque em cada item para abrir</span></div>
+      <p class="lead">O princípio que orienta todas as regras é simples: <b>o cliente é da loja, e a loja é de todos nós.</b> Uma loja organizada, um atendimento cordial e uma equipe unida vendem mais, e isso é bom para cada um. O código vale para toda a equipe, vendedores e técnico, em todos os turnos, inclusive sábados e domingos de escala.</p>
+
+      <details class="steps"><summary>Escala e pontualidade</summary>
+        <div class="cbody">
+          <p>Cada vendedor deve estar na loja, uniformizado e pronto para atender, <b>no horário de início do seu turno</b>, e não chegando nesse horário.</p>
+          <div class="tscroll"><table class="esc">
+            <thead><tr><th>Vendedor</th><th>Turno (seg–sex)</th><th>Sábado</th><th>Folga</th></tr></thead>
+            <tbody>
+              <tr><td>Gustavo</td><td>10h–19h</td><td>10h–14h</td><td>Terça</td></tr>
+              <tr><td>Danilo</td><td>13h–21h</td><td>Reveza manhã/noite (17h–21h)</td><td>Quarta</td></tr>
+              <tr><td>Elisa</td><td>17h–21h (na terça, manhã, cobrindo a folga do Gustavo)</td><td>Reveza manhã/noite (17h–21h)</td><td>Segunda</td></tr>
+            </tbody>
+          </table></div>
+          <ul>
+            <li>Cada vendedor trabalha um domingo por mês, conforme escala divulgada no grupo da empresa.</li>
+            <li>Atrasos, faltas e trocas de turno devem ser avisados <b>com antecedência</b> no grupo da empresa e só valem após autorização da gerência.</li>
+            <li>Ninguém sai antes do fim do turno sem autorização, nem deixa a loja sem vendedor.</li>
+            <li>As tarefas de limpeza (louça e pia, varrer e passar pano, retirar o lixo) são feitas no início e no fim do expediente, para não atrapalhar as vendas.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="steps"><summary>Almoço e pausas</summary>
+        <div class="cbody">
+          <p>O intervalo de almoço é de <b>1 hora, cumprida rigorosamente</b>. Quem volta atrasado atrasa o almoço do colega e deixa a loja descoberta.</p>
+          <ul>
+            <li>Os almoços nunca acontecem ao mesmo tempo: a loja nunca fica sem vendedor na frente.</li>
+            <li>O horário de almoço é combinado no início do turno e avisado no grupo da empresa.</li>
+            <li>Durante o almoço o vendedor está fora do atendimento; ao voltar, retoma a sua vez normalmente.</li>
+          </ul>
+          <p><b>Pausa para fumantes</b></p>
+          <ul>
+            <li>Turnos de 8 a 9 horas: até <b>2 pausas de no máximo 10 minutos</b>, uma antes e outra depois do almoço.</li>
+            <li>Turnos de 4 horas: até <b>1 pausa de no máximo 10 minutos</b>.</li>
+            <li>A pausa só acontece com outro vendedor presente na loja e com a frente coberta. Nunca dois vendedores em pausa ao mesmo tempo.</li>
+            <li>Não sair com cliente aguardando atendimento, em horário de pico ou durante uma venda em andamento.</li>
+            <li>Fumar longe da fachada da loja e fora da vista dos clientes, sem cigarro na mão com o uniforme em frente à loja.</li>
+            <li>Ao voltar, lavar as mãos e cuidar do hálito antes de atender. Pausas não são acumuladas nem trocadas por saída antecipada.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="steps"><summary>Vestimenta e apresentação</summary>
+        <div class="cbody">
+          <p>O uniforme da Aura é <b>predominantemente preto, com sapatos fechados</b>, e é obrigatório em todo o turno.</p>
+          <ul>
+            <li>Uniforme limpo, passado e em bom estado; cada vendedor é responsável pelo seu.</li>
+            <li>Sapatos fechados sempre. Não são permitidos chinelos, sandálias ou rasteiras.</li>
+            <li>Higiene pessoal em dia: cabelo arrumado, unhas limpas e perfume discreto.</li>
+            <li>Bonés, óculos escuros e fones de ouvido não são usados durante o atendimento.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="steps"><summary>Atendimento: todo cliente é da loja</summary>
+        <div class="cbody">
+          <p><b>Os clientes são da LOJA, e não do vendedor.</b> Todo cliente que entra, liga ou manda mensagem deve ser bem tratado e atendido, independentemente de para quem a venda vai ser registrada.</p>
+          <ul>
+            <li><b>Vez de atendimento:</b> a ordem de atendimento segue os critérios já estabelecidos pela loja e deve ser respeitada por todos. Furar a vez ou "puxar" cliente do colega não é aceito.</li>
+            <li><b>Presença na frente da loja:</b> para ter direito à vez, o vendedor precisa estar na FRENTE da loja, disponível. Quem está no fundo, no celular ou fora da loja passa a vez.</li>
+            <li><b>Pós-venda e transferência de dados:</b> se o vendedor que fez a venda não puder fazer a transferência de dados, ela será feita da mesma forma, com o mesmo cuidado, por quem estiver de plantão na loja.</li>
+            <li>Não será aceito qualquer tipo de má vontade, demora proposital ou negligência no atendimento a um cliente "do colega". O cliente não sabe e não deve perceber de quem foi a venda.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="steps"><summary>Estoque, lançamentos e acessórios</summary>
+        <div class="cbody">
+          <p>O estoque físico deve bater com o sistema o tempo todo.</p>
+          <ul>
+            <li>Estoque organizado e <b>todos os aparelhos etiquetados</b>.</li>
+            <li>Todo aparelho que entra, sai ou é vendido deve ser <b>lançado corretamente no sistema</b> no mesmo momento, com IMEI, estado, cor e armazenamento certos.</li>
+            <li><b>É estritamente proibido deixar aparelhos guardados na gaveta.</b> Aparelho fica no estoque, na vitrine ou com o cliente durante o atendimento.</li>
+            <li>Acessórios organizados, expostos por tipo e repostos ao longo do dia.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="steps"><summary>Stories no Instagram</summary>
+        <div class="cbody">
+          <p>A loja publica <b>um story a cada 30 minutos</b> no @somosaura.ps durante todo o horário de funcionamento.</p>
+          <ul>
+            <li>Conteúdo: aparelhos disponíveis, novidades, acessórios, entregas a clientes (com autorização) e o dia a dia da loja.</li>
+            <li>Fotos e vídeos com boa luz, aparelhos limpos e fundo organizado.</li>
+            <li>A divisão de quem posta em cada horário é definida pela gerência e divulgada no grupo da empresa.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="steps"><summary>Comunicação, postura e ética</summary>
+        <div class="cbody">
+          <p>Na presença de clientes, a comunicação é discreta e profissional.</p>
+          <ul>
+            <li>Evitar mandar ou ouvir áudios e falar alto na presença de clientes. <b>Priorizar sempre mensagens de texto.</b></li>
+            <li><b>É extremamente proibido falar o nome de concorrentes dentro da loja.</b></li>
+            <li>Nunca falar mal, nem faltar com ética, com outras lojas ou seus vendedores, nem com clientes, nem nas redes sociais.</li>
+            <li>Discordâncias entre colegas são resolvidas em particular ou com a gerência, nunca na frente de clientes.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="steps"><summary>Convivência e bom ambiente</summary>
+        <div class="cbody">
+          <p>Um bom ambiente depende de respeito, colaboração e cuidado com o espaço de todos.</p>
+          <ul>
+            <li>Tratar colegas com respeito e cordialidade; sem fofocas, apelidos ofensivos ou brincadeiras de mau gosto.</li>
+            <li>Ajudar o colega quando a loja estiver cheia, mesmo que a venda não seja sua.</li>
+            <li>Copa, banheiro e balcão limpos depois do uso; cada um lava o que sujar.</li>
+            <li>Celular pessoal com uso moderado e nunca durante o atendimento.</li>
+            <li><b>Refrigerante: apenas 1 vez por semana, mediante autorização da gerência.</b></li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="steps"><summary>Regras do CRM (Kommo)</summary>
+        <div class="cbody">
+          <p>O Kommo é a única fonte que define quem está atendendo cada cliente, e o que não está registrado nele não vale para fins de venda ou comissão. Cada cliente novo vai para o vendedor da vez, e o vendedor tem <b>10 minutos para responder cada nova mensagem do cliente</b>, mesmo que esteja em um atendimento presencial. Se não responder nesse prazo, o cliente volta para a fila e o próximo vendedor pode chamá-lo.</p>
+          <p><b>O uso dos funis do Kommo é obrigatório.</b> A loja investiu na implementação do sistema e no treinamento da equipe, e todo cliente deve estar na etapa certa do funil durante todo o atendimento.</p>
+          <p>Quando o cliente para de responder, o vendedor deve colocá-lo no <b>funil de remarketing do Kommo</b>, que faz o remarketing automaticamente. Só assim o vendedor mantém o cliente por <b>24 horas</b> aguardando a resposta. Se não colocar o cliente no funil de remarketing, perde o atendimento na hora e o cliente volta para a fila. Passadas as 24 horas sem resposta, o cliente também volta para a fila.</p>
+          <p>Todo cliente que comprou deve ser colocado <b>obrigatoriamente no funil de venda ganha</b>. É a partir dele que a loja faz o pós-venda: oferece acessórios depois da compra e pede a avaliação no Google.</p>
+          <p>É proibido apagar, alterar ou se colocar como responsável em atendimentos de outro colega. Quem atender um cliente que já está com outro vendedor deve anotar no Kommo o que foi feito. Dúvidas ou conflitos sobre a quem pertence uma venda são decididos exclusivamente pela gerência, com base no histórico do Kommo, e nunca discutidos na frente de clientes.</p>
+        </div>
+      </details>
+
+      <details class="steps"><summary>Uso de imagem e descumprimento</summary>
+        <div class="cbody">
+          <p>Ao assinar o código, o vendedor autoriza, de forma gratuita, o uso da sua imagem e voz em fotos e vídeos feitos no ambiente de trabalho, para divulgação da loja Aura nas redes sociais (@somosaura.ps e @somosaura.reserva), no WhatsApp, em anúncios e em materiais de divulgação, sempre de forma respeitosa. A autorização vale enquanto durar o vínculo com a loja; depois do desligamento, não há novas publicações, e um pedido de remoção por escrito é atendido em até 30 dias.</p>
+          <p>O descumprimento destas regras resulta em advertência verbal, depois advertência por escrito e, em caso de reincidência, nas demais medidas previstas na legislação trabalhista.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <footer>Aura · Av. 22 de Abril, 101 · Porto Seguro-BA</footer>
+</div>
+
+<div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-labelledby="vTitle">
+  <div class="vbar">
+    <button type="button" class="vbtn" id="vClose" aria-label="Fechar">✕</button>
+    <div class="vt" id="vTitle">Termo</div>
+    <a class="vbtn primary" id="vDown" href="#" download>Baixar PDF</a>
+  </div>
+  <div class="vmsg" id="vMsg" hidden></div>
+  <div class="vpage"><img id="vImg" alt=""></div>
+</div>
+
+<script>
+(function () {
+  const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  const fmtDate = s => { const [y, m, d] = s.split('-'); return d + '/' + m; };
+  const wd = s => ['domingo','segunda','terça','quarta','quinta','sexta','sábado'][new Date(s + 'T12:00:00').getDay()];
+
+
+  function goal(el, done, target, expected, money, daysLeft) {
+    const f = money ? brl : (v => String(v));
+    el.querySelector('[data-v]').textContent = f(done);
+    el.querySelector('[data-of]').textContent = 'de ' + f(target);
+    const pct = Math.min(100, done / target * 100);
+    el.querySelector('[data-fill]').style.width = pct + '%';
+    const tick = el.querySelector('[data-tick]');
+    const ep = Math.min(100, expected / target * 100);
+    tick.style.left = 'calc(' + ep + '% - 1px)';
+    tick.dataset.l = 'esperado ' + (money ? brl(expected) : Math.round(expected));
+    el.querySelector('[data-pct]').textContent = Math.round(done / target * 100) + '% da meta';
+    const ratio = expected > 0 ? done / expected : 1;
+    const st = el.querySelector('[data-status]');
+    const cls = ratio >= 1 ? 'ok' : ratio >= 0.85 ? 'warn' : 'late';
+    const txt = ratio >= 1 ? 'No ritmo' : ratio >= 0.85 ? 'Um pouco atrás' : 'Atrás do ritmo';
+    st.innerHTML = ''; const p = document.createElement('span'); p.className = 'pill ' + cls; p.textContent = txt; st.appendChild(p);
+    const left = Math.max(0, target - done);
+    const need = el.querySelector('[data-need]');
+    if (left === 0) { need.textContent = 'Meta batida. Agora é passar dela.'; return; }
+    const perDay = daysLeft > 0 ? left / daysLeft : left;
+    need.innerHTML = '';
+    need.append('Faltam ');
+    const b1 = document.createElement('b'); b1.textContent = f(money ? Math.round(left) : left); need.append(b1);
+    need.append(' em ' + daysLeft + (daysLeft === 1 ? ' dia' : ' dias') + ': ');
+    const b2 = document.createElement('b'); b2.textContent = money ? brl(perDay) : (Math.ceil(perDay * 10) / 10).toLocaleString('pt-BR'); need.append(b2);
+    need.append(money ? ' por dia.' : ' iPhones por dia.');
+  }
+
+  function list(ul, itens, emptyMsg) {
+    ul.innerHTML = '';
+    if (!itens || !itens.length) { const li = document.createElement('li'); li.className = 'empty'; li.style.display = 'block'; li.textContent = emptyMsg; ul.appendChild(li); return; }
+    itens.forEach(it => {
+      const li = document.createElement('li');
+      const h = document.createElement('span'); h.className = 'h'; h.textContent = it.hora;
+      const p = document.createElement('span'); p.className = 'p';
+      const t = document.createElement('span'); t.className = 'tag ' + it.tipo; t.textContent = it.tipo === 'iphone' ? 'iPhone' : 'Acess.';
+      p.append(t, it.produto);
+      const s = document.createElement('span'); s.className = 's'; s.textContent = it.vendedor;
+      li.append(h, p, s); ul.appendChild(li);
+    });
+  }
+
+  function render(d) {
+    const up = new Date(d.atualizadoEm);
+    document.getElementById('upd').textContent = 'Atualizado em ' + up.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'America/Bahia' }) + ' às ' + up.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Bahia' });
+    const m = d.mes;
+    document.getElementById('metaTitulo').textContent = 'Meta de ' + m.rotulo.toLowerCase().replace(/^\w/, c => c.toUpperCase());
+    // dias decorridos até a atualização (fração do dia pelo horário da loja, 9h às 21h)
+    const local = new Date(up.toLocaleString('en-US', { timeZone: 'America/Bahia' }));
+    const day = local.getDate();
+    const hr = local.getHours() + local.getMinutes() / 60;
+    const frac = Math.max(0, Math.min(1, (hr - 9) / 12));
+    const elapsed = (day - 1) + frac;
+    const daysLeft = Math.max(1, m.diasNoMes - day + (frac >= 1 ? 0 : 1));
+    goal(document.getElementById('gIphone'), m.iphones, m.metaIphones, m.metaIphones * elapsed / m.diasNoMes, false, daysLeft);
+    goal(document.getElementById('gAcc'), m.acessorios, m.metaAcessorios, m.metaAcessorios * elapsed / m.diasNoMes, true, daysLeft);
+
+    document.getElementById('hIph').textContent = d.hoje.iphones;
+    document.getElementById('hAcc').textContent = brl(d.hoje.acessorios);
+    document.getElementById('hDate').textContent = 'Hoje, ' + wd(d.hoje.data) + ' ' + fmtDate(d.hoje.data);
+    list(document.getElementById('hList'), d.hoje.itens, 'Nenhuma venda concluída hoje até a última atualização.');
+    if (d.ontem) {
+      document.getElementById('oDate').textContent = 'Ontem, ' + wd(d.ontem.data) + ' ' + fmtDate(d.ontem.data);
+      document.getElementById('oIph').textContent = d.ontem.iphones;
+      document.getElementById('oAcc').textContent = brl(d.ontem.acessorios);
+      list(document.getElementById('oList'), d.ontem.itens, 'Nenhuma venda concluída.');
+    }
+  }
+
+  // Copiar link de avaliação no Google
+  const cr = document.getElementById('copyReview'), crTxt = document.getElementById('copyReviewTxt');
+  cr.addEventListener('click', () => {
+    const link = cr.dataset.link;
+    const done = msg => { crTxt.textContent = msg; cr.classList.add('copied'); setTimeout(() => { crTxt.textContent = 'Toque para copiar o link'; cr.classList.remove('copied'); }, 2500); };
+    try {
+      navigator.clipboard.writeText(link).then(() => done('Link copiado ✓'), () => fallback());
+    } catch (e) { fallback(); }
+    function fallback() {
+      const ta = document.createElement('textarea'); ta.value = link; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (e) {} ta.remove();
+      done(ok ? 'Link copiado ✓' : link);
+    }
+  });
+
+  // Escala: quem está na loja hoje
+  (function () {
+    const SHIFTS = {
+      0: [], // domingo: escala do grupo
+      1: [['Gustavo', '10h–19h'], ['Danilo', '13h–21h']],
+      2: [['Elisa', 'manhã (cobre Gustavo)'], ['Danilo', '13h–21h']],
+      3: [['Gustavo', '10h–19h'], ['Elisa', '17h–21h']],
+      4: [['Gustavo', '10h–19h'], ['Danilo', '13h–21h'], ['Elisa', '17h–21h']],
+      5: [['Gustavo', '10h–19h'], ['Danilo', '13h–21h'], ['Elisa', '17h–21h']],
+      6: [['Gustavo', '10h–14h'], ['Danilo', 'manhã ou 17h–21h'], ['Elisa', 'manhã ou 17h–21h']]
+    };
+    const OFF = { 1: 'Elisa', 2: 'Gustavo', 3: 'Danilo' };
+    const names = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+    const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bahia' }));
+    const d = now.getDay();
+    document.getElementById('shiftDay').textContent = 'Na loja hoje · ' + names[d];
+    const box = document.getElementById('shiftToday');
+    if (d === 0) {
+      const c = document.createElement('span'); c.className = 'who-chip'; c.textContent = 'Domingo: confira a escala no grupo da empresa (17h–21h)'; box.appendChild(c);
+    } else {
+      SHIFTS[d].forEach(([n, h]) => { const c = document.createElement('span'); c.className = 'who-chip'; const b = document.createElement('b'); b.textContent = n; const s = document.createElement('span'); s.textContent = h; c.append(b, s); box.appendChild(c); });
+      if (OFF[d]) { const c = document.createElement('span'); c.className = 'who-chip off'; const b = document.createElement('b'); b.textContent = OFF[d]; const s = document.createElement('span'); s.textContent = 'folga'; c.append(b, s); box.appendChild(c); }
+    }
+    const t = document.getElementById('shiftToggle'), w = document.getElementById('shiftWeek');
+    t.addEventListener('click', () => { w.hidden = !w.hidden; t.setAttribute('aria-expanded', String(!w.hidden)); t.textContent = w.hidden ? 'Ver a semana' : 'Fechar'; });
+  })();
+
+  // Visualizador dos termos
+  const DOCS = {
+    'termo-atendimento-garantia': 'Termo de Atendimento em Garantia',
+    'termo-emprestimo-reserva': 'Termo de Empréstimo de Aparelho Reserva',
+    'termo-devolucao-reserva': 'Termo de Devolução de Aparelho Reserva',
+    'termo-compra-upgrade': 'Termo de Compra de Aparelho Usado'
+  };
+  const viewer = document.getElementById('viewer'), vImg = document.getElementById('vImg'), vTitle = document.getElementById('vTitle'), vDown = document.getElementById('vDown'), vMsg = document.getElementById('vMsg');
+  let current = null, lastFocus = null;
+  function openDoc(id, btn) {
+    current = id; lastFocus = btn;
+    vTitle.textContent = DOCS[id];
+    vImg.src = 'docs/' + id + '-1.jpg';
+    vImg.alt = DOCS[id];
+    vDown.href = 'docs/' + id + '.pdf';
+    vDown.setAttribute('download', id + '.pdf');
+    vMsg.hidden = true;
+    viewer.hidden = false;
+    document.body.style.overflow = 'hidden';
+    document.getElementById('vClose').focus();
+  }
+  function closeDoc() {
+    viewer.hidden = true; document.body.style.overflow = '';
+    if (lastFocus) lastFocus.focus();
+  }
+  document.querySelectorAll('button.doc[data-doc]').forEach(b => b.addEventListener('click', () => openDoc(b.dataset.doc, b)));
+  document.getElementById('vClose').addEventListener('click', closeDoc);
+  viewer.addEventListener('keydown', e => { if (e.key === 'Escape') closeDoc(); });
+
+  // Ranking
+  const rk ={ per: 'mes', met: 'iphones', open: null, data: null };
+  const rkUnit = { iphones: n => n === 1 ? 'iPhone' : 'iPhones', vendas: n => n === 1 ? 'venda' : 'vendas' };
+  function drawRanking() {
+    const ol = document.getElementById('rkList');
+    ol.innerHTML = '';
+    const rows = ((rk.data && rk.data[rk.per]) || []).slice();
+    if (!rows.length) {
+      const li = document.createElement('li'); li.className = 'empty'; li.style.border = '0'; li.style.background = 'none';
+      li.textContent = rk.per === 'hoje' ? 'Nenhuma venda concluída hoje até a última atualização.' : 'Sem vendas neste período.';
+      ol.appendChild(li); return;
+    }
+    rows.sort((a, b) => (b[rk.met] - a[rk.met]) || (b.iphones - a.iphones) || (b.acessorios - a.acessorios) || a.vendedor.localeCompare(b.vendedor));
+    const max = Math.max(1, ...rows.map(r => r[rk.met]));
+    rows.forEach((r, i) => {
+      const li = document.createElement('li'); if (rk.open === r.vendedor) li.classList.add('open');
+      const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'row'; btn.setAttribute('aria-expanded', rk.open === r.vendedor ? 'true' : 'false');
+      const pos = document.createElement('span'); pos.className = 'pos'; pos.textContent = (i + 1) + 'º';
+      const who = document.createElement('span'); who.className = 'who2';
+      const nm = document.createElement('span'); nm.className = 'nm'; nm.textContent = r.vendedor;
+      const tr = document.createElement('span'); tr.className = 'track'; tr.style.display = 'block';
+      const bar = document.createElement('i'); tr.appendChild(bar);
+      who.append(nm, tr);
+      const val = document.createElement('span'); val.className = 'val';
+      const v = r[rk.met];
+      val.textContent = rk.met === 'acessorios' ? brl(v) : v;
+      const sm = document.createElement('small'); sm.textContent = rk.met === 'acessorios' ? 'em acessórios' : rkUnit[rk.met](v);
+      val.appendChild(sm);
+      btn.append(pos, who, val);
+      btn.addEventListener('click', () => { rk.open = rk.open === r.vendedor ? null : r.vendedor; drawRanking(); });
+      const det = document.createElement('div'); det.className = 'det';
+      [['iPhones', r.iphones], ['Acessórios', brl(r.acessorios)], ['Vendas', r.vendas]].forEach(([k, x]) => {
+        const d = document.createElement('div'); const s = document.createElement('span'); s.textContent = k; const b = document.createElement('b'); b.textContent = x; d.append(s, b); det.appendChild(d);
+      });
+      li.append(btn, det); ol.appendChild(li);
+      requestAnimationFrame(() => { bar.style.width = (r[rk.met] / max * 100) + '%'; });
+    });
+  }
+  function bindSeg(attr, key) {
+    document.querySelectorAll('[data-' + attr + ']').forEach(b => b.addEventListener('click', () => {
+      rk[key] = b.dataset[attr];
+      document.querySelectorAll('[data-' + attr + ']').forEach(o => o.setAttribute('aria-checked', o === b ? 'true' : 'false'));
+      drawRanking();
+    }));
+  }
+  bindSeg('per', 'per'); bindSeg('met', 'met');
+  drawRanking();
+
+  fetch('dados.json', { cache: 'no-store' }).then(r => r.json()).then(d => { render(d); rk.data = d.ranking || null; drawRanking(); }).catch(() => {
+    document.getElementById('upd').textContent = 'Não foi possível carregar os números agora.';
+  });
+
+  // Tarefas do dia
+  const TASKS = [
+    { t: 'Abertura', items: ['Lavar pratos e pia', 'Varrer e passar pano', 'Tirar o lixo', 'Abrir o Kommo e conferir a fila de mensagens'] },
+    { t: 'Durante o dia', items: ['Responder mensagens em até 10 minutos', 'Colocar no remarketing quem não respondeu', 'Mover para venda ganha quem comprou', 'Termo de compra assinado em todo upgrade', 'Oferecer acessórios em toda venda de iPhone'] },
+    { t: 'Fechamento', items: ['Lavar pratos e pia', 'Varrer e passar pano', 'Tirar o lixo', 'Conferir funis do Kommo antes de sair'] }
+  ];
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bahia' });
+  const KEY = 'aura-tarefas-' + today;
+  let state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { state = {}; }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  const box = document.getElementById('tasks');
+  function drawTasks() {
+    box.innerHTML = '';
+    TASKS.forEach((g, gi) => {
+      const c = document.createElement('div'); c.className = 'card';
+      const h = document.createElement('h3'); h.textContent = g.t;
+      const sm = document.createElement('small'); h.appendChild(sm); c.appendChild(h);
+      let n = 0;
+      g.items.forEach((txt, ii) => {
+        const id = 't' + gi + '-' + ii;
+        const lab = document.createElement('label'); lab.className = 'chk'; lab.htmlFor = id;
+        const inp = document.createElement('input'); inp.type = 'checkbox'; inp.id = id; inp.checked = !!state[id];
+        if (inp.checked) n++;
+        inp.addEventListener('change', () => { state[id] = inp.checked; save(); drawTasks(); });
+        const sp = document.createElement('span'); sp.textContent = txt;
+        lab.append(inp, sp); c.appendChild(lab);
+      });
+      sm.textContent = n + '/' + g.items.length;
+      box.appendChild(c);
+    });
+  }
+  drawTasks();
+  document.getElementById('resetTasks').addEventListener('click', () => { state = {}; save(); drawTasks(); });
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); }); }
+</script>
+</body>
+</html>
