@@ -1,5 +1,5 @@
 {
-  "atualizadoEm": "2026-11-04T00:10:00-03:00",
+  "atualizadoEm": "2026-11-04T11:05:00-03:00",
   "mes": {
     "rotulo": "Novembro 2026",
     "ano": 2026,
@@ -7,18 +7,25 @@
     "diasNoMes": 30,
     "metaIphones": 110,
     "metaAcessorios": 25000,
-    "iphones": 3,
-    "acessorios": 1286.78
+    "iphones": 8,
+    "acessorios": 1486.78
   },
   "hoje": {
     "data": "2026-11-04",
     "iphones": 0,
-    "acessorios": 0,
-    "itens": []
+    "acessorios": 200.0,
+    "itens": [
+      {
+        "hora": "10:31",
+        "tipo": "acessorio",
+        "produto": "Carregador",
+        "vendedor": "Gustavo"
+      }
+    ]
   },
   "ontem": {
     "data": "2026-11-03",
-    "iphones": 2,
+    "iphones": 4,
     "acessorios": 865.83,
     "itens": [
       {
@@ -28,9 +35,16 @@
         "vendedor": "Elisa"
       },
       {
+        "hora": "15:06",
+        "tipo": "iphone",
+        "produto": "iPhone 17 Pro Max 256GB Slv",
+        "vendedor": "Elisa",
+        "pre": true
+      },
+      {
         "hora": "16:33",
         "tipo": "acessorio",
-        "produto": "Película + capinha",
+        "produto": "Película + Capinha",
         "vendedor": "Danilo"
       },
       {
@@ -42,19 +56,25 @@
       {
         "hora": "18:44",
         "tipo": "acessorio",
-        "produto": "Película Ultra Safe",
+        "produto": "Película",
         "vendedor": "Danilo"
       },
       {
         "hora": "18:52",
         "tipo": "acessorio",
-        "produto": "Capa Customic",
+        "produto": "Capinha",
         "vendedor": "Danilo"
       },
       {
         "hora": "20:43",
         "tipo": "acessorio",
-        "produto": "Película privacidade",
+        "produto": "Película",
+        "vendedor": "Danilo"
+      },
+      {
+        "hora": "20:47",
+        "tipo": "iphone",
+        "produto": "iPhone 14 Pro Max 128GB Roxo Profundo",
         "vendedor": "Danilo"
       }
     ]
@@ -63,35 +83,48 @@
     "mes": [
       {
         "vendedor": "Danilo",
+        "iphones": 3,
+        "acessorios": 865.83,
+        "vendas": 7
+      },
+      {
+        "vendedor": "Gustavo",
+        "iphones": 3,
+        "acessorios": 443.27,
+        "vendas": 5
+      },
+      {
+        "vendedor": "Elisa",
+        "iphones": 2,
+        "acessorios": 177.68,
+        "vendas": 3
+      }
+    ],
+    "semana": [
+      {
+        "vendedor": "Gustavo",
+        "iphones": 3,
+        "acessorios": 443.27,
+        "vendas": 5
+      },
+      {
+        "vendedor": "Danilo",
         "iphones": 2,
         "acessorios": 865.83,
         "vendas": 6
       },
       {
         "vendedor": "Elisa",
-        "iphones": 1,
-        "acessorios": 177.68,
+        "iphones": 2,
+        "acessorios": 0.0,
         "vendas": 2
-      },
+      }
+    ],
+    "hoje": [
       {
         "vendedor": "Gustavo",
         "iphones": 0,
-        "acessorios": 243.28,
-        "vendas": 1
-      }
-    ],
-    "hoje": [],
-    "ontem": [
-      {
-        "vendedor": "Danilo",
-        "iphones": 1,
-        "acessorios": 865.83,
-        "vendas": 5
-      },
-      {
-        "vendedor": "Elisa",
-        "iphones": 1,
-        "acessorios": 0,
+        "acessorios": 200.0,
         "vendas": 1
       }
     ]

@@ -107,6 +107,7 @@ ul.sales .s { color: var(--ink-soft); font-size: 12.5px; }
 .tag { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; margin-right: 6px; vertical-align: 1px; }
 .tag.iphone { background: rgba(190,232,40,.14); color: var(--lime); }
 .tag.acessorio { background: rgba(185,192,179,.12); color: var(--ink-soft); }
+.tag.pre { background: rgba(242,184,75,.14); color: var(--warn); }
 .empty { color: var(--ink-mute); font-size: 13.5px; padding: 6px 0; }
 .sub-h { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-mute); margin: 0 0 8px; }
 
@@ -307,8 +308,8 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
       <div class="rk-ctl">
         <div class="seg" role="radiogroup" aria-label="Período">
           <button type="button" role="radio" data-per="mes" aria-checked="true">Mês</button>
+          <button type="button" role="radio" data-per="semana" aria-checked="false">Semana</button>
           <button type="button" role="radio" data-per="hoje" aria-checked="false">Hoje</button>
-          <button type="button" role="radio" data-per="ontem" aria-checked="false">Ontem</button>
         </div>
         <div class="seg" role="radiogroup" aria-label="Critério">
           <button type="button" role="radio" data-met="iphones" aria-checked="true">iPhones</button>
@@ -608,7 +609,9 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
       const h = document.createElement('span'); h.className = 'h'; h.textContent = it.hora;
       const p = document.createElement('span'); p.className = 'p';
       const t = document.createElement('span'); t.className = 'tag ' + it.tipo; t.textContent = it.tipo === 'iphone' ? 'iPhone' : 'Acess.';
-      p.append(t, it.produto);
+      p.append(t);
+      if (it.pre) { const pr = document.createElement('span'); pr.className = 'tag pre'; pr.textContent = 'Pré-venda'; p.append(pr); }
+      p.append(it.produto);
       const s = document.createElement('span'); s.className = 's'; s.textContent = it.vendedor;
       li.append(h, p, s); ul.appendChild(li);
     });
@@ -632,12 +635,12 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     document.getElementById('hIph').textContent = d.hoje.iphones;
     document.getElementById('hAcc').textContent = brl(d.hoje.acessorios);
     document.getElementById('hDate').textContent = 'Hoje, ' + wd(d.hoje.data) + ' ' + fmtDate(d.hoje.data);
-    list(document.getElementById('hList'), d.hoje.itens, 'Nenhuma venda concluída hoje até a última atualização.');
+    list(document.getElementById('hList'), d.hoje.itens, 'Nenhuma venda hoje até a última atualização.');
     if (d.ontem) {
       document.getElementById('oDate').textContent = 'Ontem, ' + wd(d.ontem.data) + ' ' + fmtDate(d.ontem.data);
       document.getElementById('oIph').textContent = d.ontem.iphones;
       document.getElementById('oAcc').textContent = brl(d.ontem.acessorios);
-      list(document.getElementById('oList'), d.ontem.itens, 'Nenhuma venda concluída.');
+      list(document.getElementById('oList'), d.ontem.itens, 'Nenhuma venda.');
     }
   }
 
@@ -721,7 +724,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     const rows = ((rk.data && rk.data[rk.per]) || []).slice();
     if (!rows.length) {
       const li = document.createElement('li'); li.className = 'empty'; li.style.border = '0'; li.style.background = 'none';
-      li.textContent = rk.per === 'hoje' ? 'Nenhuma venda concluída hoje até a última atualização.' : 'Sem vendas neste período.';
+      li.textContent = rk.per === 'hoje' ? 'Nenhuma venda hoje até a última atualização.' : 'Sem vendas neste período.';
       ol.appendChild(li); return;
     }
     rows.sort((a, b) => (b[rk.met] - a[rk.met]) || (b.iphones - a.iphones) || (b.acessorios - a.acessorios) || a.vendedor.localeCompare(b.vendedor));
