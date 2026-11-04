@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portal do Vendedor Aura</title>
+<meta name="theme-color" content="#0d1310">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Aura">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --ground: #0d1310;
+  --deep: #08100b;
+  --ink: #f2f0e6;
+  --ink-soft: #b9c0b3;
+  --ink-mute: #7f8a7b;
+  --green: #1f8e4d;
+  --lime: #bee828;
+  --grad: linear-gradient(120deg, #1f8e4d, #8fd13a 60%, #bee828);
+  --f-display: "Sora", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--f-body);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* Fundo: verde-escuro com brilho e linhas transversais */
+.bg { position: fixed; inset: 0; overflow: hidden; z-index: 0;
+  background:
+    radial-gradient(120% 70% at 85% 0%, rgba(31,142,77,.28), transparent 60%),
+    radial-gradient(90% 60% at 0% 100%, rgba(190,232,40,.10), transparent 60%),
+    linear-gradient(180deg, var(--ground), var(--deep));
+}
+.bg::before { /* linhas orgânicas: contornos que repetem a forma do símbolo da Aura */
+  content: ""; position: absolute; inset: 0;
+  background: url("/entrar/fundo-aura.svg") center / cover no-repeat;
+}
+.bg::after { /* escurece o centro para o texto respirar */
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(90% 26% at 50% 62%, rgba(13,19,16,.92), rgba(13,19,16,.45) 70%, transparent),
+    radial-gradient(80% 18% at 50% 27%, rgba(13,19,16,.7), transparent);
+}
+
+/* Conteúdo */
+main {
+  position: relative; z-index: 1;
+  min-height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: calc(env(safe-area-inset-top, 0px) + 32px) 24px calc(env(safe-area-inset-bottom, 0px) + 28px);
+  text-align: center;
+}
+.brand { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.brand img { width: min(240px, 62vw); height: auto; display: block; }
+.brand .sub {
+  font-family: var(--f-display); font-weight: 500; font-size: 13px;
+  letter-spacing: .32em; text-transform: uppercase; color: var(--ink-soft);
+  padding-left: .32em; /* compensa o espaçamento da última letra */
+}
+.rule { width: 44px; height: 3px; border-radius: 3px; background: var(--grad); margin: 30px auto 0; }
+
+.panel { width: 100%; max-width: 340px; margin-top: 34px; }
+.btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; height: 54px; border: 0; border-radius: 14px;
+  background: var(--grad); color: #0d1310;
+  font-family: var(--f-display); font-weight: 700; font-size: 16px; letter-spacing: .01em;
+  text-decoration: none; cursor: pointer;
+  box-shadow: 0 10px 30px -10px rgba(190,232,40,.45);
+  transition: transform .15s, box-shadow .15s;
+}
+.btn:active { transform: scale(.98); }
+.btn svg { width: 18px; height: 18px; }
+
+.steps { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 10px; text-align: left; }
+.steps li { display: flex; gap: 12px; align-items: flex-start; font-size: 13.5px; line-height: 1.45; color: var(--ink-soft); }
+.steps b { color: var(--ink); font-weight: 600; }
+.steps .n {
+  flex: none; width: 22px; height: 22px; border-radius: 50%;
+  display: grid; place-items: center; margin-top: 1px;
+  font-size: 11.5px; font-weight: 700; color: var(--lime);
+  border: 1px solid rgba(190,232,40,.45);
+}
+.foot { margin-top: 30px; font-size: 12px; color: var(--ink-mute); }
+
+/* Enquanto verifica se já está logado */
+.checking .panel { visibility: hidden; }
+.checking .rule { animation: pulse 1s ease-in-out infinite alternate; }
+@keyframes pulse { from { opacity: .35; width: 30px; } to { opacity: 1; width: 64px; } }
+@media (prefers-reduced-motion: reduce) { .checking .rule { animation: none; } }
+
+@media (min-height: 760px) { .brand img { width: min(270px, 62vw); } }
+</style>
+</head>
+<body class="checking">
+<div class="bg" aria-hidden="true"></div>
+
+<main>
+  <div class="brand">
+    <img src="/entrar/logo-aura-hd.png" alt="aura" width="900" height="200">
+    <div class="sub">Portal do Vendedor</div>
+  </div>
+  <div class="rule" aria-hidden="true"></div>
+
+  <div class="panel">
+    <a class="btn" href="/">
+      Entrar
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+    <ol class="steps">
+      <li><span class="n">1</span><span>Na próxima tela, digite o <b>seu e-mail</b> e toque em <b>Send me a code</b>.</span></li>
+      <li><span class="n">2</span><span>Copie o <b>código</b> que chegou no seu e-mail e cole na tela.</span></li>
+      <li><span class="n">3</span><span>Pronto. Você fica conectado por <b>30 dias</b>.</span></li>
+    </ol>
+    <div class="foot">Acesso exclusivo da equipe Aura</div>
+  </div>
+</main>
+
+<script>
+// Já está logado? Abre o portal direto. Se não, mostra o botão Entrar.
+(async () => {
+  const show = () => document.body.classList.remove('checking');
+  const timer = setTimeout(show, 2500);
+  try {
+    const r = await fetch('/?check=' + Date.now(), { redirect: 'manual', cache: 'no-store', credentials: 'include' });
+    if (r.ok) { location.replace('/'); return; }
+  } catch (e) { /* sem sinal ou bloqueado: mostra o botão */ }
+  clearTimeout(timer);
+  show();
+})();
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(() => {}); });
+}
+</script>
+</body>
+</html>
