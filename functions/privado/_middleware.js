@@ -1,0 +1,18 @@
+// Arquivos em /privado/ só são entregues para os e-mails autorizados de cada arquivo.
+// O Cloudflare Access coloca o e-mail de quem fez login no cabeçalho abaixo.
+const ADMIN = ['carlsoncarvjr@gmail.com', 'guadariachi0@gmail.com'];
+const PERMISSOES = {
+  'tecnico.json': ['maikobarreto16@gmail.com', ...ADMIN],
+};
+
+export async function onRequest(ctx) {
+  const email = (ctx.request.headers.get('Cf-Access-Authenticated-User-Email') || '').toLowerCase();
+  const arquivo = new URL(ctx.request.url).pathname.split('/').pop();
+  if (!(PERMISSOES[arquivo] || []).includes(email)) {
+    return new Response('Acesso não autorizado', { status: 403 });
+  }
+  const resp = await ctx.next();
+  const r = new Response(resp.body, resp);
+  r.headers.set('Cache-Control', 'private, no-store');
+  return r;
+}

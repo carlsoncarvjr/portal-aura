@@ -1,0 +1,17 @@
+{
+  "atualizadoEm": "2026-11-04T15:10:00-03:00",
+  "mes": "Novembro 2026",
+  "meta": 15,
+  "servicos": 0,
+  "faixaAtual": 25,
+  "proxima": {
+    "pct": 25,
+    "faltam": 1
+  },
+  "lucro": 0,
+  "comissaoFaixas": 0.0,
+  "comissaoGarantia": 0.0,
+  "comissao": 0.0,
+  "garantiaAplicada": false,
+  "os": []
+}

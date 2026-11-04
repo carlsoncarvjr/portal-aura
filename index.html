@@ -11,7 +11,21 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+/* Área do técnico */
+.tc .big { display: flex; align-items: baseline; gap: 8px; margin-top: 6px; } .tc .big b { font-family: var(--f-display); font-size: 44px; line-height: 1; } .tc .big span { color: var(--ink-mute); }
+.tc .pill { display: inline-block; margin-top: 10px; font-size: 13px; font-weight: 700; color: #0d1310; background: var(--grad); padding: 4px 10px; border-radius: 999px; }
+.tc .next { margin-top: 8px; font-size: 13.5px; color: var(--ink-soft); } .tc .next b { color: var(--lime); }
+.tc-lad, .tc-lab { display: grid; grid-template-columns: 6fr 6fr 7fr 6fr; gap: 4px; }
+.tc-lad { margin-top: 16px; } .tc-lad span { height: 10px; border-radius: 5px; background: var(--surface-2); overflow: hidden; } .tc-lad i { display: block; height: 100%; background: var(--grad); border-radius: 5px; }
+.tc-lab { margin-top: 6px; font-size: 11.5px; color: var(--ink-mute); line-height: 1.3; } .tc-lab div { display: flex; flex-direction: column; } .tc-lab b { color: var(--ink-soft); } .tc-lab .on b { color: var(--lime); }
+.tc-meta { margin-top: 14px; font-size: 12.5px; color: var(--ink-mute); }
+.tc-k { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.tc-k .card { padding: 14px; } .tc-k .k { font-size: 12px; color: var(--ink-mute); } .tc-k .v { font-family: var(--f-display); font-weight: 700; font-size: 24px; margin-top: 2px; } .tc-k .s { font-size: 11.5px; color: var(--ink-mute); margin-top: 2px; } .tc-k .hi .v { color: var(--lime); }
+.tc-os { list-style: none; margin: 0; padding: 0; } .tc-os li { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; padding: 12px 0; border-top: 1px solid var(--line); align-items: start; } .tc-os li:first-child { border-top: 0; padding-top: 0; }
+.tc-os .d { font-size: 12px; color: var(--ink-mute); padding-top: 2px; } .tc-os .p small, .tc-os .r small { display: block; font-size: 12px; color: var(--ink-mute); } .tc-os .r { text-align: right; } .tc-os .r b { display: block; font-size: 14px; color: var(--lime); }
+.tag.ok { background: rgba(190,232,40,.14); color: var(--lime); } .tag.and { background: rgba(111,179,255,.14); color: #6fb3ff; } .tag.nc { background: rgba(185,192,179,.12); color: var(--ink-soft); }
+</style>
 <title>Portal do Vendedor Aura</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
@@ -235,6 +249,28 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     <a href="#documentos">Documentos</a>
     <a href="#regras">Regras</a>
   </nav>
+
+  <section id="tecnico" class="tc" hidden>
+    <div class="sec-h"><h2 id="tcTitle">Minha comissão</h2><span class="hint" id="tcUpd"></span></div>
+    <div class="card">
+      <div class="lbl" style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute)">Serviços externos no mês</div>
+      <div class="big"><b id="tcN">–</b><span>serviços</span></div>
+      <span class="pill" id="tcFaixa">Faixa atual: 25%</span>
+      <div class="next" id="tcNext"></div>
+      <div class="tc-lad" id="tcLad"><span><i></i></span><span><i></i></span><span><i></i></span><span><i></i></span></div>
+      <div class="tc-lab" id="tcLab"><div><b>25%</b>1–6</div><div><b>30%</b>7–12</div><div><b>35%</b>13–19</div><div><b>40%</b>20+</div></div>
+      <div class="tc-meta" id="tcMeta"></div>
+    </div>
+    <div class="tc-k">
+      <div class="card"><div class="k">Lucro dos serviços</div><div class="v" id="tcLucro">–</div><div class="s">já sem peças e taxa da máquina</div></div>
+      <div class="card hi"><div class="k">Comissão estimada</div><div class="v" id="tcCom">–</div><div class="s" id="tcComS"></div></div>
+    </div>
+    <div class="card" style="margin-top:10px">
+      <div class="lbl" style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:10px">OS do mês</div>
+      <ul class="tc-os" id="tcOs"></ul>
+      <p class="hint" style="margin:10px 0 0">Contam para a faixa: OS externas, finalizadas e pagas, a partir de R$ 150. Internas e garantia ficam de fora.</p>
+    </div>
+  </section>
 
   <section id="escala" class="shift">
     <div class="shift-h"><span class="lbl2" id="shiftDay">Na loja hoje</span><button type="button" class="link-btn" id="shiftToggle" aria-expanded="false" aria-controls="shiftWeek">Ver a semana</button></div>
@@ -766,6 +802,66 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
   fetch('dados.json', { cache: 'no-store' }).then(r => r.json()).then(d => { render(d); rk.data = d.ranking || null; drawRanking(); }).catch(() => {
     document.getElementById('upd').textContent = 'Não foi possível carregar os números agora.';
   });
+
+
+  // Quem entrou? (login do Cloudflare) — ajusta a tela para cada pessoa
+  const PESSOAS = {
+    'carlsoncarvjr@gmail.com': { nome: 'Carlson', papel: 'admin' },
+    'guadariachi0@gmail.com': { nome: 'Guadalupe', papel: 'admin' },
+    'maikobarreto16@gmail.com': { nome: 'Maiko', papel: 'tecnico' },
+  };
+  const brl0 = v => 'R$ ' + Number(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  function renderTecnico(t, admin) {
+    const sec = document.getElementById('tecnico'); sec.hidden = false;
+    if (admin) document.getElementById('tcTitle').textContent = 'Assistência · comissão do Maiko';
+    document.getElementById('tcN').textContent = t.servicos;
+    document.getElementById('tcFaixa').textContent = 'Faixa atual: ' + t.faixaAtual + '%';
+    document.getElementById('tcNext').innerHTML = t.proxima ? 'Faltam <b>' + t.proxima.faltam + (t.proxima.faltam === 1 ? ' serviço' : ' serviços') + '</b> para chegar aos <b>' + t.proxima.pct + '%</b>' : 'Faixa máxima atingida';
+    const lim = [[0, 6], [6, 12], [12, 19], [19, 25]];
+    document.querySelectorAll('#tcLad i').forEach((el, i) => { const [a, b] = lim[i]; el.style.width = Math.max(0, Math.min(1, (t.servicos - a) / (b - a))) * 100 + '%'; });
+    document.querySelectorAll('#tcLab div').forEach((el, i) => el.classList.toggle('on', [25, 30, 35, 40][i] === t.faixaAtual && t.servicos > 0));
+    const falta = Math.max(0, t.meta - t.servicos);
+    document.getElementById('tcMeta').textContent = 'Meta da loja: ' + t.meta + ' serviços no mês' + (falta ? ' · faltam ' + falta : ' · batida!');
+    document.getElementById('tcLucro').textContent = brl0(t.lucro);
+    document.getElementById('tcCom').textContent = brl0(t.comissao);
+    document.getElementById('tcComS').textContent = t.garantiaAplicada ? 'garantia de 30% aplicada (nov/dez)' : 'pelas faixas';
+    const up = new Date(t.atualizadoEm);
+    document.getElementById('tcUpd').textContent = t.mes;
+    const ul = document.getElementById('tcOs'); ul.innerHTML = '';
+    if (!t.os.length) { const li = document.createElement('li'); li.style.display = 'block'; li.className = 'hint'; li.textContent = 'Nenhuma OS lançada no MercadoPhone neste mês ainda.'; ul.appendChild(li); }
+    t.os.forEach(o => {
+      const li = document.createElement('li');
+      const d = document.createElement('span'); d.className = 'd'; d.textContent = (o.data || '').slice(8, 10) + '/' + (o.data || '').slice(5, 7);
+      const p = document.createElement('span'); p.className = 'p';
+      const tg = document.createElement('span');
+      if (o.motivo) { tg.className = 'tag nc'; tg.textContent = 'Não conta'; }
+      else if (o.conta) { tg.className = 'tag ok'; tg.textContent = 'Finalizado'; }
+      else { tg.className = 'tag and'; tg.textContent = o.situacao || 'Aberta'; }
+      p.append(tg, [o.aparelho, o.servico].filter(Boolean).join(' · '));
+      const sm = document.createElement('small'); sm.textContent = 'OS ' + o.codigo + (o.motivo ? ' · ' + o.motivo.charAt(0).toLowerCase() + o.motivo.slice(1) : o.pecas ? ' · peças R$ ' + Math.round(o.pecas) : ''); p.appendChild(sm);
+      const r = document.createElement('span'); r.className = 'r';
+      const b = document.createElement('b'); b.textContent = o.lucro != null ? brl0(o.lucro) : '—';
+      const v = document.createElement('small'); v.textContent = (o.lucro != null ? 'de ' : '') + brl0(o.valor);
+      r.append(b, v); li.append(d, p, r); ul.appendChild(li);
+    });
+  }
+  function aplicarPessoa(email) {
+    const pz = PESSOAS[(email || '').toLowerCase()];
+    if (!pz) return;
+    document.querySelector('header.top .who .t').textContent = 'Olá, ' + pz.nome;
+    if (pz.papel === 'tecnico') {
+      ['escala', 'ranking', 'tarefas'].forEach(id => { const el = document.getElementById(id); if (el) el.hidden = true; });
+      document.querySelectorAll('nav.jump a[href="#ranking"], nav.jump a[href="#tarefas"]').forEach(a => a.remove());
+    }
+    if (pz.papel === 'tecnico' || pz.papel === 'admin') {
+      const nav = document.querySelector('nav.jump');
+      const a = document.createElement('a'); a.href = '#tecnico'; a.textContent = pz.papel === 'admin' ? 'Assistência' : 'Minha comissão';
+      nav.insertBefore(a, nav.firstChild);
+      fetch('privado/tecnico.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(t => { if (t) renderTecnico(t, pz.papel === 'admin'); }).catch(() => {});
+    }
+  }
+  fetch('/cdn-cgi/access/get-identity', { cache: 'no-store', credentials: 'include' })
+    .then(r => r.ok ? r.json() : null).then(id => { if (id && id.email) aplicarPessoa(id.email); }).catch(() => {});
 
   // Tarefas do dia
   const TASKS = [
