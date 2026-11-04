@@ -1,5 +1,5 @@
 // Portal do Vendedor Aura — funciona sem internet com a última versão salva.
-const CACHE = 'aura-portal-v3';
+const CACHE = 'aura-portal-v4';
 const SHELL = [
   './',
   'index.html',
@@ -17,7 +17,9 @@ const SHELL = [
   'docs/termo-atendimento-garantia.pdf',
   'docs/termo-emprestimo-reserva.pdf',
   'docs/termo-devolucao-reserva.pdf',
-  'docs/termo-compra-upgrade.pdf'
+  'docs/termo-compra-upgrade.pdf',
+  'docs/termo-entrada-manutencao-1.jpg',
+  'docs/termo-entrada-manutencao.pdf'
 ];
 
 self.addEventListener('install', e => {

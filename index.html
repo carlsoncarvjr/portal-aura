@@ -404,6 +404,10 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
         <span class="sheet">PDF</span>
         <span><span class="n">Compra do aparelho usado (upgrade)</span><span class="w" style="display:block">Versão em branco, para uso fora do sistema</span><span class="how" style="display:block">No dia a dia, gere pelo MercadoPhone (passo a passo abaixo).</span></span>
       </button>
+      <button type="button" class="doc" data-doc="termo-entrada-manutencao">
+        <span class="sheet">PDF</span>
+        <span><span class="n">Entrada para manutenção</span><span class="w" style="display:block">Assinar quando o cliente deixa o aparelho para conserto</span><span class="how" style="display:block">Anote o estado do aparelho na frente do cliente. A retirada é assinada no quadro final.</span></span>
+      </button>
     </div>
     <details class="steps">
       <summary>Como gerar o termo de compra pelo MercadoPhone</summary>
@@ -727,7 +731,8 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     'termo-atendimento-garantia': 'Termo de Atendimento em Garantia',
     'termo-emprestimo-reserva': 'Termo de Empréstimo de Aparelho Reserva',
     'termo-devolucao-reserva': 'Termo de Devolução de Aparelho Reserva',
-    'termo-compra-upgrade': 'Termo de Compra de Aparelho Usado'
+    'termo-compra-upgrade': 'Termo de Compra de Aparelho Usado',
+    'termo-entrada-manutencao': 'Termo de Entrada para Manutenção'
   };
   const viewer = document.getElementById('viewer'), vImg = document.getElementById('vImg'), vTitle = document.getElementById('vTitle'), vDown = document.getElementById('vDown'), vMsg = document.getElementById('vMsg');
   let current = null, lastFocus = null;
