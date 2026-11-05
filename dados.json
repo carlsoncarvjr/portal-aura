@@ -1,5 +1,5 @@
 {
-  "atualizadoEm": "2026-11-04T11:05:00-03:00",
+  "atualizadoEm": "2026-11-05T17:15:32-03:00",
   "mes": {
     "rotulo": "Novembro 2026",
     "ano": 2026,
@@ -7,120 +7,131 @@
     "diasNoMes": 30,
     "metaIphones": 110,
     "metaAcessorios": 26000,
-    "iphones": 8,
-    "acessorios": 1486.78
+    "iphones": 11,
+    "acessorios": 2641.04
   },
   "hoje": {
-    "data": "2026-11-04",
-    "iphones": 0,
+    "data": "2026-11-05",
+    "iphones": 1,
     "acessorios": 200.0,
+    "itens": [
+      {
+        "hora": "13:37",
+        "tipo": "acessorio",
+        "produto": "Capinha + Película",
+        "vendedor": "Gustavo"
+      },
+      {
+        "hora": "15:13",
+        "tipo": "iphone",
+        "produto": "iPhone 18 Pro 256GB Bordô",
+        "vendedor": "Elisa"
+      }
+    ]
+  },
+  "ontem": {
+    "data": "2026-11-04",
+    "iphones": 2,
+    "acessorios": 1154.26,
     "itens": [
       {
         "hora": "10:31",
         "tipo": "acessorio",
         "produto": "Carregador",
         "vendedor": "Gustavo"
-      }
-    ]
-  },
-  "ontem": {
-    "data": "2026-11-03",
-    "iphones": 4,
-    "acessorios": 865.83,
-    "itens": [
+      },
       {
-        "hora": "13:18",
+        "hora": "10:38",
+        "tipo": "acessorio",
+        "produto": "Capinha",
+        "vendedor": "Gustavo"
+      },
+      {
+        "hora": "13:00",
+        "tipo": "acessorio",
+        "produto": "Carregador + Cabo",
+        "vendedor": "Gustavo"
+      },
+      {
+        "hora": "15:59",
         "tipo": "iphone",
-        "produto": "iPhone 14 Pro Max 256GB Gold",
+        "produto": "iPhone 16 128GB Branco",
+        "vendedor": "Gustavo"
+      },
+      {
+        "hora": "16:11",
+        "tipo": "iphone",
+        "produto": "iPhone 16 Pro Max 256GB Titânio Preto",
         "vendedor": "Elisa"
       },
       {
-        "hora": "15:06",
-        "tipo": "iphone",
-        "produto": "iPhone 17 Pro Max 256GB Slv",
-        "vendedor": "Elisa",
-        "pre": true
-      },
-      {
-        "hora": "16:33",
-        "tipo": "acessorio",
-        "produto": "Película + Capinha",
-        "vendedor": "Danilo"
-      },
-      {
-        "hora": "17:29",
-        "tipo": "iphone",
-        "produto": "iPhone 17 Pro Max 256GB Azul",
-        "vendedor": "Danilo"
-      },
-      {
-        "hora": "18:44",
-        "tipo": "acessorio",
-        "produto": "Película",
-        "vendedor": "Danilo"
-      },
-      {
-        "hora": "18:52",
+        "hora": "16:37",
         "tipo": "acessorio",
         "produto": "Capinha",
-        "vendedor": "Danilo"
+        "vendedor": "Gustavo"
       },
       {
-        "hora": "20:43",
+        "hora": "17:50",
         "tipo": "acessorio",
         "produto": "Película",
-        "vendedor": "Danilo"
+        "vendedor": "Elisa"
       },
       {
-        "hora": "20:47",
-        "tipo": "iphone",
-        "produto": "iPhone 14 Pro Max 128GB Roxo Profundo",
-        "vendedor": "Danilo"
+        "hora": "17:51",
+        "tipo": "acessorio",
+        "produto": "Película",
+        "vendedor": "Elisa"
       }
     ]
   },
   "ranking": {
     "mes": [
       {
+        "vendedor": "Gustavo",
+        "iphones": 4,
+        "acessorios": 1234.8,
+        "vendas": 10
+      },
+      {
+        "vendedor": "Elisa",
+        "iphones": 4,
+        "acessorios": 540.41,
+        "vendas": 7
+      },
+      {
         "vendedor": "Danilo",
         "iphones": 3,
         "acessorios": 865.83,
         "vendas": 7
-      },
-      {
-        "vendedor": "Gustavo",
-        "iphones": 3,
-        "acessorios": 443.27,
-        "vendas": 5
-      },
-      {
-        "vendedor": "Elisa",
-        "iphones": 2,
-        "acessorios": 177.68,
-        "vendas": 3
       }
     ],
     "semana": [
       {
         "vendedor": "Gustavo",
-        "iphones": 3,
-        "acessorios": 443.27,
-        "vendas": 5
+        "iphones": 4,
+        "acessorios": 1234.8,
+        "vendas": 10
+      },
+      {
+        "vendedor": "Elisa",
+        "iphones": 4,
+        "acessorios": 362.74,
+        "vendas": 6
       },
       {
         "vendedor": "Danilo",
         "iphones": 2,
         "acessorios": 865.83,
         "vendas": 6
-      },
-      {
-        "vendedor": "Elisa",
-        "iphones": 2,
-        "acessorios": 0.0,
-        "vendas": 2
       }
     ],
     "hoje": [
+      {
+        "vendedor": "Elisa",
+        "iphones": 1,
+        "acessorios": 0.0,
+        "vendas": 1
+      },
       {
         "vendedor": "Gustavo",
         "iphones": 0,

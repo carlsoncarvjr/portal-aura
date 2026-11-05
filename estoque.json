@@ -1,9 +1,9 @@
 {
- "atualizadoEm": "2026-11-05T00:35:00-03:00",
- "total": 71,
+ "atualizadoEm": "2026-11-05T17:15:32-03:00",
+ "total": 63,
  "porUnidade": {
-  "Meu iPhone": 53,
-  "Riachi": 18
+  "Meu iPhone": 49,
+  "Riachi": 14
  },
  "itens": [
   {
@@ -41,26 +41,10 @@
   {
    "modelo": "iPhone 16 Pro Max",
    "memoria": "256GB",
-   "cor": "Desert Titanium",
-   "imei": "355688666973444",
-   "bateria": 90,
-   "unidade": "Meu iPhone"
-  },
-  {
-   "modelo": "iPhone 16 Pro Max",
-   "memoria": "256GB",
    "cor": "Natural Titanium",
    "imei": "355008287849370",
    "bateria": 93,
    "unidade": "Meu iPhone"
-  },
-  {
-   "modelo": "iPhone 16 Pro Max",
-   "memoria": "256GB",
-   "cor": "Natural Titanium",
-   "imei": "354331122560478",
-   "bateria": 87,
-   "unidade": "Riachi"
   },
   {
    "modelo": "iPhone 16 Pro Max",
@@ -74,24 +58,8 @@
    "modelo": "iPhone 16 Pro Max",
    "memoria": "256GB",
    "cor": "Titânio Natural",
-   "imei": "359222387590281",
-   "bateria": 88,
-   "unidade": "Meu iPhone"
-  },
-  {
-   "modelo": "iPhone 16 Pro Max",
-   "memoria": "256GB",
-   "cor": "Titânio Natural",
    "imei": "357100770965173",
    "bateria": 88,
-   "unidade": "Meu iPhone"
-  },
-  {
-   "modelo": "iPhone 16 Pro Max",
-   "memoria": "256GB",
-   "cor": "Titânio Preto",
-   "imei": "358536502638464",
-   "bateria": 94,
    "unidade": "Meu iPhone"
   },
   {
@@ -231,14 +199,6 @@
    "unidade": "Meu iPhone"
   },
   {
-   "modelo": "iPhone 14 Plus",
-   "memoria": "128GB",
-   "cor": "Estelar",
-   "imei": "354692335717704",
-   "bateria": 82,
-   "unidade": "Riachi"
-  },
-  {
    "modelo": "iPhone 14 Pro",
    "memoria": "256GB",
    "cor": "Preto",
@@ -330,14 +290,6 @@
    "modelo": "iPhone 13",
    "memoria": "128GB",
    "cor": "Midnight",
-   "imei": "353874237472478",
-   "bateria": 78,
-   "unidade": "Meu iPhone"
-  },
-  {
-   "modelo": "iPhone 13",
-   "memoria": "128GB",
-   "cor": "Midnight",
    "imei": "352941885567023",
    "bateria": 100,
    "unidade": "Riachi"
@@ -365,14 +317,6 @@
    "imei": "350294955435628",
    "bateria": 90,
    "unidade": "Meu iPhone"
-  },
-  {
-   "modelo": "iPhone 13",
-   "memoria": "128GB",
-   "cor": "Preto",
-   "imei": "354739186753955",
-   "bateria": 89,
-   "unidade": "Riachi"
   },
   {
    "modelo": "iPhone 13",
@@ -508,14 +452,6 @@
    "cor": "Preto",
    "imei": "351174774728222",
    "bateria": 87,
-   "unidade": "Riachi"
-  },
-  {
-   "modelo": "iPhone 11",
-   "memoria": "64GB",
-   "cor": "Preto",
-   "imei": "354746821573557",
-   "bateria": 69,
    "unidade": "Riachi"
   },
   {

@@ -1,5 +1,5 @@
 {
-  "atualizadoEm": "2026-11-04T17:40:00-03:00",
+  "atualizadoEm": "2026-11-05T17:15:32-03:00",
   "mes": "Novembro 2026",
   "vendedor": "Danilo",
   "iphones": 3,
@@ -22,19 +22,19 @@
   "premios": {
     "metaIphones": {
       "valor": 100,
-      "loja": 8,
+      "loja": 11,
       "meta": 110,
       "batida": false
     },
     "metaAcessorios": {
       "valor": 100,
-      "loja": 1486.78,
+      "loja": 2641.04,
       "meta": 26000,
       "batida": false
     },
     "melhorVendedor": {
       "valor": 100,
-      "posicao": 1
+      "posicao": 3
     }
   },
   "total": 0.0,

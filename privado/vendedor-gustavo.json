@@ -1,40 +1,40 @@
 {
-  "atualizadoEm": "2026-11-04T17:40:00-03:00",
+  "atualizadoEm": "2026-11-05T17:15:32-03:00",
   "mes": "Novembro 2026",
   "vendedor": "Gustavo",
-  "iphones": 3,
+  "iphones": 4,
   "jbl": 0,
   "valorPorIphone": 0,
   "proximaFaixaIphone": {
     "aPartirDe": 12,
     "valor": 10,
-    "faltam": 9
+    "faltam": 8
   },
   "comissaoIphones": 0,
-  "acessorios": 443.27,
+  "acessorios": 1234.8,
   "pctAcessorios": 0.0,
   "proximaFaixaAcessorios": {
     "aPartirDe": 3000,
     "pct": 3.0,
-    "faltam": 2556.73
+    "faltam": 1765.2
   },
   "comissaoAcessorios": 0.0,
   "premios": {
     "metaIphones": {
       "valor": 100,
-      "loja": 8,
+      "loja": 11,
       "meta": 110,
       "batida": false
     },
     "metaAcessorios": {
       "valor": 100,
-      "loja": 1486.78,
+      "loja": 2641.04,
       "meta": 26000,
       "batida": false
     },
     "melhorVendedor": {
       "valor": 100,
-      "posicao": 2
+      "posicao": 1
     }
   },
   "total": 0.0,
@@ -103,6 +103,41 @@
     }
   ],
   "vendas": [
+    {
+      "data": "2026-11-05",
+      "produto": "Capinha + Película",
+      "tipo": "acessorio",
+      "valor": 200.0,
+      "iphones": 0
+    },
+    {
+      "data": "2026-11-04",
+      "produto": "Capinha",
+      "tipo": "acessorio",
+      "valor": 112.81,
+      "iphones": 0
+    },
+    {
+      "data": "2026-11-04",
+      "produto": "iPhone 16 128GB Branco",
+      "tipo": "iphone",
+      "valor": 0.0,
+      "iphones": 1
+    },
+    {
+      "data": "2026-11-04",
+      "produto": "Carregador + Cabo",
+      "tipo": "acessorio",
+      "valor": 380.0,
+      "iphones": 0
+    },
+    {
+      "data": "2026-11-04",
+      "produto": "Capinha",
+      "tipo": "acessorio",
+      "valor": 98.71,
+      "iphones": 0
+    },
     {
       "data": "2026-11-04",
       "produto": "Carregador",
