@@ -715,7 +715,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
   <div class="vbar">
     <button type="button" class="vbtn" id="vClose" aria-label="Fechar">✕</button>
     <div class="vt" id="vTitle">Termo</div>
-    <a class="vbtn primary" id="vDown" href="#" download>Baixar PDF</a>
+    <button type="button" class="vbtn primary" id="vDown">Imprimir / Enviar</button>
   </div>
   <div class="vmsg" id="vMsg" hidden></div>
   <div class="vpage"><img id="vImg" alt=""></div>
@@ -850,14 +850,24 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     'termo-entrada-manutencao': 'Termo de Entrada para Manutenção'
   };
   const viewer = document.getElementById('viewer'), vImg = document.getElementById('vImg'), vTitle = document.getElementById('vTitle'), vDown = document.getElementById('vDown'), vMsg = document.getElementById('vMsg');
-  let current = null, lastFocus = null;
+  let current = null, lastFocus = null, docFile = null;
+  // Celular: abre a folha de compartilhar (Imprimir, Salvar em Arquivos, WhatsApp...). Computador: abre o PDF numa aba, com imprimir e baixar.
+  vDown.addEventListener('click', () => {
+    const url = 'docs/' + current + '.pdf';
+    if (docFile && navigator.canShare && navigator.canShare({ files: [docFile] })) {
+      navigator.share({ files: [docFile], title: DOCS[current] }).catch(() => {});
+      return;
+    }
+    const w = window.open(docFile ? URL.createObjectURL(docFile) : url, '_blank');
+    if (!w) location.href = url;
+  });
   function openDoc(id, btn) {
     current = id; lastFocus = btn;
     vTitle.textContent = DOCS[id];
     vImg.src = 'docs/' + id + '-1.jpg';
     vImg.alt = DOCS[id];
-    vDown.href = 'docs/' + id + '.pdf';
-    vDown.setAttribute('download', id + '.pdf');
+    docFile = null;
+    fetch('docs/' + id + '.pdf').then(r => r.ok ? r.blob() : Promise.reject()).then(b => { if (current === id) docFile = new File([b], id + '.pdf', { type: 'application/pdf' }); }).catch(() => {});
     vMsg.hidden = true;
     viewer.hidden = false;
     document.body.style.overflow = 'hidden';
