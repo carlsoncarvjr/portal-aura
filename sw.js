@@ -1,5 +1,5 @@
 // Portal do Vendedor Aura — funciona sem internet com a última versão salva.
-const CACHE = 'aura-portal-v6';
+const CACHE = 'aura-portal-v7';
 const SHELL = [
   './',
   'index.html',
@@ -34,9 +34,9 @@ self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if (e.request.method !== 'GET' || url.origin !== location.origin) return;
   // Login (Cloudflare) e a checagem da tela de entrada sempre vão direto para a internet.
-  if (url.pathname.startsWith('/cdn-cgi/') || url.pathname.startsWith('/privado/') || url.searchParams.has('check')) return;
+  if (url.pathname.startsWith('/cdn-cgi/') || url.pathname.startsWith('/privado/') || url.pathname.startsWith('/api/') || url.searchParams.has('check')) return;
   // Números e a própria página: busca na internet primeiro, usa a cópia salva se estiver sem sinal.
-  if (url.pathname.endsWith('dados.json') || url.pathname.endsWith('estoque.json') || e.request.mode === 'navigate' || url.pathname.startsWith('/entrar') || url.pathname.endsWith('index.html')) {
+  if (url.pathname.endsWith('dados.json') || url.pathname.endsWith('estoque.json') || url.pathname.endsWith('avaliacao.json') || e.request.mode === 'navigate' || url.pathname.startsWith('/entrar') || url.pathname.endsWith('index.html')) {
     e.respondWith(
       fetch(e.request).then(r => { const copy = r.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); return r; })
         .catch(() => caches.match(e.request).then(r => r || caches.match('index.html')))

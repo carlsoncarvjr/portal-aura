@@ -1,0 +1,696 @@
+{
+ "atualizadoEm": "2026-08-26",
+ "ajusteManualEm": "2026-10-23",
+ "grades": {
+  "A": 1,
+  "AB": 0.92,
+  "B": 0.82,
+  "Bm": 0.65
+ },
+ "itens": [
+  {
+   "gen": "iPhone 11",
+   "modelo": "IPHONE 11",
+   "cap": "64GB",
+   "media": 850,
+   "override": 650,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 11",
+   "modelo": "IPHONE 11",
+   "cap": "128GB",
+   "media": 1080,
+   "override": 750,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 11",
+   "modelo": "IPHONE 11",
+   "cap": "256GB",
+   "media": 1199,
+   "override": 800,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 11",
+   "modelo": "IPHONE 11 PRO",
+   "cap": "64GB",
+   "media": 1299,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 11",
+   "modelo": "IPHONE 11 PRO MAX",
+   "cap": "64GB",
+   "media": 1400,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 11",
+   "modelo": "IPHONE 11 PRO MAX",
+   "cap": "256GB",
+   "media": 1550,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 12",
+   "modelo": "IPHONE 12",
+   "cap": "64GB",
+   "media": 1240,
+   "override": 900,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 12",
+   "modelo": "IPHONE 12",
+   "cap": "128GB",
+   "media": 1300,
+   "override": 1200,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 12",
+   "modelo": "IPHONE 12",
+   "cap": "256GB",
+   "media": 1450,
+   "override": 1350,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 12",
+   "modelo": "IPHONE 12 MINI",
+   "cap": "128GB",
+   "media": 1099,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 12",
+   "modelo": "IPHONE 12 MINI",
+   "cap": "256GB",
+   "media": 1099,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 12",
+   "modelo": "IPHONE 12 PRO",
+   "cap": "128GB",
+   "media": 1600,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 12",
+   "modelo": "IPHONE 12 PRO",
+   "cap": "256GB",
+   "media": 1700,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 12",
+   "modelo": "IPHONE 12 PRO",
+   "cap": "512GB",
+   "media": 1730,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 12",
+   "modelo": "IPHONE 12 PRO MAX",
+   "cap": "128GB",
+   "media": 1800,
+   "override": 1800,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 12",
+   "modelo": "IPHONE 12 PRO MAX",
+   "cap": "256GB",
+   "media": 2100,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 12",
+   "modelo": "IPHONE 12 PRO MAX",
+   "cap": "512GB",
+   "media": 2250,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 13",
+   "modelo": "IPHONE 13",
+   "cap": "128GB",
+   "media": 1599,
+   "override": 1600,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 13",
+   "modelo": "IPHONE 13",
+   "cap": "256GB",
+   "media": 1850,
+   "override": null,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 13",
+   "modelo": "IPHONE 13",
+   "cap": "512GB",
+   "media": 1950,
+   "override": null,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 13",
+   "modelo": "IPHONE 13 MINI",
+   "cap": "128GB",
+   "media": 1200,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 13",
+   "modelo": "IPHONE 13 PRO",
+   "cap": "128GB",
+   "media": 2120,
+   "override": 2100,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 13",
+   "modelo": "IPHONE 13 PRO",
+   "cap": "256GB",
+   "media": 2250,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 13",
+   "modelo": "IPHONE 13 PRO",
+   "cap": "512GB",
+   "media": 2475,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 13",
+   "modelo": "IPHONE 13 PRO",
+   "cap": "1TB",
+   "media": 2625,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 13",
+   "modelo": "IPHONE 13 PRO MAX",
+   "cap": "128GB",
+   "media": 2350,
+   "override": 2200,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 13",
+   "modelo": "IPHONE 13 PRO MAX",
+   "cap": "256GB",
+   "media": 2579,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 13",
+   "modelo": "IPHONE 13 PRO MAX",
+   "cap": "512GB",
+   "media": 2650,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14",
+   "cap": "128GB",
+   "media": 1770,
+   "override": 1650,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14",
+   "cap": "256GB",
+   "media": 2120,
+   "override": null,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14",
+   "cap": "512GB",
+   "media": 2280,
+   "override": null,
+   "n": 1,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14 PLUS",
+   "cap": "128GB",
+   "media": 1930,
+   "override": 2000,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14 PLUS",
+   "cap": "256GB",
+   "media": 2200,
+   "override": 2200,
+   "n": 6,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14 PRO",
+   "cap": "128GB",
+   "media": 2480,
+   "override": 2500,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14 PRO",
+   "cap": "256GB",
+   "media": 2650,
+   "override": 2700,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14 PRO",
+   "cap": "512GB",
+   "media": 2800,
+   "override": 2900,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14 PRO",
+   "cap": "1TB",
+   "media": 2900,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14 PRO MAX",
+   "cap": "128GB",
+   "media": 2730,
+   "override": 2800,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14 PRO MAX",
+   "cap": "256GB",
+   "media": 3000,
+   "override": 3000,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14 PRO MAX",
+   "cap": "512GB",
+   "media": 3300,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 14",
+   "modelo": "IPHONE 14 PRO MAX",
+   "cap": "1TB",
+   "media": 3450,
+   "override": 3300,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 15",
+   "modelo": "IPHONE 15",
+   "cap": "128GB",
+   "media": 2300,
+   "override": 2400,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 15",
+   "modelo": "IPHONE 15",
+   "cap": "256GB",
+   "media": 2750,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 15",
+   "modelo": "IPHONE 15",
+   "cap": "512GB",
+   "media": 2790,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 15",
+   "modelo": "IPHONE 15 PLUS",
+   "cap": "128GB",
+   "media": 2480,
+   "override": 2500,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 15",
+   "modelo": "IPHONE 15 PLUS",
+   "cap": "256GB",
+   "media": 2790,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 15",
+   "modelo": "IPHONE 15 PRO",
+   "cap": "128GB",
+   "media": 2900,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 15",
+   "modelo": "IPHONE 15 PRO",
+   "cap": "256GB",
+   "media": 3200,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 15",
+   "modelo": "IPHONE 15 PRO",
+   "cap": "512GB",
+   "media": 3840,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 15",
+   "modelo": "IPHONE 15 PRO",
+   "cap": "1TB",
+   "media": 3700,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 15",
+   "modelo": "IPHONE 15 PRO MAX",
+   "cap": "256GB",
+   "media": 3450,
+   "override": 3700,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 15",
+   "modelo": "IPHONE 15 PRO MAX",
+   "cap": "512GB",
+   "media": 3730,
+   "override": 3900,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 15",
+   "modelo": "IPHONE 15 PRO MAX",
+   "cap": "1TB",
+   "media": 3850,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16",
+   "cap": "128GB",
+   "media": 3150,
+   "override": 3200,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16",
+   "cap": "256GB",
+   "media": 3770,
+   "override": 3600,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16",
+   "cap": "512GB",
+   "media": 3850,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16 PLUS",
+   "cap": "128GB",
+   "media": 3450,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16 PLUS",
+   "cap": "256GB",
+   "media": 3850,
+   "override": null,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16 PRO",
+   "cap": "128GB",
+   "media": 3680,
+   "override": 3800,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16 PRO",
+   "cap": "256GB",
+   "media": 4250,
+   "override": 4200,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16 PRO",
+   "cap": "512GB",
+   "media": 4799,
+   "override": 4600,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16 PRO",
+   "cap": "1TB",
+   "media": 4400,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16 PRO MAX",
+   "cap": "256GB",
+   "media": 4350,
+   "override": 4600,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16 PRO MAX",
+   "cap": "512GB",
+   "media": 4880,
+   "override": 4900,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16 PRO MAX",
+   "cap": "1TB",
+   "media": 5100,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 16",
+   "modelo": "IPHONE 16E",
+   "cap": "128GB",
+   "media": 2280,
+   "override": null,
+   "n": 2,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 17",
+   "modelo": "IPHONE 17",
+   "cap": "256GB",
+   "media": 4350,
+   "override": 4200,
+   "n": 5,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 17",
+   "modelo": "IPHONE 17",
+   "cap": "512GB",
+   "media": 5400,
+   "override": null,
+   "n": 1,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 17",
+   "modelo": "IPHONE 17 AIR",
+   "cap": "256GB",
+   "media": 4600,
+   "override": null,
+   "n": 4,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 17",
+   "modelo": "IPHONE 17 PRO",
+   "cap": "256GB",
+   "media": 5949,
+   "override": 5800,
+   "n": 3,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 17",
+   "modelo": "IPHONE 17 PRO",
+   "cap": "512GB",
+   "media": 6995,
+   "override": 6200,
+   "n": 2,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 17",
+   "modelo": "IPHONE 17 PRO",
+   "cap": "1TB",
+   "media": 7800,
+   "override": 6500,
+   "n": 3,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 17",
+   "modelo": "IPHONE 17 PRO MAX",
+   "cap": "256GB",
+   "media": 6300,
+   "override": 6200,
+   "n": 3,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 17",
+   "modelo": "IPHONE 17 PRO MAX",
+   "cap": "512GB",
+   "media": 7150,
+   "override": 6600,
+   "n": 3,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 17",
+   "modelo": "IPHONE 17 PRO MAX",
+   "cap": "1TB",
+   "media": 8600,
+   "override": 7000,
+   "n": 3,
+   "flag": null
+  },
+  {
+   "gen": "iPhone 17",
+   "modelo": "IPHONE 17 PRO MAX",
+   "cap": "2TB",
+   "media": 10800,
+   "override": 7300,
+   "n": 3,
+   "flag": null
+  }
+ ]
+}
