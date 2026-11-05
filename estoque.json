@@ -1,9 +1,9 @@
 {
- "atualizadoEm": "2026-11-05T00:30:00-03:00",
- "total": 53,
+ "atualizadoEm": "2026-11-05T00:35:00-03:00",
+ "total": 71,
  "porUnidade": {
-  "Meu iPhone": 52,
-  "Riachi": 1
+  "Meu iPhone": 53,
+  "Riachi": 18
  },
  "itens": [
   {
@@ -13,6 +13,14 @@
    "imei": "356913120069319",
    "bateria": null,
    "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 16",
+   "memoria": "128GB",
+   "cor": "Preto",
+   "imei": "356166896431722",
+   "bateria": 91,
+   "unidade": "Riachi"
   },
   {
    "modelo": "iPhone 16 Pro",
@@ -28,14 +36,6 @@
    "cor": "Desert Titanium",
    "imei": "351670270158715",
    "bateria": null,
-   "unidade": "Meu iPhone"
-  },
-  {
-   "modelo": "iPhone 16 Pro Max",
-   "memoria": "256GB",
-   "cor": "",
-   "imei": "358536502638464",
-   "bateria": 94,
    "unidade": "Meu iPhone"
   },
   {
@@ -57,6 +57,22 @@
   {
    "modelo": "iPhone 16 Pro Max",
    "memoria": "256GB",
+   "cor": "Natural Titanium",
+   "imei": "354331122560478",
+   "bateria": 87,
+   "unidade": "Riachi"
+  },
+  {
+   "modelo": "iPhone 16 Pro Max",
+   "memoria": "256GB",
+   "cor": "Titânio Branco",
+   "imei": "356541622843624",
+   "bateria": null,
+   "unidade": "Riachi"
+  },
+  {
+   "modelo": "iPhone 16 Pro Max",
+   "memoria": "256GB",
    "cor": "Titânio Natural",
    "imei": "359222387590281",
    "bateria": 88,
@@ -71,6 +87,14 @@
    "unidade": "Meu iPhone"
   },
   {
+   "modelo": "iPhone 16 Pro Max",
+   "memoria": "256GB",
+   "cor": "Titânio Preto",
+   "imei": "358536502638464",
+   "bateria": 94,
+   "unidade": "Meu iPhone"
+  },
+  {
    "modelo": "iPhone 16e",
    "memoria": "128GB",
    "cor": "White",
@@ -80,18 +104,18 @@
   },
   {
    "modelo": "iPhone 15",
-   "memoria": "",
-   "cor": "",
-   "imei": "351682579493990",
-   "bateria": null,
+   "memoria": "128GB",
+   "cor": "Black",
+   "imei": "356562912899332",
+   "bateria": 87,
    "unidade": "Meu iPhone"
   },
   {
    "modelo": "iPhone 15",
    "memoria": "128GB",
    "cor": "Black",
-   "imei": "356562912899332",
-   "bateria": 87,
+   "imei": "351682579493990",
+   "bateria": null,
    "unidade": "Meu iPhone"
   },
   {
@@ -128,11 +152,27 @@
   },
   {
    "modelo": "iPhone 15",
+   "memoria": "128GB",
+   "cor": "Preto",
+   "imei": "356520500371080",
+   "bateria": 81,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 15",
    "memoria": "256GB",
    "cor": "Preto",
    "imei": "357291743783346",
    "bateria": 85,
    "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 15 Plus",
+   "memoria": "128GB",
+   "cor": "Rosa",
+   "imei": "354820296178398",
+   "bateria": 88,
+   "unidade": "Riachi"
   },
   {
    "modelo": "iPhone 15 Pro Max",
@@ -159,6 +199,14 @@
    "unidade": "Riachi"
   },
   {
+   "modelo": "iPhone 15 Pro Max",
+   "memoria": "256GB",
+   "cor": "Titânio Branco",
+   "imei": "354058249666785",
+   "bateria": null,
+   "unidade": "Riachi"
+  },
+  {
    "modelo": "iPhone 14",
    "memoria": "128GB",
    "cor": "Midnight",
@@ -181,6 +229,14 @@
    "imei": "358075740306253",
    "bateria": null,
    "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 14 Plus",
+   "memoria": "128GB",
+   "cor": "Estelar",
+   "imei": "354692335717704",
+   "bateria": 82,
+   "unidade": "Riachi"
   },
   {
    "modelo": "iPhone 14 Pro",
@@ -216,6 +272,14 @@
   },
   {
    "modelo": "iPhone 14 Pro Max",
+   "memoria": "128GB",
+   "cor": "Roxo Profundo",
+   "imei": "358540300582601",
+   "bateria": 86,
+   "unidade": "Riachi"
+  },
+  {
+   "modelo": "iPhone 14 Pro Max",
    "memoria": "256GB",
    "cor": "Roxo Profundo",
    "imei": "350636273806932",
@@ -224,7 +288,7 @@
   },
   {
    "modelo": "iPhone 13",
-   "memoria": "",
+   "memoria": "128GB",
    "cor": "Azul",
    "imei": "358271958259926",
    "bateria": 84,
@@ -273,10 +337,42 @@
   {
    "modelo": "iPhone 13",
    "memoria": "128GB",
+   "cor": "Midnight",
+   "imei": "352941885567023",
+   "bateria": 100,
+   "unidade": "Riachi"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "128GB",
+   "cor": "Midnight",
+   "imei": "358021948469576",
+   "bateria": 84,
+   "unidade": "Riachi"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "128GB",
+   "cor": "Midnight",
+   "imei": "358538779425237",
+   "bateria": 100,
+   "unidade": "Riachi"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "128GB",
    "cor": "Preto",
    "imei": "350294955435628",
    "bateria": 90,
    "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "128GB",
+   "cor": "Preto",
+   "imei": "354739186753955",
+   "bateria": 89,
+   "unidade": "Riachi"
   },
   {
    "modelo": "iPhone 13",
@@ -352,6 +448,14 @@
   },
   {
    "modelo": "iPhone 12",
+   "memoria": "64GB",
+   "cor": "Branco",
+   "imei": "353051111593584",
+   "bateria": null,
+   "unidade": "Riachi"
+  },
+  {
+   "modelo": "iPhone 12",
    "memoria": "128GB",
    "cor": "White",
    "imei": "353361737805324",
@@ -360,8 +464,8 @@
   },
   {
    "modelo": "iPhone 12 Pro",
-   "memoria": "",
-   "cor": "",
+   "memoria": "128GB",
+   "cor": "Azul Pacífico",
    "imei": "356683114971081",
    "bateria": null,
    "unidade": "Meu iPhone"
@@ -389,6 +493,30 @@
    "imei": "358710335729127",
    "bateria": null,
    "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 11",
+   "memoria": "64GB",
+   "cor": "Branco",
+   "imei": "353855328139589",
+   "bateria": 89,
+   "unidade": "Riachi"
+  },
+  {
+   "modelo": "iPhone 11",
+   "memoria": "64GB",
+   "cor": "Preto",
+   "imei": "351174774728222",
+   "bateria": 87,
+   "unidade": "Riachi"
+  },
+  {
+   "modelo": "iPhone 11",
+   "memoria": "64GB",
+   "cor": "Preto",
+   "imei": "354746821573557",
+   "bateria": 69,
+   "unidade": "Riachi"
   },
   {
    "modelo": "iPhone 11",
@@ -429,6 +557,22 @@
    "imei": "352845113435913",
    "bateria": 75,
    "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 11 Pro Max",
+   "memoria": "64GB",
+   "cor": "Verde",
+   "imei": "353916101358125",
+   "bateria": 83,
+   "unidade": "Riachi"
+  },
+  {
+   "modelo": "iPhone XR",
+   "memoria": "64GB",
+   "cor": "Preto",
+   "imei": "356460109657789",
+   "bateria": 50,
+   "unidade": "Riachi"
   }
  ]
 }
