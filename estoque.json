@@ -1,0 +1,434 @@
+{
+ "atualizadoEm": "2026-11-05T00:30:00-03:00",
+ "total": 53,
+ "porUnidade": {
+  "Meu iPhone": 52,
+  "Riachi": 1
+ },
+ "itens": [
+  {
+   "modelo": "iPhone 16",
+   "memoria": "128GB",
+   "cor": "Azul",
+   "imei": "356913120069319",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 16 Pro",
+   "memoria": "128GB",
+   "cor": "Preto",
+   "imei": "352254485057589",
+   "bateria": 92,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 16 Pro",
+   "memoria": "256GB",
+   "cor": "Desert Titanium",
+   "imei": "351670270158715",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 16 Pro Max",
+   "memoria": "256GB",
+   "cor": "",
+   "imei": "358536502638464",
+   "bateria": 94,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 16 Pro Max",
+   "memoria": "256GB",
+   "cor": "Desert Titanium",
+   "imei": "355688666973444",
+   "bateria": 90,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 16 Pro Max",
+   "memoria": "256GB",
+   "cor": "Natural Titanium",
+   "imei": "355008287849370",
+   "bateria": 93,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 16 Pro Max",
+   "memoria": "256GB",
+   "cor": "Titânio Natural",
+   "imei": "359222387590281",
+   "bateria": 88,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 16 Pro Max",
+   "memoria": "256GB",
+   "cor": "Titânio Natural",
+   "imei": "357100770965173",
+   "bateria": 88,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 16e",
+   "memoria": "128GB",
+   "cor": "White",
+   "imei": "353591263398506",
+   "bateria": 93,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 15",
+   "memoria": "",
+   "cor": "",
+   "imei": "351682579493990",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 15",
+   "memoria": "128GB",
+   "cor": "Black",
+   "imei": "356562912899332",
+   "bateria": 87,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 15",
+   "memoria": "128GB",
+   "cor": "Blue",
+   "imei": "350450243678607",
+   "bateria": 98,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 15",
+   "memoria": "128GB",
+   "cor": "Green",
+   "imei": "353177646256908",
+   "bateria": 81,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 15",
+   "memoria": "128GB",
+   "cor": "Pink",
+   "imei": "353887197697348",
+   "bateria": 84,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 15",
+   "memoria": "128GB",
+   "cor": "Pink",
+   "imei": "350448886694535",
+   "bateria": 76,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 15",
+   "memoria": "256GB",
+   "cor": "Preto",
+   "imei": "357291743783346",
+   "bateria": 85,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 15 Pro Max",
+   "memoria": "256GB",
+   "cor": "Azul",
+   "imei": "352310726751727",
+   "bateria": 87,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 15 Pro Max",
+   "memoria": "256GB",
+   "cor": "Natural Titanium",
+   "imei": "351016860981456",
+   "bateria": 84,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 15 Pro Max",
+   "memoria": "256GB",
+   "cor": "Titânio Azul",
+   "imei": "350496309925515",
+   "bateria": 73,
+   "unidade": "Riachi"
+  },
+  {
+   "modelo": "iPhone 14",
+   "memoria": "128GB",
+   "cor": "Midnight",
+   "imei": "358049671154990",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 14",
+   "memoria": "128GB",
+   "cor": "Midnight",
+   "imei": "354776211759284",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 14 Plus",
+   "memoria": "",
+   "cor": "",
+   "imei": "358075740306253",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 14 Pro",
+   "memoria": "256GB",
+   "cor": "Preto",
+   "imei": "354672348384635",
+   "bateria": 95,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 14 Pro Max",
+   "memoria": "128GB",
+   "cor": "Graphite",
+   "imei": "356163570119590",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 14 Pro Max",
+   "memoria": "128GB",
+   "cor": "Roxo Profundo",
+   "imei": "353083963587745",
+   "bateria": 82,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 14 Pro Max",
+   "memoria": "128GB",
+   "cor": "Roxo Profundo",
+   "imei": "350121914728464",
+   "bateria": 88,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 14 Pro Max",
+   "memoria": "256GB",
+   "cor": "Roxo Profundo",
+   "imei": "350636273806932",
+   "bateria": 78,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "",
+   "cor": "Azul",
+   "imei": "358271958259926",
+   "bateria": 84,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "128GB",
+   "cor": "Green",
+   "imei": "354922767698803",
+   "bateria": 70,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "128GB",
+   "cor": "Midnight",
+   "imei": "354208279487418",
+   "bateria": 75,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "128GB",
+   "cor": "Midnight",
+   "imei": "352888213684956",
+   "bateria": 60,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "128GB",
+   "cor": "Midnight",
+   "imei": "353874237472478",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "128GB",
+   "cor": "Midnight",
+   "imei": "353874237472478",
+   "bateria": 78,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "128GB",
+   "cor": "Preto",
+   "imei": "350294955435628",
+   "bateria": 90,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "128GB",
+   "cor": "Starlight",
+   "imei": "350056837336500",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13",
+   "memoria": "128GB",
+   "cor": "Starlight",
+   "imei": "351475538929968",
+   "bateria": 79,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13 Pro",
+   "memoria": "512GB",
+   "cor": "Titânio Branco",
+   "imei": "353103644673159",
+   "bateria": 93,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13 Pro Max",
+   "memoria": "128GB",
+   "cor": "Azul",
+   "imei": "359508626811003",
+   "bateria": 77,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13 Pro Max",
+   "memoria": "128GB",
+   "cor": "Gold",
+   "imei": "355387496540594",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13 Pro Max",
+   "memoria": "256GB",
+   "cor": "Graphite",
+   "imei": "357447883349070",
+   "bateria": 75,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 13 Pro Max",
+   "memoria": "512GB",
+   "cor": "Gold",
+   "imei": "359481987936001",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 12",
+   "memoria": "64GB",
+   "cor": "Black",
+   "imei": "350197042137216",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 12",
+   "memoria": "64GB",
+   "cor": "Black",
+   "imei": "352619275324615",
+   "bateria": 76,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 12",
+   "memoria": "128GB",
+   "cor": "White",
+   "imei": "353361737805324",
+   "bateria": 76,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 12 Pro",
+   "memoria": "",
+   "cor": "",
+   "imei": "356683114971081",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 12 Pro",
+   "memoria": "128GB",
+   "cor": "Grafite",
+   "imei": "356688111762102",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 11",
+   "memoria": "64GB",
+   "cor": "Black",
+   "imei": "354650750801429",
+   "bateria": 100,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 11",
+   "memoria": "64GB",
+   "cor": "Branco",
+   "imei": "358710335729127",
+   "bateria": null,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 11",
+   "memoria": "128GB",
+   "cor": "",
+   "imei": "353988107976440",
+   "bateria": 89,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 11",
+   "memoria": "128GB",
+   "cor": "Black",
+   "imei": "350944544520500",
+   "bateria": 86,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 11",
+   "memoria": "128GB",
+   "cor": "White",
+   "imei": "357778615304037",
+   "bateria": 76,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 11",
+   "memoria": "256GB",
+   "cor": "White",
+   "imei": "352925119744755",
+   "bateria": 93,
+   "unidade": "Meu iPhone"
+  },
+  {
+   "modelo": "iPhone 11 Pro Max",
+   "memoria": "64GB",
+   "cor": "Branco",
+   "imei": "352845113435913",
+   "bateria": 75,
+   "unidade": "Meu iPhone"
+  }
+ ]
+}

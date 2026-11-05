@@ -34,6 +34,19 @@
 .vc-steps { display: flex; gap: 3px; margin-top: 10px; } .vc-steps span { flex: 1; height: 8px; border-radius: 4px; background: var(--surface-2); } .vc-steps span.on { background: var(--grad); }
 .vc-pr { list-style: none; margin: 0; padding: 0; } .vc-pr li { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 14px; } .vc-pr li:first-child { border-top: 0; padding-top: 0; } .vc-pr small { display: block; font-size: 12px; color: var(--ink-mute); } .vc-pr .ok { color: var(--lime); font-weight: 700; } .vc-pr .no { color: var(--ink-mute); }
 .vc-tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; } .vc-tbl th { text-align: left; font-size: 11.5px; color: var(--ink-mute); font-weight: 600; padding: 0 0 6px; } .vc-tbl td { padding: 8px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; } .vc-tbl td:last-child, .vc-tbl th:last-child { text-align: right; } .vc-tbl td:last-child { color: var(--lime); font-weight: 700; }
+
+/* Estoque */
+.st-tools { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.st-tools input { width: 100%; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; padding: 0 14px; }
+.st-tools input::placeholder { color: var(--ink-mute); }
+.st-grp { margin-top: 12px; } .st-grp:first-child { margin-top: 0; }
+.st-grp h3 { font-family: var(--f-display); font-size: 14.5px; font-weight: 600; margin: 0 0 6px; display: flex; justify-content: space-between; } .st-grp h3 span { color: var(--ink-mute); font-weight: 500; font-size: 12.5px; }
+.st-row { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; padding: 9px 0; border-top: 1px solid var(--line); } .st-grp .st-row:first-of-type { border-top: 0; }
+.st-row .a { font-size: 14px; } .st-row .u { font-size: 11.5px; color: var(--ink-mute); text-align: right; }
+.st-row .i { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.st-row .i button { border: 1px solid var(--line); background: transparent; color: var(--ink-soft); border-radius: 8px; font-size: 11.5px; padding: 3px 8px; cursor: pointer; } .st-row .i button.ok { color: var(--lime); border-color: var(--green); }
+.bat { font-size: 11.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-left: 6px; vertical-align: 1px; }
+.bat.b1 { background: rgba(190,232,40,.14); color: var(--lime); } .bat.b2 { background: rgba(242,184,75,.14); color: var(--warn); } .bat.b3 { background: rgba(239,123,90,.14); color: var(--late); } .bat.b0 { background: rgba(185,192,179,.12); color: var(--ink-mute); }
 </style>
 <title>Portal do Vendedor Aura</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -255,6 +268,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     <a href="#ranking">Ranking</a>
     <a href="#hoje">Vendas do dia</a>
     <a href="#tarefas">Tarefas</a>
+    <a href="#estoque">Estoque</a>
     <a href="#documentos">Documentos</a>
     <a href="#regras">Regras</a>
   </nav>
@@ -411,6 +425,19 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     <div class="sec-h"><h2>Tarefas do dia</h2><button class="reset" id="resetTasks" type="button">Desmarcar tudo</button></div>
     <div class="tasks" id="tasks"></div>
     <p class="sec-h hint" style="margin-top:10px">As marcações ficam salvas só neste aparelho e recomeçam a cada dia.</p>
+  </section>
+
+  <section id="estoque">
+    <div class="sec-h"><h2>Estoque</h2><span class="hint" id="stHint">Carregando…</span></div>
+    <div class="st-tools">
+      <input type="search" id="stBusca" placeholder="Buscar modelo, cor, memória ou IMEI" autocomplete="off" aria-label="Buscar no estoque">
+      <div class="seg" role="radiogroup" aria-label="Unidade">
+        <button type="button" role="radio" data-un="" aria-checked="true">Todas</button>
+        <button type="button" role="radio" data-un="Meu iPhone" aria-checked="false">Meu iPhone</button>
+        <button type="button" role="radio" data-un="Riachi" aria-checked="false">Riachi</button>
+      </div>
+    </div>
+    <div class="card" id="stLista"></div>
   </section>
 
   <section id="documentos">
@@ -938,6 +965,35 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
   }
   fetch('/cdn-cgi/access/get-identity', { cache: 'no-store', credentials: 'include' })
     .then(r => r.ok ? r.json() : null).then(id => { if (id && id.email) aplicarPessoa(id.email); }).catch(() => {});
+
+
+  // Estoque
+  const st = { itens: [], un: '', q: '' };
+  function drawEstoque() {
+    const box = document.getElementById('stLista'); box.innerHTML = '';
+    const q = st.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const rows = st.itens.filter(x => (!st.un || x.unidade === st.un) && q.every(t => (x.modelo + ' ' + x.memoria + ' ' + x.cor + ' ' + x.imei + ' ' + x.unidade).toLowerCase().includes(t)));
+    document.getElementById('stHint').textContent = rows.length + (rows.length === 1 ? ' aparelho' : ' aparelhos');
+    if (!rows.length) { const p = document.createElement('p'); p.className = 'hint'; p.style.margin = '0'; p.textContent = st.itens.length ? 'Nada encontrado com esse filtro.' : 'Estoque ainda não carregado.'; box.appendChild(p); return; }
+    const grupos = new Map(); rows.forEach(x => { if (!grupos.has(x.modelo)) grupos.set(x.modelo, []); grupos.get(x.modelo).push(x); });
+    grupos.forEach((lista, mod) => {
+      const g = document.createElement('div'); g.className = 'st-grp';
+      const h = document.createElement('h3'); h.textContent = mod; const c = document.createElement('span'); c.textContent = lista.length; h.appendChild(c); g.appendChild(h);
+      lista.forEach(x => {
+        const r = document.createElement('div'); r.className = 'st-row';
+        const a = document.createElement('span'); a.className = 'a'; a.textContent = [x.memoria, x.cor].filter(Boolean).join(' · ') || '—';
+        const b = document.createElement('span'); b.className = 'bat ' + (x.bateria == null ? 'b0' : x.bateria >= 85 ? 'b1' : x.bateria >= 80 ? 'b2' : 'b3'); b.textContent = x.bateria == null ? 'bateria —' : x.bateria + '%'; a.appendChild(b);
+        const u = document.createElement('span'); u.className = 'u'; u.textContent = x.unidade;
+        const i = document.createElement('span'); i.className = 'i'; i.append('IMEI ' + (x.imei || '—'));
+        if (x.imei) { const bt = document.createElement('button'); bt.type = 'button'; bt.textContent = 'Copiar'; bt.addEventListener('click', () => { const ok = () => { bt.textContent = 'Copiado'; bt.classList.add('ok'); setTimeout(() => { bt.textContent = 'Copiar'; bt.classList.remove('ok'); }, 1500); }; (navigator.clipboard ? navigator.clipboard.writeText(x.imei) : Promise.reject()).then(ok).catch(() => { const t = document.createElement('textarea'); t.value = x.imei; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); ok(); } catch (e) {} t.remove(); }); }); i.appendChild(bt); }
+        r.append(a, u, i); g.appendChild(r);
+      });
+      box.appendChild(g);
+    });
+  }
+  document.getElementById('stBusca').addEventListener('input', e => { st.q = e.target.value; drawEstoque(); });
+  document.querySelectorAll('[data-un]').forEach(b => b.addEventListener('click', () => { st.un = b.dataset.un; document.querySelectorAll('[data-un]').forEach(o => o.setAttribute('aria-checked', o === b ? 'true' : 'false')); drawEstoque(); }));
+  fetch('estoque.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => { if (d) { st.itens = d.itens || []; } drawEstoque(); }).catch(() => drawEstoque());
 
   // Tarefas do dia
   const TASKS = [
