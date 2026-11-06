@@ -1,5 +1,5 @@
 // Portal do Vendedor Aura — funciona sem internet com a última versão salva.
-const CACHE = 'aura-portal-v11';
+const CACHE = 'aura-portal-v12';
 const SHELL = [
   './',
   'index.html',
@@ -46,4 +46,21 @@ self.addEventListener('fetch', e => {
   }
   // Demais arquivos (termos, ícones): cópia salva primeiro.
   e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).then(res => { const copy = res.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); return res; })));
+});
+
+// Notificações
+self.addEventListener('push', e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (err) { d = { title: 'Portal Aura', body: e.data ? e.data.text() : '' }; }
+  e.waitUntil(self.registration.showNotification(d.title || 'Portal Aura', {
+    body: d.body || '', icon: 'icons/icon-192.png', badge: 'icons/favicon-32.png', tag: d.tag || undefined, data: { url: d.url || '/' }
+  }));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = new URL((e.notification.data && e.notification.data.url) || '/', self.location.origin).href;
+  e.waitUntil(clients.matchAll({ type: 'window', includeUncontrolled: true }).then(ws => {
+    for (const w of ws) { if (w.url.startsWith(self.location.origin)) { w.navigate(url).catch(() => {}); return w.focus(); } }
+    return clients.openWindow(url);
+  }));
 });

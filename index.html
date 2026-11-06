@@ -111,9 +111,12 @@ body[data-tab="loja"] .wrap > section[data-tab="loja"], body[data-tab="docs"] .w
 :root[data-theme="light"] .viewer#viewer { background: rgba(20,27,22,.92); }
 .tema { flex: none; width: 38px; height: 38px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft); display: grid; place-items: center; cursor: pointer; }
 .tema svg { width: 18px; height: 18px; }
+.tema.on { color: var(--lime); border-color: var(--lime); }
+.aviso-push { position: fixed; left: 16px; right: 16px; bottom: calc(86px + env(safe-area-inset-bottom, 0px)); z-index: 30; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+.aviso-push b { display: block; margin-bottom: 2px; }
 header.top .rt { display: flex; align-items: center; gap: 10px; min-width: 0; }
 body header.top { flex-wrap: nowrap; }
-@media (max-width: 420px) { body header.top img { height: 27px; } body .who .u { font-size: 11.5px; } }
+@media (max-width: 420px) { body header.top img { height: 24px; } body .who .u { font-size: 11px; } body .who .t { font-size: 14px; } .tema { width: 34px; height: 34px; } }
 
 /* Calculadora de troca */
 #calcView { background: var(--ground); }
@@ -349,6 +352,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
         <div class="t">Portal do Vendedor</div>
         <div class="u" id="upd">Carregando números…</div>
       </div>
+      <button type="button" class="tema" id="sino" aria-label="Ativar notificações"></button>
       <button type="button" class="tema" id="tema" aria-label="Mudar para o tema claro"></button>
     </div>
   </header>
@@ -1395,6 +1399,39 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
   $c('openCalc').addEventListener('click', e => { calcLast = e.currentTarget; calcView.hidden = false; document.body.style.overflow = 'hidden'; carregarCalc(); atualizaAval(); $c('calcClose').focus(); });
   $c('calcClose').addEventListener('click', closeCalc);
   calcView.addEventListener('keydown', e => { if (e.key === 'Escape') closeCalc(); });
+
+  // Notificações
+  const VAPID = 'BA9PQAsAvQsCAz7x-LTM8qCORxXexphwC35YCNX3ITJwbHDiMeXggANV80EpYQTQbwOBpZEvMI92JeNluds01mA';
+  const SINO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
+  const sinoBtn = document.getElementById('sino'); sinoBtn.innerHTML = SINO;
+  const suportaPush = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+  function avisoPush(titulo, texto) {
+    let a = document.querySelector('.aviso-push'); if (a) a.remove();
+    a = document.createElement('div'); a.className = 'aviso-push'; a.setAttribute('role', 'status');
+    const b = document.createElement('b'); b.textContent = titulo; a.append(b, texto); document.body.appendChild(a);
+    setTimeout(() => a.remove(), 7000); a.addEventListener('click', () => a.remove());
+  }
+  function marcaSino(on) { sinoBtn.classList.toggle('on', on); sinoBtn.setAttribute('aria-label', on ? 'Notificações ativadas (toque para desativar)' : 'Ativar notificações'); }
+  const keyBytes = s => { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; return Uint8Array.from(atob(s), c => c.charCodeAt(0)); };
+  if (suportaPush) navigator.serviceWorker.ready.then(r => r.pushManager.getSubscription()).then(s => marcaSino(!!s)).catch(() => {});
+  sinoBtn.addEventListener('click', async () => {
+    const ios = /iPhone|iPad/.test(navigator.userAgent), instalado = window.navigator.standalone || matchMedia('(display-mode: standalone)').matches;
+    if (!suportaPush) { avisoPush('Notificações', ios && !instalado ? 'No iPhone, primeiro adicione o portal à Tela de Início (Compartilhar › Adicionar à Tela de Início) e abra por lá.' : 'Este aparelho ou navegador não aceita notificações.'); return; }
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      const atual = await reg.pushManager.getSubscription();
+      if (atual) {
+        await fetch('/api/push', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ subscription: atual.toJSON(), sair: true }) }).catch(() => {});
+        await atual.unsubscribe(); marcaSino(false); avisoPush('Notificações desativadas', 'Você não vai mais receber avisos neste aparelho.'); return;
+      }
+      const perm = await Notification.requestPermission();
+      if (perm !== 'granted') { avisoPush('Notificações bloqueadas', 'Libere nos Ajustes do aparelho › Notificações › Aura.'); return; }
+      const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(VAPID) });
+      const r = await fetch('/api/push', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ subscription: sub.toJSON() }) });
+      if (!r.ok) throw new Error();
+      marcaSino(true); avisoPush('Notificações ativadas', 'Você vai receber os avisos de vendas, metas e tarefas.');
+    } catch (e) { avisoPush('Não deu certo', 'Tente de novo em instantes.'); }
+  });
   // Abas
   const ABAS = ['inicio', 'vendas', 'loja', 'docs'];
   function irPara(aba, rolar) {
