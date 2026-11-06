@@ -1,5 +1,5 @@
 {
-  "atualizadoEm": "2026-11-05T22:35:00-03:00",
+  "atualizadoEm": "2026-11-06T12:14:25-03:00",
   "mes": {
     "rotulo": "Novembro 2026",
     "ano": 2026,
@@ -11,6 +11,12 @@
     "acessorios": 3057.31
   },
   "hoje": {
+    "data": "2026-11-06",
+    "iphones": 0,
+    "acessorios": 0,
+    "itens": []
+  },
+  "ontem": {
     "data": "2026-11-05",
     "iphones": 2,
     "acessorios": 616.27,
@@ -43,61 +49,6 @@
         "hora": "20:10",
         "tipo": "acessorio",
         "produto": "Capinha",
-        "vendedor": "Elisa"
-      }
-    ]
-  },
-  "ontem": {
-    "data": "2026-11-04",
-    "iphones": 2,
-    "acessorios": 1154.26,
-    "itens": [
-      {
-        "hora": "10:31",
-        "tipo": "acessorio",
-        "produto": "Carregador",
-        "vendedor": "Gustavo"
-      },
-      {
-        "hora": "10:38",
-        "tipo": "acessorio",
-        "produto": "Capinha",
-        "vendedor": "Gustavo"
-      },
-      {
-        "hora": "13:00",
-        "tipo": "acessorio",
-        "produto": "Carregador + Cabo",
-        "vendedor": "Gustavo"
-      },
-      {
-        "hora": "15:59",
-        "tipo": "iphone",
-        "produto": "iPhone 16 128GB Branco",
-        "vendedor": "Gustavo"
-      },
-      {
-        "hora": "16:11",
-        "tipo": "iphone",
-        "produto": "iPhone 16 Pro Max 256GB Titânio Preto",
-        "vendedor": "Elisa"
-      },
-      {
-        "hora": "16:37",
-        "tipo": "acessorio",
-        "produto": "Capinha",
-        "vendedor": "Gustavo"
-      },
-      {
-        "hora": "17:50",
-        "tipo": "acessorio",
-        "produto": "Película",
-        "vendedor": "Elisa"
-      },
-      {
-        "hora": "17:51",
-        "tipo": "acessorio",
-        "produto": "Película",
         "vendedor": "Elisa"
       }
     ]
@@ -143,25 +94,6 @@
         "vendas": 7
       }
     ],
-    "hoje": [
-      {
-        "vendedor": "Elisa",
-        "iphones": 1,
-        "acessorios": 416.27,
-        "vendas": 3
-      },
-      {
-        "vendedor": "Danilo",
-        "iphones": 1,
-        "acessorios": 0.0,
-        "vendas": 1
-      },
-      {
-        "vendedor": "Gustavo",
-        "iphones": 0,
-        "acessorios": 200.0,
-        "vendas": 1
-      }
-    ]
+    "hoje": []
   }
 }

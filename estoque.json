@@ -1,19 +1,11 @@
 {
- "atualizadoEm": "2026-11-05T22:35:00-03:00",
- "total": 66,
+ "atualizadoEm": "2026-11-06T12:14:25-03:00",
+ "total": 65,
  "porUnidade": {
-  "Meu iPhone": 50,
+  "Meu iPhone": 49,
   "Riachi": 16
  },
  "itens": [
-  {
-   "modelo": "iPhone 18 Pro",
-   "memoria": "256GB",
-   "cor": "Bordô",
-   "imei": "351141714998868",
-   "bateria": null,
-   "unidade": "Meu iPhone"
-  },
   {
    "modelo": "iPhone 18 Pro Max",
    "memoria": "256GB",
