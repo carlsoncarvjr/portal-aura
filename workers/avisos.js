@@ -125,10 +125,21 @@ async function stories(env) {
   await enviar(env, ['vendedor'], { title: '📸 Hora do story no Instagram', body: ideia + ' Poste no @somosaura.ps.', url: 'https://www.instagram.com/somosaura.ps/', tag: 'story' }, nomes);
 }
 
+function turnosDoDia(e, data, dia) {
+  if (e.datas && e.datas[data]) return e.datas[data];
+  let lista = ((e.semana && e.semana[String(dia)]) || []).slice();
+  for (const r of e.rodizios || []) {
+    if (r.dia !== dia || !r.turnos || !r.turnos.length) continue;
+    const sem = Math.round((Date.parse(data + 'T12:00:00Z') - Date.parse(r.ref + 'T12:00:00Z')) / 604800000);
+    lista = lista.concat(r.turnos[((sem % r.turnos.length) + r.turnos.length) % r.turnos.length]);
+  }
+  return lista;
+}
+
 async function escalaHoje(t) {
   const e = await fetch(ESCALA + '?t=' + Date.now(), { cf: { cacheTtl: 0 } }).then(r => r.ok ? r.json() : null).catch(() => null);
   if (!e) return null;
-  return { e, turnos: (e.datas && e.datas[t.data]) || (e.semana && e.semana[String(t.dia)]) || [] };
+  return { e, turnos: turnosDoDia(e, t.data, t.dia) };
 }
 
 // Abertura: no início do primeiro turno do dia, para quem abre. Fechamento: 20 min antes de fechar, para quem fecha.
@@ -156,6 +167,6 @@ export default {
   },
   async fetch(req, env) {
     const v = await env.AVALIACAO.get('avisos:ultimo', 'json');
-    return new Response('Portal Aura avisos v2 OK ' + (v ? v.atualizadoEm : 'sem dados'), { status: 200 });
+    return new Response('Portal Aura avisos v3 OK ' + (v ? v.atualizadoEm : 'sem dados'), { status: 200 });
   }
 };

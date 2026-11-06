@@ -407,11 +407,11 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
         <thead><tr><th>Vendedor</th><th>Seg a sex</th><th>Sábado</th><th>Folga</th></tr></thead>
         <tbody>
           <tr><td>Gustavo</td><td>10h–19h</td><td>10h–14h</td><td>Terça</td></tr>
-          <tr><td>Danilo</td><td>13h–21h</td><td>Reveza manhã / 17h–21h</td><td>Quarta</td></tr>
-          <tr><td>Elisa</td><td>17h–21h (terça de manhã)</td><td>Reveza manhã / 17h–21h</td><td>Segunda</td></tr>
+          <tr><td>Danilo</td><td>13h–21h</td><td>Reveza 10h–14h / 17h–21h</td><td>Quarta</td></tr>
+          <tr><td>Elisa</td><td>17h–21h (terça de manhã)</td><td>Reveza 10h–14h / 17h–21h</td><td>Segunda</td></tr>
         </tbody>
       </table>
-      <p class="hint" style="margin:8px 0 0">Domingo: um vendedor por domingo, conforme escala do grupo da empresa.</p>
+      <p class="hint" style="margin:8px 0 0">Domingo (17h–21h): rodízio Gustavo → Danilo → Elisa. Sábado: Elisa e Danilo alternam manhã e noite a cada semana.</p>
     </div>
   </section>
 
@@ -931,27 +931,24 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
 
   // Escala: quem está na loja hoje
   (function () {
-    const SHIFTS = {
-      0: [], // domingo: escala do grupo
-      1: [['Gustavo', '10h–19h'], ['Danilo', '13h–21h']],
-      2: [['Elisa', 'manhã (cobre Gustavo)'], ['Danilo', '13h–21h']],
-      3: [['Gustavo', '10h–19h'], ['Elisa', '17h–21h']],
-      4: [['Gustavo', '10h–19h'], ['Danilo', '13h–21h'], ['Elisa', '17h–21h']],
-      5: [['Gustavo', '10h–19h'], ['Danilo', '13h–21h'], ['Elisa', '17h–21h']],
-      6: [['Gustavo', '10h–14h'], ['Danilo', 'manhã ou 17h–21h'], ['Elisa', 'manhã ou 17h–21h']]
-    };
-    const OFF = { 1: 'Elisa', 2: 'Gustavo', 3: 'Danilo' };
     const names = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
-    const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bahia' }));
-    const d = now.getDay();
+    const VEND = ['Gustavo', 'Danilo', 'Elisa'];
+    const hoje = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bahia' });
+    const d = new Date(hoje + 'T12:00:00Z').getUTCDay();
+    const fmtH = h => { const [a, b] = h.split(':'); return Number(a) + 'h' + (b && b !== '00' ? b : ''); };
     document.getElementById('shiftDay').textContent = 'Na loja hoje · ' + names[d];
     const box = document.getElementById('shiftToday');
-    if (d === 0) {
-      const c = document.createElement('span'); c.className = 'who-chip'; c.textContent = 'Domingo: confira a escala no grupo da empresa (17h–21h)'; box.appendChild(c);
-    } else {
-      SHIFTS[d].forEach(([n, h]) => { const c = document.createElement('span'); c.className = 'who-chip'; const b = document.createElement('b'); b.textContent = n; const s = document.createElement('span'); s.textContent = h; c.append(b, s); box.appendChild(c); });
-      if (OFF[d]) { const c = document.createElement('span'); c.className = 'who-chip off'; const b = document.createElement('b'); b.textContent = OFF[d]; const s = document.createElement('span'); s.textContent = 'folga'; c.append(b, s); box.appendChild(c); }
-    }
+    const chip = (n, txt, off) => { const c = document.createElement('span'); c.className = 'who-chip' + (off ? ' off' : ''); const b = document.createElement('b'); b.textContent = n; const sp = document.createElement('span'); sp.textContent = txt; c.append(b, sp); box.appendChild(c); };
+    fetch('escala.json', { cache: 'no-store' }).then(r => r.json()).then(e => {
+      let lista = (e.datas && e.datas[hoje]) || null;
+      if (!lista) {
+        lista = ((e.semana && e.semana[String(d)]) || []).slice();
+        (e.rodizios || []).forEach(r => { if (r.dia !== d) return; const sem = Math.round((Date.parse(hoje + 'T12:00:00Z') - Date.parse(r.ref + 'T12:00:00Z')) / 604800000); lista = lista.concat(r.turnos[((sem % r.turnos.length) + r.turnos.length) % r.turnos.length]); });
+      }
+      box.innerHTML = '';
+      lista.forEach(([n, a, b]) => chip(n, fmtH(a) + '–' + fmtH(b)));
+      VEND.filter(n => !lista.some(x => x[0] === n)).forEach(n => chip(n, 'folga', true));
+    }).catch(() => {});
     const t = document.getElementById('shiftToggle'), w = document.getElementById('shiftWeek');
     t.addEventListener('click', () => { w.hidden = !w.hidden; t.setAttribute('aria-expanded', String(!w.hidden)); t.textContent = w.hidden ? 'Ver a semana' : 'Fechar'; });
   })();

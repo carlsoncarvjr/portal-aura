@@ -1,15 +1,145 @@
 {
- "_comoUsar": "Turnos dos vendedores para os avisos de story (a cada 30 min, só para quem está no turno). semana: 0=domingo ... 6=sábado, cada item [nome, início, fim]. datas: turnos de um dia específico (sábados, domingos, trocas), substituem a semana naquele dia.",
+ "_comoUsar": "Turnos dos vendedores (portal e avisos de story). semana: 0=domingo ... 6=sábado, cada item [nome, início, fim]. rodizios: turnos que alternam a cada semana a partir da data de referência (ref), somados aos da semana. datas: turnos de um dia específico (trocas), substituem tudo naquele dia.",
  "lojaAbre": "09:00",
  "lojaFecha": "21:00",
  "semana": {
   "0": [],
-  "1": [["Gustavo", "10:00", "19:00"], ["Danilo", "13:00", "21:00"]],
-  "2": [["Elisa", "10:00", "19:00"], ["Danilo", "13:00", "21:00"]],
-  "3": [["Gustavo", "10:00", "19:00"], ["Elisa", "17:00", "21:00"]],
-  "4": [["Gustavo", "10:00", "19:00"], ["Danilo", "13:00", "21:00"], ["Elisa", "17:00", "21:00"]],
-  "5": [["Gustavo", "10:00", "19:00"], ["Danilo", "13:00", "21:00"], ["Elisa", "17:00", "21:00"]],
-  "6": [["Gustavo", "10:00", "14:00"]]
+  "1": [
+   [
+    "Gustavo",
+    "10:00",
+    "19:00"
+   ],
+   [
+    "Danilo",
+    "13:00",
+    "21:00"
+   ]
+  ],
+  "2": [
+   [
+    "Elisa",
+    "10:00",
+    "19:00"
+   ],
+   [
+    "Danilo",
+    "13:00",
+    "21:00"
+   ]
+  ],
+  "3": [
+   [
+    "Gustavo",
+    "10:00",
+    "19:00"
+   ],
+   [
+    "Elisa",
+    "17:00",
+    "21:00"
+   ]
+  ],
+  "4": [
+   [
+    "Gustavo",
+    "10:00",
+    "19:00"
+   ],
+   [
+    "Danilo",
+    "13:00",
+    "21:00"
+   ],
+   [
+    "Elisa",
+    "17:00",
+    "21:00"
+   ]
+  ],
+  "5": [
+   [
+    "Gustavo",
+    "10:00",
+    "19:00"
+   ],
+   [
+    "Danilo",
+    "13:00",
+    "21:00"
+   ],
+   [
+    "Elisa",
+    "17:00",
+    "21:00"
+   ]
+  ],
+  "6": [
+   [
+    "Gustavo",
+    "10:00",
+    "14:00"
+   ]
+  ]
  },
- "datas": {}
+ "datas": {},
+ "rodizios": [
+  {
+   "dia": 6,
+   "ref": "2026-11-07",
+   "turnos": [
+    [
+     [
+      "Elisa",
+      "10:00",
+      "14:00"
+     ],
+     [
+      "Danilo",
+      "17:00",
+      "21:00"
+     ]
+    ],
+    [
+     [
+      "Danilo",
+      "10:00",
+      "14:00"
+     ],
+     [
+      "Elisa",
+      "17:00",
+      "21:00"
+     ]
+    ]
+   ]
+  },
+  {
+   "dia": 0,
+   "ref": "2026-11-08",
+   "turnos": [
+    [
+     [
+      "Gustavo",
+      "17:00",
+      "21:00"
+     ]
+    ],
+    [
+     [
+      "Danilo",
+      "17:00",
+      "21:00"
+     ]
+    ],
+    [
+     [
+      "Elisa",
+      "17:00",
+      "21:00"
+     ]
+    ]
+   ]
+  }
+ ]
 }
