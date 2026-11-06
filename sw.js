@@ -1,5 +1,5 @@
 // Portal do Vendedor Aura — funciona sem internet com a última versão salva.
-const CACHE = 'aura-portal-v12';
+const CACHE = 'aura-portal-v13';
 const SHELL = [
   './',
   'index.html',
@@ -59,6 +59,7 @@ self.addEventListener('push', e => {
 self.addEventListener('notificationclick', e => {
   e.notification.close();
   const url = new URL((e.notification.data && e.notification.data.url) || '/', self.location.origin).href;
+  if (!url.startsWith(self.location.origin)) { e.waitUntil(clients.openWindow(url)); return; }
   e.waitUntil(clients.matchAll({ type: 'window', includeUncontrolled: true }).then(ws => {
     for (const w of ws) { if (w.url.startsWith(self.location.origin)) { w.navigate(url).catch(() => {}); return w.focus(); } }
     return clients.openWindow(url);

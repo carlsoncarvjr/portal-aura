@@ -41,10 +41,21 @@ async function sendPush(sub, data, vapid, ttl = 43200) {
 
 const DADOS = 'https://raw.githubusercontent.com/carlsoncarvjr/portal-aura/main/dados.json';
 const MARCOS = [25, 50, 75, 90, 100];
+const ESCALA = 'https://raw.githubusercontent.com/carlsoncarvjr/portal-aura/main/escala.json';
+const IDEIAS = [
+  'Mostre um iPhone da vitrine com o preço e o "chama no direct".',
+  'Grave um bastidor rápido da loja ou da equipe atendendo.',
+  'Poste um cliente satisfeito com o aparelho novo (com autorização).',
+  'Mostre um acessório: capa, película ou carregador, com o valor.',
+  'Faça uma enquete: "Qual cor você escolheria?" com dois iPhones.',
+  'Mostre um seminovo do estoque com a saúde da bateria.',
+  'Lembre que aceitamos o iPhone usado na troca e parcelamos em até 12x.'
+];
 
 function agoraBahia() {
   const p = Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Bahia', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date()).map(x => [x.type, x.value]));
-  return { data: p.year + '-' + p.month + '-' + p.day, min: Number(p.hour) * 60 + Number(p.minute) };
+  const dia = new Date(Date.UTC(Number(p.year), Number(p.month) - 1, Number(p.day))).getUTCDay();
+  return { data: p.year + '-' + p.month + '-' + p.day, min: Number(p.hour) * 60 + Number(p.minute), dia };
 }
 
 async function inscritos(env) {
@@ -57,11 +68,11 @@ async function inscritos(env) {
   return out;
 }
 
-async function enviar(env, papeis, msg) {
+async function enviar(env, papeis, msg, nomes) {
   const v = await env.AVALIACAO.get('vapid:chave', 'json');
   if (!v) return { enviados: 0, total: 0 };
   const vapid = { subject: 'https://portal-aura.pages.dev', privateJwk: v.privateJwk, publicKey: v.publicKey };
-  const lista = (await inscritos(env)).filter(i => !papeis || papeis.includes(i.papel));
+  const lista = (await inscritos(env)).filter(i => (!papeis || papeis.includes(i.papel)) && (!nomes || nomes.includes(i.nome)));
   let ok = 0;
   await Promise.all(lista.map(async i => {
     try {
@@ -94,24 +105,53 @@ async function vendas(env) {
   if (marco) await enviar(env, ['vendedor', 'admin'], { title: marco === 100 ? '🏆 Meta de iPhones batida!' : '🎯 ' + marco + '% da meta de iPhones', body: marco === 100 ? atual.iphones + ' iPhones no mês. Prêmio garantido para a equipe!' : 'A loja chegou a ' + atual.iphones + ' de ' + meta + '. Faltam ' + (meta - atual.iphones) + '.', url: '/#inicio', tag: 'meta' });
 }
 
+const hm = s => { const [h, m] = String(s).split(':').map(Number); return h * 60 + (m || 0); };
+
+async function stories(env) {
+  const t = agoraBahia();
+  const slot = Math.floor(t.min / 30) * 30;
+  if (t.min - slot >= 15) return;   // só na primeira rodada de cada meia hora
+  const k = 'avisos:story:' + t.data + ':' + slot;
+  if (await env.AVALIACAO.get(k)) return;
+  const h = await escalaHoje(t);
+  if (!h) return;
+  const e = h.e, turnos = h.turnos;
+  if (slot < hm(e.lojaAbre || '09:00') || slot >= hm(e.lojaFecha || '21:00')) return;
+  const nomes = turnos.filter(([, ini, fim]) => slot >= hm(ini) + 30 && slot <= hm(fim) - 30).map(([n]) => n);
+  await env.AVALIACAO.put(k, '1', { expirationTtl: 2 * 86400 });
+  if (!nomes.length) return;
+  const ideia = IDEIAS[(slot / 30) % IDEIAS.length];
+  await enviar(env, ['vendedor'], { title: '📸 Hora do story no Instagram', body: ideia + ' Poste no @somosaura.ps.', url: 'https://www.instagram.com/somosaura.ps/', tag: 'story' }, nomes);
+}
+
+async function escalaHoje(t) {
+  const e = await fetch(ESCALA + '?t=' + Date.now(), { cf: { cacheTtl: 0 } }).then(r => r.ok ? r.json() : null).catch(() => null);
+  if (!e) return null;
+  return { e, turnos: (e.datas && e.datas[t.data]) || (e.semana && e.semana[String(t.dia)]) || [] };
+}
+
+// Abertura: no início do primeiro turno do dia, para quem abre. Fechamento: 20 min antes de fechar, para quem fecha.
 async function lembretes(env) {
   const t = agoraBahia();
+  const h = await escalaHoje(t);
+  if (!h || !h.turnos.length) return;
+  const abre = Math.min(...h.turnos.map(x => hm(x[1]))), fecha = Math.max(...h.turnos.map(x => hm(x[2])));
   const itens = [
-    { id: 'abertura', ini: 9 * 60, msg: { title: '☀️ Bom dia! Tarefas de abertura', body: 'Pia, chão, lixo e a fila do Kommo. Marque no portal quando terminar.', url: '/#loja', tag: 'tarefas' } },
-    { id: 'fechamento', ini: 20 * 60 + 40, msg: { title: '🌙 Tarefas de fechamento', body: 'Pia, chão, lixo e conferir os funis do Kommo antes de sair.', url: '/#loja', tag: 'tarefas' } },
+    { id: 'abertura', ini: abre, nomes: h.turnos.filter(x => hm(x[1]) === abre).map(x => x[0]), msg: { title: '☀️ Bom dia! Tarefas de abertura', body: 'Pia, chão, lixo e a fila do Kommo. Marque no portal quando terminar.', url: '/#loja', tag: 'tarefas' } },
+    { id: 'fechamento', ini: fecha - 20, nomes: h.turnos.filter(x => hm(x[2]) === fecha).map(x => x[0]), msg: { title: '🌙 Tarefas de fechamento', body: 'Pia, chão, lixo e conferir os funis do Kommo antes de sair.', url: '/#loja', tag: 'tarefas' } },
   ];
   for (const it of itens) {
-    if (t.min < it.ini || t.min >= it.ini + 30) continue;
+    if (t.min < it.ini || t.min >= it.ini + 15) continue;
     const k = 'avisos:' + it.id + ':' + t.data;
     if (await env.AVALIACAO.get(k)) continue;
     await env.AVALIACAO.put(k, '1', { expirationTtl: 3 * 86400 });
-    await enviar(env, ['vendedor'], it.msg);
+    await enviar(env, ['vendedor'], it.msg, it.nomes);
   }
 }
 
 export default {
   async scheduled(ev, env, ctx) {
-    ctx.waitUntil(Promise.all([vendas(env).catch(() => {}), lembretes(env).catch(() => {})]));
+    ctx.waitUntil(Promise.all([vendas(env).catch(() => {}), lembretes(env).catch(() => {}), stories(env).catch(() => {})]));
   },
   async fetch(req, env) {
     const v = await env.AVALIACAO.get('avisos:ultimo', 'json');
