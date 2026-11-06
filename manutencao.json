@@ -1,0 +1,129 @@
+{
+ "atualizadoEm": "2026-11-05",
+ "parcelas": 6,
+ "acrescimoParcelado": 6.5,
+ "servicos": [
+  [
+   "tela",
+   "Troca de tela"
+  ],
+  [
+   "fundo",
+   "Troca do vidro traseiro"
+  ],
+  [
+   "bateria",
+   "Troca de bateria"
+  ]
+ ],
+ "itens": [
+  {
+   "modelo": "iPhone 11",
+   "tela": 500,
+   "fundo": 499,
+   "bateria": 540
+  },
+  {
+   "modelo": "iPhone 11 Pro",
+   "tela": 550,
+   "fundo": 550,
+   "bateria": 560
+  },
+  {
+   "modelo": "iPhone 11 Pro Max",
+   "tela": 600,
+   "fundo": 600,
+   "bateria": 580
+  },
+  {
+   "modelo": "iPhone 12",
+   "tela": 700,
+   "fundo": 600,
+   "bateria": 600
+  },
+  {
+   "modelo": "iPhone 12 Pro",
+   "tela": 800,
+   "fundo": 600,
+   "bateria": 660
+  },
+  {
+   "modelo": "iPhone 12 Pro Max",
+   "tela": 980,
+   "fundo": 600,
+   "bateria": 660
+  },
+  {
+   "modelo": "iPhone 13",
+   "tela": 980,
+   "fundo": 600,
+   "bateria": 600
+  },
+  {
+   "modelo": "iPhone 13 Pro",
+   "tela": 1020,
+   "fundo": 600,
+   "bateria": 660
+  },
+  {
+   "modelo": "iPhone 13 Pro Max",
+   "tela": 1200,
+   "fundo": 600,
+   "bateria": 700
+  },
+  {
+   "modelo": "iPhone 14",
+   "tela": 1200,
+   "fundo": 700,
+   "bateria": 660
+  },
+  {
+   "modelo": "iPhone 14 Pro",
+   "tela": 1200,
+   "fundo": 700,
+   "bateria": 700
+  },
+  {
+   "modelo": "iPhone 14 Pro Max",
+   "tela": 1400,
+   "fundo": 700,
+   "bateria": 740
+  },
+  {
+   "modelo": "iPhone 15",
+   "tela": 1500,
+   "fundo": 860,
+   "bateria": 680
+  },
+  {
+   "modelo": "iPhone 15 Pro",
+   "tela": 1700,
+   "fundo": 860,
+   "bateria": 720
+  },
+  {
+   "modelo": "iPhone 15 Pro Max",
+   "tela": 1900,
+   "fundo": 860,
+   "bateria": 760
+  },
+  {
+   "modelo": "iPhone 16",
+   "tela": 1800,
+   "fundo": 860,
+   "bateria": 680
+  },
+  {
+   "modelo": "iPhone 16 Pro",
+   "tela": 2000,
+   "fundo": 860,
+   "bateria": 720
+  },
+  {
+   "modelo": "iPhone 16 Pro Max",
+   "tela": 2300,
+   "fundo": 860,
+   "bateria": 720
+  }
+ ]
+}

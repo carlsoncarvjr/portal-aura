@@ -135,6 +135,15 @@ body header.top { flex-wrap: nowrap; }
 .cc-t td { padding: 7px 0; border-top: 1px solid var(--line); } .cc-t td:not(:first-child), .cc-t th:not(:first-child) { text-align: right; }
 .cc-t td b { font-weight: 700; }
 .cc-copy { width: 100%; min-height: 48px; border: 0; border-radius: 14px; background: var(--grad); color: #0d1310; font: 700 15px var(--f-body); cursor: pointer; }
+
+/* Tabela de manutenção */
+#mnView { background: var(--ground); }
+.mn-m { padding: 12px 0; border-top: 1px solid var(--line); } .mn-m:first-child { border-top: 0; padding-top: 0; }
+.mn-m h3 { font-family: var(--f-display); font-size: 15px; font-weight: 600; margin: 0 0 6px; }
+.mn-r { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 10px; padding: 5px 0; font-size: 14px; }
+.mn-r .v { text-align: right; font-variant-numeric: tabular-nums; } .mn-r .v b { display: block; font-size: 15px; } .mn-r .v small { font-size: 12px; color: var(--ink-mute); }
+.mn-r button { border: 1px solid var(--line); background: transparent; color: var(--ink-soft); border-radius: 8px; font: 600 11.5px var(--f-body); padding: 5px 8px; cursor: pointer; }
+.mn-r button.ok { color: var(--lime); border-color: var(--lime); }
 </style>
 <title>Portal do Vendedor Aura</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -425,6 +434,10 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
       <button type="button" class="app" id="openCalc">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8.5 6.5h7M8.5 11h.01M12 11h.01M15.5 11h.01M8.5 14.5h.01M12 14.5h.01M15.5 14.5h.01M8.5 18h.01M12 18h3.5"/></svg></span>
         <span class="n">Calculadora de troca</span><span class="d">Diferença e parcelas na hora</span>
+      </button>
+      <button type="button" class="app" id="openManut">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 6.5a4 4 0 0 0-5.3 5.3L4 17l3 3 5.2-5.2a4 4 0 0 0 5.3-5.3l-2.5 2.5-2.5-.5-.5-2.5z"/></svg></span>
+        <span class="n">Tabela de manutenção</span><span class="d">Tela, vidro traseiro e bateria</span>
       </button>
       <button type="button" class="app" id="openEstoque">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9"/></svg></span>
@@ -779,6 +792,22 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     <div class="card cc-res" id="ccRes"></div>
     <button type="button" class="cc-copy" id="ccCopiar">Copiar proposta para o WhatsApp</button>
     <p class="av-foot" id="ccFoot"></p>
+  </div>
+</div>
+
+<div class="viewer" id="mnView" hidden role="dialog" aria-modal="true" aria-labelledby="mnTitle">
+  <div class="vbar">
+    <button type="button" class="vbtn" id="mnClose" aria-label="Fechar">✕</button>
+    <div class="vt" id="mnTitle">Tabela de manutenção</div>
+    <span class="hint" id="mnHint"></span>
+  </div>
+  <div class="vpage st-page">
+    <div class="st-tools">
+      <input type="search" id="mnBusca" placeholder="Buscar modelo (ex.: 13 pro max)" autocomplete="off" aria-label="Buscar modelo">
+      <div class="av-gens" id="mnSrv"></div>
+    </div>
+    <div class="card" id="mnLista"></div>
+    <p class="av-foot" id="mnFoot"></p>
   </div>
 </div>
 
@@ -1429,6 +1458,51 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
       marcaSino(true); avisoPush('Notificações ativadas', 'Você vai receber os avisos de vendas, metas e tarefas.');
     } catch (e) { avisoPush('Não deu certo', 'Tente de novo em instantes.'); }
   });
+
+  // Tabela de manutenção
+  const mn = { d: null, q: '', srv: '' };
+  const brlM = (n, c) => 'R$ ' + n.toLocaleString('pt-BR', { minimumFractionDigits: c ? 2 : 0, maximumFractionDigits: c ? 2 : 0 });
+  function copiaTxt(txt, bt) {
+    const ok = () => { const o = bt.textContent; bt.textContent = 'Copiado'; bt.classList.add('ok'); setTimeout(() => { bt.textContent = o; bt.classList.remove('ok'); }, 1500); };
+    (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(ok).catch(() => { const t = document.createElement('textarea'); t.value = txt; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); ok(); } catch (e) {} t.remove(); });
+  }
+  function drawManut() {
+    const box = document.getElementById('mnLista'); box.innerHTML = ''; const d = mn.d; if (!d) return;
+    const q = mn.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const rows = d.itens.filter(x => q.every(t => x.modelo.toLowerCase().includes(t))).slice().reverse();
+    document.getElementById('mnHint').textContent = rows.length + (rows.length === 1 ? ' modelo' : ' modelos');
+    if (!rows.length) { const p = document.createElement('p'); p.className = 'hint'; p.style.margin = '0'; p.textContent = 'Nenhum modelo com essa busca.'; box.appendChild(p); return; }
+    const f = 1 + d.acrescimoParcelado / 100, n = d.parcelas;
+    rows.forEach(x => {
+      const g = document.createElement('div'); g.className = 'mn-m'; const h = document.createElement('h3'); h.textContent = x.modelo; g.appendChild(h);
+      d.servicos.filter(([k]) => !mn.srv || k === mn.srv).forEach(([k, nome]) => {
+        const v = x[k]; if (!v) return; const par = Math.round(v * f / n * 100) / 100;
+        const r = document.createElement('div'); r.className = 'mn-r';
+        const a = document.createElement('span'); a.textContent = nome;
+        const b = document.createElement('span'); b.className = 'v'; const bb = document.createElement('b'); bb.textContent = brlM(v); const sm = document.createElement('small'); sm.textContent = n + 'x de ' + brlM(par, true); b.append(bb, sm);
+        const bt = document.createElement('button'); bt.type = 'button'; bt.textContent = 'Copiar';
+        bt.addEventListener('click', () => copiaTxt('*Orçamento Aura*\n' + x.modelo + ' · ' + nome + '\n' + brlM(v) + ' à vista (PIX ou dinheiro) ou ' + n + 'x de ' + brlM(par, true) + ' no cartão.\nGarantia de 90 dias no serviço.', bt));
+        r.append(a, b, bt); g.appendChild(r);
+      });
+      box.appendChild(g);
+    });
+  }
+  function carregarManut() {
+    if (mn.d) return drawManut();
+    fetch('manutencao.json', { cache: 'no-store' }).then(r => r.json()).then(d => {
+      mn.d = d;
+      const sv = document.getElementById('mnSrv'); sv.innerHTML = '';
+      [['', 'Todos'], ...d.servicos.map(([k, nome]) => [k, nome.replace('Troca de ', '').replace('Troca do ', '')])].forEach(([k, l]) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = l.charAt(0).toUpperCase() + l.slice(1); b.setAttribute('aria-pressed', k === mn.srv ? 'true' : 'false'); b.addEventListener('click', () => { mn.srv = k; sv.querySelectorAll('button').forEach(o => o.setAttribute('aria-pressed', o === b ? 'true' : 'false')); drawManut(); }); sv.appendChild(b); });
+      document.getElementById('mnFoot').textContent = 'À vista: PIX ou dinheiro. No cartão, até ' + d.parcelas + 'x com acréscimo de ' + String(d.acrescimoParcelado).replace('.', ',') + '% no total. O botão Copiar gera o orçamento pronto para o WhatsApp. Valores sujeitos à avaliação do técnico.';
+      drawManut();
+    }).catch(() => {});
+  }
+  document.getElementById('mnBusca').addEventListener('input', e => { mn.q = e.target.value; drawManut(); });
+  const mnView = document.getElementById('mnView'); let mnLast = null;
+  function closeManut() { mnView.hidden = true; document.body.style.overflow = ''; if (mnLast) mnLast.focus(); }
+  document.getElementById('openManut').addEventListener('click', e => { mnLast = e.currentTarget; mnView.hidden = false; document.body.style.overflow = 'hidden'; carregarManut(); document.getElementById('mnClose').focus(); });
+  document.getElementById('mnClose').addEventListener('click', closeManut);
+  mnView.addEventListener('keydown', e => { if (e.key === 'Escape') closeManut(); });
   // Abas
   const ABAS = ['inicio', 'vendas', 'loja', 'docs'];
   function irPara(aba, rolar) {
