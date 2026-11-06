@@ -134,6 +134,10 @@ body header.top { flex-wrap: nowrap; }
 .cc-t th { text-align: left; font-size: 11.5px; color: var(--ink-mute); font-weight: 600; padding: 6px 0; }
 .cc-t td { padding: 7px 0; border-top: 1px solid var(--line); } .cc-t td:not(:first-child), .cc-t th:not(:first-child) { text-align: right; }
 .cc-t td b { font-weight: 700; }
+.cc-t td.cc-ck { width: 30px; text-align: left !important; color: var(--lime); font-weight: 700; } .cc-ck input { width: 18px; height: 18px; accent-color: #8fd13a; }
+.cc-t tr { cursor: pointer; } .cc-t tbody tr:not(.on) td:not(.cc-ck) { color: var(--ink-mute); } .cc-t tbody tr:not(.on) td b { font-weight: 500; }
+.cc-t td:nth-child(2), .cc-t th:nth-child(2) { text-align: left !important; }
+.cc-dica { font-size: 12px; color: var(--ink-mute); margin: 10px 0 0; }
 .cc-copy { width: 100%; min-height: 48px; border: 0; border-radius: 14px; background: var(--grad); color: #0d1310; font: 700 15px var(--f-body); cursor: pointer; }
 
 /* Tabela de manutenção */
@@ -772,6 +776,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     <div class="card cc-box">
       <div class="cc-lbl">Aparelho novo</div>
       <input class="cc-in" id="ccNome" type="text" placeholder="Modelo (ex.: iPhone 16 Pro 256GB)" autocomplete="off">
+      <input class="cc-in" id="ccCliente" type="text" placeholder="Nome do cliente (opcional)" autocomplete="off">
       <label class="cc-row"><span>Preço à vista</span><input class="cc-in cc-num" id="ccPreco" type="text" inputmode="numeric" placeholder="R$ 0"></label>
     </div>
     <div class="card cc-box">
@@ -1389,6 +1394,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     calc();
   }
   let ccTexto = '';
+  const ccSel = new Set(['12', '10', '6']);
   function calc() {
     const preco = num($c('ccPreco').value), aval = $c('ccModelo').value === '' ? 0 : num($c('ccAval').value), ent = num($c('ccEntrada').value);
     const dif = Math.max(0, preco - aval - ent);
@@ -1396,22 +1402,49 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     if (!preco) { const p = document.createElement('p'); p.className = 'hint'; p.style.margin = '0'; p.textContent = 'Digite o preço do aparelho novo para ver a diferença e as parcelas.'; box.appendChild(p); ccTexto = ''; return; }
     const top = document.createElement('div'); top.className = 'cc-dif'; const l = document.createElement('span'); l.textContent = 'Diferença a pagar'; const b = document.createElement('b'); b.textContent = reaisC(dif); top.append(l, b); box.appendChild(top);
     const m = cc.maq[$c('ccMaq').value] || { taxas: {} };
+    const dica = document.createElement('p'); dica.className = 'cc-dica'; dica.textContent = 'Marque as opções que vão na proposta (o PIX vai sempre).'; box.appendChild(dica);
     const t = document.createElement('table'); t.className = 'cc-t';
-    t.innerHTML = '<thead><tr><th>Forma</th><th>Parcela</th><th>Total</th></tr></thead>';
-    const tb = document.createElement('tbody'); const linhas = [];
-    const add = (forma, parc, total) => { const tr = document.createElement('tr'); [forma, parc, total].forEach((v, k) => { const td = document.createElement('td'); if (k === 1) { const bb = document.createElement('b'); bb.textContent = v; td.appendChild(bb); } else td.textContent = v; tr.appendChild(td); }); tb.appendChild(tr); };
-    add('PIX ou dinheiro', '—', reaisC(dif)); linhas.push('PIX ou dinheiro: ' + reaisC(dif));
+    t.innerHTML = '<thead><tr><th></th><th>Forma</th><th>Parcela</th><th>Total</th></tr></thead>';
+    const tb = document.createElement('tbody'); const ops = [];
+    const add = (id, forma, parc, total, txt) => {
+      const tr = document.createElement('tr');
+      const td0 = document.createElement('td'); td0.className = 'cc-ck';
+      if (id) { const ck = document.createElement('input'); ck.type = 'checkbox'; ck.checked = ccSel.has(id); ck.setAttribute('aria-label', 'Incluir ' + forma + ' na proposta'); ck.addEventListener('change', () => { if (ck.checked) ccSel.add(id); else ccSel.delete(id); calc(); }); td0.appendChild(ck); if (ck.checked) tr.className = 'on'; }
+      else { td0.textContent = '✓'; tr.className = 'on'; }
+      tr.appendChild(td0);
+      [forma, parc, total].forEach((v, k) => { const td = document.createElement('td'); if (k === 1) { const bb = document.createElement('b'); bb.textContent = v; td.appendChild(bb); } else td.textContent = v; tr.appendChild(td); });
+      if (id) tr.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') tr.querySelector('input').click(); });
+      tb.appendChild(tr);
+      if (!id || ccSel.has(id)) ops.push(txt);
+    };
+    add(null, 'PIX ou dinheiro', '—', reaisC(dif), '*' + reaisC(dif) + ' no PIX ou dinheiro* (melhor condição)');
     if (dif > 0) {
-      const deb = Math.ceil(dif / (1 - cc.debito / 100)); add('Débito', '—', reaisC(deb)); linhas.push('Débito: ' + reaisC(deb));
-      Object.keys(m.taxas).map(Number).sort((a, b2) => a - b2).forEach(n => { const tx = m.taxas[n]; if (tx == null) return; const tot = Math.ceil(dif / (1 - tx / 100)); const par = tot / n; add(n + 'x', reaisC(par, true), reaisC(tot)); linhas.push(n + 'x de ' + reaisC(par, true) + ' (total ' + reaisC(tot) + ')'); });
+      const deb = Math.ceil(dif / (1 - cc.debito / 100)); add('deb', 'Débito', '—', reaisC(deb), reaisC(deb) + ' no débito');
+      Object.keys(m.taxas).map(Number).sort((a, b2) => b2 - a).forEach(n => { const tx = m.taxas[n]; if (tx == null) return; const tot = Math.ceil(dif / (1 - tx / 100)); const par = tot / n; add(String(n), n + 'x', reaisC(par, true), reaisC(tot), n + 'x de ' + reaisC(par, true) + ' no cartão'); });
     }
     t.appendChild(tb); box.appendChild(t);
-    const nomeNovo = $c('ccNome').value.trim() || 'Aparelho novo';
+    const nomeNovo = $c('ccNome').value.trim() || 'seu novo iPhone';
+    const cli = $c('ccCliente').value.trim().split(/\s+/)[0] || '';
     const i = $c('ccModelo').value;
-    ccTexto = '*Proposta Aura*\n' + nomeNovo + ': ' + reaisC(preco) + (i !== '' ? '\nSeu ' + nomeM(cc.itens[i].modelo) + ' ' + cc.itens[i].cap + ' na troca: −' + reaisC(aval) : '') + (ent ? '\nEntrada: −' + reaisC(ent) : '') + '\n*Diferença: ' + reaisC(dif) + '*\n\n' + linhas.join('\n') + '\n\nValores sujeitos à vistoria do aparelho.';
+    const usado = i !== '' ? nomeM(cc.itens[i].modelo) + ' ' + cc.itens[i].cap : '';
+    const L = [];
+    L.push('Oi' + (cli ? ', ' + cli.charAt(0).toUpperCase() + cli.slice(1).toLowerCase() : '') + '! Tudo bem? 😊');
+    L.push('Preparei sua proposta aqui na *Aura*:');
+    L.push('');
+    L.push('📱 *' + nomeNovo + '*' + (dif !== preco ? ' — de ' + reaisC(preco) : ''));
+    if (usado) L.push('🔄 Seu ' + usado + ' entra como parte do pagamento: *' + reaisC(aval) + '*');
+    if (ent) L.push('💵 Entrada: ' + reaisC(ent));
+    L.push('');
+    L.push(dif === preco ? '💰 *Formas de pagamento:*' : '💰 *Você paga só a diferença:*');
+    ops.forEach((o, k) => L.push((k ? '• ou ' : '• ') + o));
+    L.push('');
+    if (usado) L.push('_A avaliação do seu aparelho é confirmada na vistoria aqui na loja._');
+    L.push('Quer que eu já separe o seu? É só me responder por aqui que eu reservo pra você! 🙌');
+    ccTexto = L.join('\n');
   }
   ['ccPreco', 'ccAval', 'ccEntrada'].forEach(id => { const el = $c(id); el.addEventListener('input', calc); el.addEventListener('blur', () => { fmtCampo(el); calc(); }); el.addEventListener('focus', () => { const n = num(el.value); el.value = n ? String(n) : ''; }); });
   $c('ccNome').addEventListener('input', calc);
+  $c('ccCliente').addEventListener('input', calc);
   $c('ccModelo').addEventListener('change', atualizaAval);
   $c('ccMaq').addEventListener('change', calc);
   document.querySelectorAll('#ccGrades [data-g]').forEach(b => b.addEventListener('click', () => { document.querySelectorAll('#ccGrades [data-g]').forEach(o => o.setAttribute('aria-checked', o === b ? 'true' : 'false')); atualizaAval(); }));
@@ -1419,7 +1452,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     if (!ccTexto) return; const bt = $c('ccCopiar'); const ok = () => { bt.textContent = 'Copiado! Cole no WhatsApp'; setTimeout(() => { bt.textContent = 'Copiar proposta para o WhatsApp'; }, 2000); };
     (navigator.clipboard ? navigator.clipboard.writeText(ccTexto) : Promise.reject()).then(ok).catch(() => { const t = document.createElement('textarea'); t.value = ccTexto; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); ok(); } catch (e) {} t.remove(); });
   });
-  $c('calcLimpar').addEventListener('click', () => { ['ccNome', 'ccPreco', 'ccEntrada'].forEach(id => { $c(id).value = ''; }); $c('ccModelo').value = ''; atualizaAval(); });
+  $c('calcLimpar').addEventListener('click', () => { ['ccNome', 'ccCliente', 'ccPreco', 'ccEntrada'].forEach(id => { $c(id).value = ''; }); $c('ccModelo').value = ''; atualizaAval(); });
   const calcView = $c('calcView'); let calcLast = null;
   function closeCalc() { calcView.hidden = true; document.body.style.overflow = ''; if (calcLast) calcLast.focus(); }
   $c('openCalc').addEventListener('click', e => { calcLast = e.currentTarget; calcView.hidden = false; document.body.style.overflow = 'hidden'; carregarCalc(); atualizaAval(); $c('calcClose').focus(); });
