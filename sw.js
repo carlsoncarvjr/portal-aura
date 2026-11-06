@@ -1,5 +1,5 @@
 // Portal do Vendedor Aura — funciona sem internet com a última versão salva.
-const CACHE = 'aura-portal-v9';
+const CACHE = 'aura-portal-v10';
 const SHELL = [
   './',
   'index.html',
@@ -7,6 +7,7 @@ const SHELL = [
   'entrar/fundo-aura.svg',
   'entrar/logo-aura-hd.png',
   'logo-aura.png',
+  'logo-aura-login.png',
   'icons/icon-192.png',
   'icons/icon-512.png',
   'icons/apple-touch-icon.png',
