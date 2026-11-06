@@ -72,6 +72,27 @@
 .av-in { width: 110px; height: 32px; border-radius: 8px; border: 1px solid #6fb3ff; background: var(--surface); color: var(--ink); font: inherit; padding: 0 8px; }
 .av-flag { display: inline-block; font-size: 10.5px; font-weight: 700; color: var(--warn); background: rgba(242,184,75,.14); border-radius: 6px; padding: 1px 6px; margin-left: 6px; }
 .av-foot { font-size: 12px; color: var(--ink-mute); line-height: 1.6; margin: 14px 0 0; }
+
+/* Abas */
+body { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+body[data-tab] .wrap > section[data-tab] { display: none; }
+body[data-tab="inicio"] .wrap > section[data-tab="inicio"], body[data-tab="vendas"] .wrap > section[data-tab="vendas"],
+body[data-tab="loja"] .wrap > section[data-tab="loja"], body[data-tab="docs"] .wrap > section[data-tab="docs"] { display: block; }
+.wrap > section[hidden] { display: none !important; }
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: grid; grid-template-columns: repeat(4, 1fr); background: rgba(13,19,16,.96); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--line); padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); }
+.tabbar button { display: flex; flex-direction: column; align-items: center; gap: 3px; background: none; border: 0; color: var(--ink-mute); font: 600 11.5px var(--f-body); padding: 6px 0; cursor: pointer; border-radius: 12px; }
+.tabbar svg { width: 23px; height: 23px; }
+.tabbar button[aria-current="page"] { color: var(--lime); }
+@media (min-width: 820px) { .tabbar { left: 50%; right: auto; transform: translateX(-50%); width: 480px; bottom: 14px; border: 1px solid var(--line); border-radius: 18px; } }
+.rg-open { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer; padding: 16px; }
+.rg-open .ic { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; background: var(--surface-2); color: var(--lime); flex: none; } .rg-open .ic svg { width: 20px; height: 20px; }
+.rg-open .n { display: block; font-weight: 700; font-size: 15px; } .rg-open .d { display: block; font-size: 12.5px; color: var(--ink-mute); }
+.rg-open > span:nth-child(2) { flex: 1; } .rg-open .go { font-size: 24px; color: var(--ink-mute); }
+#rgView { background: var(--ground); }
+#rgView .rules { display: grid; gap: 10px; }
+.upd-old { color: var(--warn); font-weight: 700; }
+.tk-by { display: block; font-size: 11.5px; color: var(--ink-mute); margin-top: 1px; }
+.vc-tot.stack { flex-direction: column-reverse; align-items: flex-start; gap: 8px; } .vc-tot b.next { font-size: 26px; white-space: normal; }
 </style>
 <title>Portal do Vendedor Aura</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -290,19 +311,10 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     </div>
   </header>
 
-  <nav class="jump" aria-label="Seções">
-    <a href="#acessos">Acessos</a>
-    <a href="#metas">Metas</a>
-    <a href="#ranking">Ranking</a>
-    <a href="#hoje">Vendas do dia</a>
-    <a href="#tarefas">Tarefas</a>
-    <a href="#documentos">Documentos</a>
-    <a href="#regras">Regras</a>
-  </nav>
 
-  <section id="vendedor" hidden>
+  <section id="vendedor" data-tab="inicio" hidden>
     <div class="sec-h"><h2>Minha comissão</h2><span class="hint" id="vcMes"></span></div>
-    <div class="card vc-tot"><div><div class="lbl2" style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute)">Total estimado no mês</div><div class="hint" id="vcTotS" style="margin-top:4px"></div></div><b id="vcTot">–</b></div>
+    <div class="card vc-tot"><div><div class="lbl2" id="vcTotL" style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute)">Total estimado no mês</div><div class="hint" id="vcTotS" style="margin-top:4px"></div></div><b id="vcTot">–</b></div>
     <div class="vc-k" style="margin-top:10px">
       <div class="card"><div class="k">iPhones</div><div class="v" id="vcIph">–</div><div class="s" id="vcIphS"></div><div class="vc-steps" id="vcIphSteps"></div></div>
       <div class="card"><div class="k">Acessórios</div><div class="v" id="vcAcc">–</div><div class="s" id="vcAccS"></div><div class="vc-steps" id="vcAccSteps"></div></div>
@@ -314,12 +326,12 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     <details class="steps" style="margin-top:10px"><summary>Minhas vendas do mês</summary><ul class="sales" id="vcList" style="margin-top:10px"></ul></details>
   </section>
 
-  <section id="equipe" hidden>
+  <section id="equipe" data-tab="inicio" hidden>
     <div class="sec-h"><h2>Comissões da equipe</h2><span class="hint">estimativa do mês</span></div>
     <div class="card"><table class="vc-tbl"><thead><tr><th>Vendedor</th><th>iPhones</th><th>Acessórios</th><th>Total</th></tr></thead><tbody id="eqBody"></tbody></table></div>
   </section>
 
-  <section id="tecnico" class="tc" hidden>
+  <section id="tecnico" data-tab="inicio" class="tc" hidden>
     <div class="sec-h"><h2 id="tcTitle">Minha comissão</h2><span class="hint" id="tcUpd"></span></div>
     <div class="card">
       <div class="lbl" style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute)">Serviços externos no mês</div>
@@ -341,7 +353,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     </div>
   </section>
 
-  <section id="escala" class="shift">
+  <section id="escala" data-tab="inicio" class="shift">
     <div class="shift-h"><span class="lbl2" id="shiftDay">Na loja hoje</span><button type="button" class="link-btn" id="shiftToggle" aria-expanded="false" aria-controls="shiftWeek">Ver a semana</button></div>
     <div class="shift-today" id="shiftToday"></div>
     <div class="tscroll" id="shiftWeek" hidden>
@@ -357,7 +369,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     </div>
   </section>
 
-  <section id="acessos">
+  <section id="acessos" data-tab="loja">
     <div class="sec-h"><h2>Acesso rápido</h2></div>
     <div class="apps">
       <a class="app" href="https://app.mercadophone.tech" target="_blank" rel="noopener">
@@ -391,7 +403,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     </div>
   </section>
 
-  <section id="metas">
+  <section id="metas" data-tab="inicio">
     <div class="sec-h"><h2 id="metaTitulo">Meta do mês</h2><span class="hint">A marca branca mostra onde a loja deveria estar hoje</span></div>
     <div class="grid2">
       <div class="card goal" id="gIphone">
@@ -411,7 +423,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     </div>
   </section>
 
-  <section id="ranking">
+  <section id="ranking" data-tab="vendas">
     <div class="sec-h"><h2>Ranking dos vendedores</h2><span class="hint" id="rkHint">Toque num vendedor para ver os detalhes</span></div>
     <div class="card">
       <div class="rk-ctl">
@@ -430,7 +442,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     </div>
   </section>
 
-  <section id="hoje">
+  <section id="hoje" data-tab="vendas">
     <div class="sec-h"><h2>Vendas do dia</h2><span class="hint">Atualizado às 12h e às 21h</span></div>
     <div class="today">
       <div class="card">
@@ -452,14 +464,22 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     </div>
   </section>
 
-  <section id="tarefas">
-    <div class="sec-h"><h2>Tarefas do dia</h2><button class="reset" id="resetTasks" type="button">Desmarcar tudo</button></div>
+  <section id="tarefas" data-tab="loja">
+    <div class="sec-h"><h2>Tarefas do dia</h2></div>
     <div class="tasks" id="tasks"></div>
-    <p class="sec-h hint" style="margin-top:10px">As marcações ficam salvas só neste aparelho e recomeçam a cada dia.</p>
+    <p class="sec-h hint" id="tkHint" style="margin-top:10px"></p>
   </section>
 
 
-  <section id="documentos">
+  <section id="regras" data-tab="docs">
+    <button type="button" class="card rg-open" id="openRegras">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5h10.5L19 8v11.5H5z"/><path d="M8.5 11h7M8.5 14.5h7M8.5 7.5h4"/></svg></span>
+      <span><span class="n">Regras da loja e código de conduta</span><span class="d">Atendimento, Kommo, estoque, uniforme e conduta</span></span>
+      <span class="go" aria-hidden="true">›</span>
+    </button>
+  </section>
+
+  <section id="documentos" data-tab="docs">
     <div class="sec-h"><h2>Documentos</h2><span class="hint">Toque para abrir o termo</span></div>
     <div class="docs">
       <button type="button" class="doc" data-doc="termo-atendimento-garantia">
@@ -503,8 +523,18 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     </details>
   </section>
 
-  <section id="regras">
-    <div class="sec-h"><h2>Regras da loja</h2></div>
+
+  <footer>Aura · Av. 22 de Abril, 101 · Porto Seguro-BA</footer>
+</div>
+<nav class="tabbar" aria-label="Seções"><button type="button" data-go="inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20h-5.5v-5.5h-5V20H4z"/></svg><span>Início</span></button><button type="button" data-go="vendas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Vendas</span></button><button type="button" data-go="loja"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5 5.5 4h13L20 9.5M4 9.5v10.5h16V9.5M4 9.5h16M9.5 20v-5h5v5"/></svg><span>Loja</span></button><button type="button" data-go="docs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M9 11h6M9 14.5h6"/></svg><span>Docs</span></button></nav>
+
+
+<div class="viewer" id="rgView" hidden role="dialog" aria-modal="true" aria-labelledby="rgTitle">
+  <div class="vbar">
+    <button type="button" class="vbtn" id="rgClose" aria-label="Fechar">✕</button>
+    <div class="vt" id="rgTitle">Regras da loja</div>
+  </div>
+  <div class="vpage st-page">
     <div class="rules">
       <div class="card rule">
         <h3>Atendimento no Kommo</h3>
@@ -665,9 +695,8 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
         </div>
       </details>
     </div>
-  </section>
-
-  <footer>Aura · Av. 22 de Abril, 101 · Porto Seguro-BA</footer>
+  
+  </div>
 </div>
 
 <div class="viewer" id="avView" hidden role="dialog" aria-modal="true" aria-labelledby="avTitle">
@@ -774,7 +803,10 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
 
   function render(d) {
     const up = new Date(d.atualizadoEm);
-    document.getElementById('upd').textContent = 'Atualizado em ' + up.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'America/Bahia' }) + ' às ' + up.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Bahia' });
+    const updEl = document.getElementById('upd');
+    updEl.textContent = 'Atualizado em ' + up.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'America/Bahia' }) + ' às ' + up.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Bahia' });
+    const horas = Math.floor((Date.now() - up.getTime()) / 3600000);
+    if (horas >= 14) { const w = document.createElement('span'); w.className = 'upd-old'; w.textContent = ' · há ' + (horas >= 48 ? Math.floor(horas / 24) + ' dias' : horas + ' h'); updEl.appendChild(w); }
     const m = d.mes;
     document.getElementById('metaTitulo').textContent = 'Meta de ' + m.rotulo.toLowerCase().replace(/^\w/, c => c.toUpperCase());
     // dias decorridos até a atualização (fração do dia pelo horário da loja, 9h às 21h)
@@ -882,7 +914,9 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
   viewer.addEventListener('keydown', e => { if (e.key === 'Escape') closeDoc(); });
 
   // Ranking
-  const rk ={ per: 'mes', met: 'iphones', open: null, data: null };
+  const horaLoja = Number(new Date().toLocaleString('en-US', { hour: 'numeric', hour12: false, timeZone: 'America/Bahia' }));
+  const rk = { per: horaLoja >= 9 && horaLoja < 21 ? 'hoje' : 'mes', met: 'iphones', open: null, data: null };
+  document.querySelectorAll('[data-per]').forEach(b => b.setAttribute('aria-checked', b.dataset.per === rk.per ? 'true' : 'false'));
   const rkUnit = { iphones: n => n === 1 ? 'iPhone' : 'iPhones', vendas: n => n === 1 ? 'venda' : 'vendas' };
   function drawRanking() {
     const ol = document.getElementById('rkList');
@@ -984,8 +1018,16 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
   function renderVendedor(c) {
     document.getElementById('vendedor').hidden = false;
     document.getElementById('vcMes').textContent = c.mes;
-    document.getElementById('vcTot').textContent = brl2(c.total);
-    document.getElementById('vcTotS').textContent = 'iPhones ' + brl0(c.comissaoIphones) + ' + acessórios ' + brl0(c.comissaoAcessorios) + (c.total > c.comissaoIphones + c.comissaoAcessorios ? ' + prêmios' : '');
+    const tot = document.getElementById('vcTot'), totS = document.getElementById('vcTotS'), totL = document.getElementById('vcTotL');
+    if (c.total > 0) {
+      tot.closest('.vc-tot').classList.remove('stack'); tot.className = ''; totL.textContent = 'Total estimado no mês'; tot.textContent = brl2(c.total);
+      totS.textContent = 'iPhones ' + brl0(c.comissaoIphones) + ' + acessórios ' + brl0(c.comissaoAcessorios) + (c.total > c.comissaoIphones + c.comissaoAcessorios ? ' + prêmios' : '');
+    } else {
+      const pi0 = c.proximaFaixaIphone, pa0 = c.proximaFaixaAcessorios;
+      tot.closest('.vc-tot').classList.add('stack'); tot.className = 'next'; totL.textContent = 'Seu próximo passo';
+      tot.textContent = pi0 ? 'Faltam ' + pi0.faltam + (pi0.faltam === 1 ? ' iPhone' : ' iPhones') : 'Bora vender!';
+      totS.textContent = (pi0 ? 'para começar a ganhar R$ ' + pi0.valor + ' por iPhone' : '') + (pa0 ? (pi0 ? ' · ou ' : '') + brl0(pa0.faltam) + ' em acessórios para ' + String(pa0.pct).replace('.', ',') + '%' : '');
+    }
     document.getElementById('vcIph').textContent = c.iphones + (c.jbl ? ' + ' + c.jbl + ' JBL' : '');
     const pi = c.proximaFaixaIphone;
     document.getElementById('vcIphS').innerHTML = (c.valorPorIphone ? 'R$ ' + c.valorPorIphone + ' por aparelho' : 'Comissão começa no 12º iPhone') + (pi ? '<br>Faltam <b>' + pi.faltam + '</b> para R$ ' + pi.valor : '<br><b>Faixa máxima</b>');
@@ -1015,12 +1057,8 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     document.querySelector('header.top .who .t').textContent = 'Olá, ' + pz.nome;
     if (pz.papel === 'tecnico') {
       ['escala', 'ranking', 'tarefas'].forEach(id => { const el = document.getElementById(id); if (el) el.hidden = true; });
-      document.querySelectorAll('nav.jump a[href="#ranking"], nav.jump a[href="#tarefas"]').forEach(a => a.remove());
     }
     if (pz.papel === 'vendedor') {
-      const nav = document.querySelector('nav.jump');
-      const a = document.createElement('a'); a.href = '#vendedor'; a.textContent = 'Minha comissão';
-      nav.insertBefore(a, nav.firstChild);
       fetch('privado/vendedor-' + pz.arq + '.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(c => { if (c) renderVendedor(c); }).catch(() => {});
     }
     if (pz.papel === 'admin') {
@@ -1028,9 +1066,6 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
         .then(l => { l = l.filter(Boolean); if (l.length) renderEquipe(l); });
     }
     if (pz.papel === 'tecnico' || pz.papel === 'admin') {
-      const nav = document.querySelector('nav.jump');
-      const a = document.createElement('a'); a.href = '#tecnico'; a.textContent = pz.papel === 'admin' ? 'Assistência' : 'Minha comissão';
-      nav.insertBefore(a, nav.firstChild);
       fetch('privado/tecnico.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(t => { if (t) renderTecnico(t, pz.papel === 'admin'); }).catch(() => {});
     }
   }
@@ -1149,11 +1184,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     { t: 'Durante o dia', items: ['Responder mensagens em até 10 minutos', 'Colocar no remarketing quem não respondeu', 'Mover para venda ganha quem comprou', 'Termo de compra assinado em todo upgrade', 'Oferecer acessórios em toda venda de iPhone'] },
     { t: 'Fechamento', items: ['Lavar pratos e pia', 'Varrer e passar pano', 'Tirar o lixo', 'Conferir funis do Kommo antes de sair'] }
   ];
-  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bahia' });
-  const KEY = 'aura-tarefas-' + today;
-  let state = {};
-  try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { state = {}; }
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  let marcas = {}, tkErro = '';
   const box = document.getElementById('tasks');
   function drawTasks() {
     box.innerHTML = '';
@@ -1163,20 +1194,57 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
       const sm = document.createElement('small'); h.appendChild(sm); c.appendChild(h);
       let n = 0;
       g.items.forEach((txt, ii) => {
-        const id = 't' + gi + '-' + ii;
+        const id = 't' + gi + '-' + ii, m = marcas[id];
         const lab = document.createElement('label'); lab.className = 'chk'; lab.htmlFor = id;
-        const inp = document.createElement('input'); inp.type = 'checkbox'; inp.id = id; inp.checked = !!state[id];
+        const inp = document.createElement('input'); inp.type = 'checkbox'; inp.id = id; inp.checked = !!m;
         if (inp.checked) n++;
-        inp.addEventListener('change', () => { state[id] = inp.checked; save(); drawTasks(); });
+        inp.addEventListener('change', () => marcar(id, inp.checked));
         const sp = document.createElement('span'); sp.textContent = txt;
+        if (m) { const by = document.createElement('small'); by.className = 'tk-by'; by.textContent = m.por + ' · ' + m.hora; sp.appendChild(by); }
         lab.append(inp, sp); c.appendChild(lab);
       });
       sm.textContent = n + '/' + g.items.length;
       box.appendChild(c);
     });
+    document.getElementById('tkHint').textContent = tkErro || 'As marcações aparecem para toda a equipe e recomeçam a cada dia.';
   }
-  drawTasks();
-  document.getElementById('resetTasks').addEventListener('click', () => { state = {}; save(); drawTasks(); });
+  function carregarTarefas() {
+    fetch('/api/tarefas', { cache: 'no-store', credentials: 'include' }).then(r => r.ok ? r.json() : Promise.reject())
+      .then(d => { marcas = d.marcas || {}; tkErro = ''; drawTasks(); })
+      .catch(() => { tkErro = 'Sem conexão: não deu para carregar as marcações.'; drawTasks(); });
+  }
+  function marcar(id, feito) {
+    const antes = marcas[id];
+    if (feito) marcas[id] = { por: '…', hora: '' }; else delete marcas[id];
+    drawTasks();
+    fetch('/api/tarefas', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, feito }) })
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(d => { marcas = d.marcas || {}; tkErro = ''; drawTasks(); })
+      .catch(() => { if (antes) marcas[id] = antes; else delete marcas[id]; tkErro = 'Não salvou: confira a internet e tente de novo.'; drawTasks(); });
+  }
+  drawTasks(); carregarTarefas();
+
+  // Abas
+  const ABAS = ['inicio', 'vendas', 'loja', 'docs'];
+  function irPara(aba, rolar) {
+    if (!ABAS.includes(aba)) aba = 'inicio';
+    document.body.dataset.tab = aba;
+    document.querySelectorAll('.tabbar [data-go]').forEach(b => { if (b.dataset.go === aba) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
+    try { sessionStorage.setItem('aura-aba', aba); } catch (e) {}
+    if (aba === 'loja') carregarTarefas();
+    if (rolar) window.scrollTo(0, 0);
+  }
+  document.querySelectorAll('.tabbar [data-go]').forEach(b => b.addEventListener('click', () => { if (document.body.dataset.tab === b.dataset.go) window.scrollTo({ top: 0, behavior: 'smooth' }); else irPara(b.dataset.go, true); }));
+  let abaIni = (location.hash || '').slice(1);
+  if (!ABAS.includes(abaIni)) { try { abaIni = sessionStorage.getItem('aura-aba') || 'inicio'; } catch (e) { abaIni = 'inicio'; } }
+  irPara(abaIni, false);
+
+  // Regras
+  const rgView = document.getElementById('rgView'); let rgLast = null;
+  function closeRegras() { rgView.hidden = true; document.body.style.overflow = ''; if (rgLast) rgLast.focus(); }
+  document.getElementById('openRegras').addEventListener('click', e => { rgLast = e.currentTarget; rgView.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('rgClose').focus(); });
+  document.getElementById('rgClose').addEventListener('click', closeRegras);
+  rgView.addEventListener('keydown', e => { if (e.key === 'Escape') closeRegras(); });
 })();
 </script>
 <script>
