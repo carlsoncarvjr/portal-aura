@@ -1440,7 +1440,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     if (deb) L.push((parc.length ? '• ou ' : '💳 ') + reaisC(deb.tot) + ' no débito');
     const ref = parc.length ? parc[0].tot : (deb ? deb.tot : 0);
     if (parc.length || deb) L.push('');
-    L.push('💰 *À vista no PIX ou dinheiro: ' + reaisC(dif) + '*' + (ref > dif ? ' (' + reaisC(ref - dif) + ' de desconto)' : ''));
+    L.push('💰 *À vista no PIX ou dinheiro: ' + reaisC(dif) + '*' + (ref > dif ? ' (com desconto)' : ''));
     L.push('');
     if (usado) L.push('_Valores sujeitos à vistoria do seu aparelho aqui na loja._');
     while (L[L.length - 1] === '') L.pop();
