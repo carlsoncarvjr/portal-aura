@@ -1,17 +1,31 @@
 {
-  "atualizadoEm": "2026-11-05T17:15:32-03:00",
+  "atualizadoEm": "2026-11-05T22:40:00-03:00",
   "mes": "Novembro 2026",
   "meta": 15,
-  "servicos": 0,
+  "servicos": 1,
   "faixaAtual": 25,
   "proxima": {
-    "pct": 25,
-    "faltam": 1
+    "pct": 30,
+    "faltam": 6
   },
-  "lucro": 0,
-  "comissaoFaixas": 0.0,
-  "comissaoGarantia": 0.0,
-  "comissao": 0.0,
-  "garantiaAplicada": false,
-  "os": []
+  "lucro": 850.0,
+  "comissaoFaixas": 212.5,
+  "comissaoGarantia": 255.0,
+  "comissao": 255.0,
+  "garantiaAplicada": true,
+  "os": [
+    {
+      "codigo": 31,
+      "data": "2026-11-05",
+      "aparelho": "iPhone 17 Pro Max",
+      "servico": "Troca de vidro da tela",
+      "situacao": "Finalizado",
+      "valor": 1600.0,
+      "pecas": 750.0,
+      "lucro": 850.0,
+      "conta": true,
+      "motivo": null,
+      "pct": 25
+    }
+  ]
 }
