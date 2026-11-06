@@ -114,7 +114,7 @@ export default {
     ctx.waitUntil(Promise.all([vendas(env).catch(() => {}), lembretes(env).catch(() => {})]));
   },
   async fetch(req, env) {
-    const u = new URL(req.url);
-    return new Response('Portal Aura · avisos', { status: 200 });
+    const v = await env.AVALIACAO.get('avisos:ultimo', 'json');
+    return new Response('Portal Aura avisos OK ' + (v ? v.atualizadoEm : 'sem dados'), { status: 200 });
   }
 };
