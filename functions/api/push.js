@@ -1,13 +1,12 @@
 // Inscrição nas notificações do portal. Guarda a inscrição no KV "AVALIACAO" (chave push:<hash>);
 // o Worker "portal-aura-avisos" lê essas inscrições e manda os avisos.
-import { sendPush } from '../../lib/webpush.js';
+import { sendPush, getVapid } from '../../lib/webpush.js';
 
 const PESSOAS = {
   'carlsoncarvjr@gmail.com': ['Carlson', 'admin'], 'guadariachi0@gmail.com': ['Guadalupe', 'admin'],
   'maikobarreto16@gmail.com': ['Maiko', 'tecnico'], 'gusthavowork@gmail.com': ['Gustavo', 'vendedor'],
   'elisaprettiferrer@icloud.com': ['Elisa', 'vendedor'], 'danilosilvaobl@gmail.com': ['Danilo', 'vendedor'],
 };
-const VAPID_PUBLIC = 'BA9PQAsAvQsCAz7x-LTM8qCORxXexphwC35YCNX3ITJwbHDiMeXggANV80EpYQTQbwOBpZEvMI92JeNluds01mA';
 
 function json(obj, status = 200) {
   return new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'private, no-store' } });
@@ -15,6 +14,14 @@ function json(obj, status = 200) {
 async function chave(endpoint) {
   const h = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(endpoint)));
   return 'push:' + [...h.slice(0, 12)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+export async function onRequestGet(ctx) {
+  const kv = ctx.env.AVALIACAO;
+  if (!kv) return json({ erro: 'Armazenamento não configurado.' }, 503);
+  if (!PESSOAS[emailDoLogin(ctx.request)]) return json({ erro: 'Usuário não autorizado.' }, 403);
+  const v = await getVapid(kv, true);
+  return json({ publicKey: v.publicKey });
 }
 
 export async function onRequestPost(ctx) {
@@ -29,13 +36,11 @@ export async function onRequestPost(ctx) {
   if (body.sair) { await kv.delete(k); return json({ ok: true, inscrito: false }); }
   await kv.put(k, JSON.stringify({ sub: { endpoint: sub.endpoint, keys: { p256dh: sub.keys.p256dh, auth: sub.keys.auth } }, email, nome: p[0], papel: p[1], em: new Date().toISOString() }));
   let teste = null;
-  if (ctx.env.VAPID_PRIVATE_JWK) {
-    try {
-      const r = await sendPush(sub, { title: 'Notificações ativadas ✅', body: 'Você vai receber os avisos do Portal Aura neste aparelho.', url: '/' },
-        { subject: 'https://portal-aura.pages.dev', privateJwk: JSON.parse(ctx.env.VAPID_PRIVATE_JWK), publicKey: VAPID_PUBLIC });
-      teste = r.status;
-    } catch (e) { teste = 'erro'; }
-  }
+  try {
+    const vapid = await getVapid(kv, true);
+    const r = await sendPush(sub, { title: 'Notificações ativadas ✅', body: 'Você vai receber os avisos do Portal Aura neste aparelho.', url: '/' }, vapid);
+    teste = r.status;
+  } catch (e) { teste = 'erro'; }
   return json({ ok: true, inscrito: true, teste });
 }
 

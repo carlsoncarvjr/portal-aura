@@ -1401,7 +1401,6 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
   calcView.addEventListener('keydown', e => { if (e.key === 'Escape') closeCalc(); });
 
   // Notificações
-  const VAPID = 'BA9PQAsAvQsCAz7x-LTM8qCORxXexphwC35YCNX3ITJwbHDiMeXggANV80EpYQTQbwOBpZEvMI92JeNluds01mA';
   const SINO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>';
   const sinoBtn = document.getElementById('sino'); sinoBtn.innerHTML = SINO;
   const suportaPush = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
@@ -1426,7 +1425,8 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
       }
       const perm = await Notification.requestPermission();
       if (perm !== 'granted') { avisoPush('Notificações bloqueadas', 'Libere nos Ajustes do aparelho › Notificações › Aura.'); return; }
-      const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(VAPID) });
+      const ch = await fetch('/api/push', { cache: 'no-store', credentials: 'include' }).then(r => r.ok ? r.json() : Promise.reject());
+      const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(ch.publicKey) });
       const r = await fetch('/api/push', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ subscription: sub.toJSON() }) });
       if (!r.ok) throw new Error();
       marcaSino(true); avisoPush('Notificações ativadas', 'Você vai receber os avisos de vendas, metas e tarefas.');

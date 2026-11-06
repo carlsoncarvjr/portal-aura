@@ -1,5 +1,5 @@
 // Worker "portal-aura-avisos" (Cloudflare). Roda a cada 15 min (cron) e manda as notificações do Portal Aura.
-// Bindings: KV AVALIACAO (mesmo do portal), segredo VAPID_PRIVATE_JWK, segredo TESTE_CHAVE (opcional, para /teste).
+// Binding: KV AVALIACAO (mesmo namespace do portal). A chave VAPID fica no KV (gerada pelo portal).
 // Web Push (RFC 8291 aes128gcm + VAPID RFC 8292) só com WebCrypto.
 const te = new TextEncoder();
 const b64u = buf => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -39,7 +39,6 @@ async function sendPush(sub, data, vapid, ttl = 43200) {
     Authorization: await vapidHeader(sub.endpoint, vapid) } });
 }
 
-const VAPID_PUBLIC = 'BA9PQAsAvQsCAz7x-LTM8qCORxXexphwC35YCNX3ITJwbHDiMeXggANV80EpYQTQbwOBpZEvMI92JeNluds01mA';
 const DADOS = 'https://raw.githubusercontent.com/carlsoncarvjr/portal-aura/main/dados.json';
 const MARCOS = [25, 50, 75, 90, 100];
 
@@ -59,7 +58,9 @@ async function inscritos(env) {
 }
 
 async function enviar(env, papeis, msg) {
-  const vapid = { subject: 'https://portal-aura.pages.dev', privateJwk: JSON.parse(env.VAPID_PRIVATE_JWK), publicKey: VAPID_PUBLIC };
+  const v = await env.AVALIACAO.get('vapid:chave', 'json');
+  if (!v) return { enviados: 0, total: 0 };
+  const vapid = { subject: 'https://portal-aura.pages.dev', privateJwk: v.privateJwk, publicKey: v.publicKey };
   const lista = (await inscritos(env)).filter(i => !papeis || papeis.includes(i.papel));
   let ok = 0;
   await Promise.all(lista.map(async i => {
@@ -114,10 +115,6 @@ export default {
   },
   async fetch(req, env) {
     const u = new URL(req.url);
-    if (u.pathname === '/teste' && env.TESTE_CHAVE && u.searchParams.get('k') === env.TESTE_CHAVE) {
-      const r = await enviar(env, null, { title: 'Teste do Portal Aura', body: 'Se você está vendo isto, as notificações estão funcionando.', url: '/' });
-      return new Response(JSON.stringify(r), { headers: { 'Content-Type': 'application/json' } });
-    }
     return new Response('Portal Aura · avisos', { status: 200 });
   }
 };
