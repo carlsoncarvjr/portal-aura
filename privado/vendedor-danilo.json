@@ -1,14 +1,14 @@
 {
-  "atualizadoEm": "2026-11-05T17:15:32-03:00",
+  "atualizadoEm": "2026-11-05T22:35:00-03:00",
   "mes": "Novembro 2026",
   "vendedor": "Danilo",
-  "iphones": 3,
+  "iphones": 4,
   "jbl": 0,
   "valorPorIphone": 0,
   "proximaFaixaIphone": {
     "aPartirDe": 12,
     "valor": 10,
-    "faltam": 9
+    "faltam": 8
   },
   "comissaoIphones": 0,
   "acessorios": 865.83,
@@ -22,13 +22,13 @@
   "premios": {
     "metaIphones": {
       "valor": 100,
-      "loja": 11,
+      "loja": 12,
       "meta": 110,
       "batida": false
     },
     "metaAcessorios": {
       "valor": 100,
-      "loja": 2641.04,
+      "loja": 3057.31,
       "meta": 26000,
       "batida": false
     },
@@ -103,6 +103,13 @@
     }
   ],
   "vendas": [
+    {
+      "data": "2026-11-05",
+      "produto": "iPhone 16 Pro Max 256GB Desert Titanium",
+      "tipo": "iphone",
+      "valor": 0.0,
+      "iphones": 1
+    },
     {
       "data": "2026-11-03",
       "produto": "iPhone 14 Pro Max 128GB Roxo Profundo",

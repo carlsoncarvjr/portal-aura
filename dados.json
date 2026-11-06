@@ -1,5 +1,5 @@
 {
-  "atualizadoEm": "2026-11-05T17:15:32-03:00",
+  "atualizadoEm": "2026-11-05T22:35:00-03:00",
   "mes": {
     "rotulo": "Novembro 2026",
     "ano": 2026,
@@ -7,13 +7,13 @@
     "diasNoMes": 30,
     "metaIphones": 110,
     "metaAcessorios": 26000,
-    "iphones": 11,
-    "acessorios": 2641.04
+    "iphones": 12,
+    "acessorios": 3057.31
   },
   "hoje": {
     "data": "2026-11-05",
-    "iphones": 1,
-    "acessorios": 200.0,
+    "iphones": 2,
+    "acessorios": 616.27,
     "itens": [
       {
         "hora": "13:37",
@@ -25,6 +25,24 @@
         "hora": "15:13",
         "tipo": "iphone",
         "produto": "iPhone 18 Pro 256GB Bordô",
+        "vendedor": "Elisa"
+      },
+      {
+        "hora": "19:52",
+        "tipo": "iphone",
+        "produto": "iPhone 16 Pro Max 256GB Desert Titanium",
+        "vendedor": "Danilo"
+      },
+      {
+        "hora": "20:06",
+        "tipo": "acessorio",
+        "produto": "Capinha",
+        "vendedor": "Elisa"
+      },
+      {
+        "hora": "20:10",
+        "tipo": "acessorio",
+        "produto": "Capinha",
         "vendedor": "Elisa"
       }
     ]
@@ -95,14 +113,14 @@
       {
         "vendedor": "Elisa",
         "iphones": 4,
-        "acessorios": 540.41,
-        "vendas": 7
+        "acessorios": 956.69,
+        "vendas": 9
       },
       {
         "vendedor": "Danilo",
-        "iphones": 3,
+        "iphones": 4,
         "acessorios": 865.83,
-        "vendas": 7
+        "vendas": 8
       }
     ],
     "semana": [
@@ -115,19 +133,25 @@
       {
         "vendedor": "Elisa",
         "iphones": 4,
-        "acessorios": 362.74,
-        "vendas": 6
+        "acessorios": 779.01,
+        "vendas": 8
       },
       {
         "vendedor": "Danilo",
-        "iphones": 2,
+        "iphones": 3,
         "acessorios": 865.83,
-        "vendas": 6
+        "vendas": 7
       }
     ],
     "hoje": [
       {
         "vendedor": "Elisa",
+        "iphones": 1,
+        "acessorios": 416.27,
+        "vendas": 3
+      },
+      {
+        "vendedor": "Danilo",
         "iphones": 1,
         "acessorios": 0.0,
         "vendas": 1

@@ -7,7 +7,7 @@ Uso:
 
 Cada arquivo é a resposta de list_inventory ({"items": [...]}) de uma página.
 Regras:
-- Unidade Meu iPhone (Aura): só itens com disponibilidade "Estoque atualizado"
+- Unidade Meu iPhone (Aura): só itens com disponibilidade "Estoque atualizado" / "Em estoque (conferido)"
   ("Disponível para venda" são aparelhos já vendidos sem baixa no sistema).
 - Unidade Riachi: todos os itens em estoque.
 - Só aparelhos (tipo Celular), com quantidade > 0.
@@ -76,7 +76,7 @@ def main():
                 continue
             if not eh_aparelho(i):
                 continue
-            if so_atualizado and norm(i.get("disponibilidade")) != "ESTOQUE ATUALIZADO":
+            if so_atualizado and norm(i.get("disponibilidade")) not in ("ESTOQUE ATUALIZADO", "EM ESTOQUE (CONFERIDO)"):
                 continue
             saida.append({
                 "modelo": modelo(i), "memoria": memoria(i), "cor": cor(i),
