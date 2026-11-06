@@ -85,6 +85,12 @@ async function enviar(env, papeis, msg, nomes) {
   return { enviados: ok, total: lista.length };
 }
 
+// Avisos dirigidos (story, abertura, fechamento): manda para quem está no turno e uma cópia para os administradores.
+async function enviarComCopia(env, msg, nomes) {
+  await enviar(env, ['vendedor'], msg, nomes);
+  await enviar(env, ['admin'], { ...msg, title: msg.title + ' · ' + nomes.join(', '), tag: msg.tag + '-adm' });
+}
+
 async function vendas(env) {
   const d = await fetch(DADOS + '?t=' + Date.now(), { cf: { cacheTtl: 0 } }).then(r => r.ok ? r.json() : null).catch(() => null);
   if (!d || !d.mes) return;
@@ -122,7 +128,7 @@ async function stories(env) {
   await env.AVALIACAO.put(k, '1', { expirationTtl: 2 * 86400 });
   if (!nomes.length) return;
   const ideia = IDEIAS[(slot / 30) % IDEIAS.length];
-  await enviar(env, ['vendedor'], { title: '📸 Hora do story no Instagram', body: ideia + ' Poste no @somosaura.ps.', url: 'https://www.instagram.com/somosaura.ps/', tag: 'story' }, nomes);
+  await enviarComCopia(env, { title: '📸 Hora do story no Instagram', body: ideia + ' Poste no @somosaura.ps.', url: 'https://www.instagram.com/somosaura.ps/', tag: 'story' }, nomes);
 }
 
 function turnosDoDia(e, data, dia) {
@@ -157,7 +163,7 @@ async function lembretes(env) {
     const k = 'avisos:' + it.id + ':' + t.data;
     if (await env.AVALIACAO.get(k)) continue;
     await env.AVALIACAO.put(k, '1', { expirationTtl: 3 * 86400 });
-    await enviar(env, ['vendedor'], it.msg, it.nomes);
+    if (it.nomes.length) await enviarComCopia(env, it.msg, it.nomes);
   }
 }
 
@@ -167,6 +173,6 @@ export default {
   },
   async fetch(req, env) {
     const v = await env.AVALIACAO.get('avisos:ultimo', 'json');
-    return new Response('Portal Aura avisos v3 OK ' + (v ? v.atualizadoEm : 'sem dados'), { status: 200 });
+    return new Response('Portal Aura avisos v4 OK ' + (v ? v.atualizadoEm : 'sem dados'), { status: 200 });
   }
 };
