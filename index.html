@@ -1415,12 +1415,12 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
       [forma, parc, total].forEach((v, k) => { const td = document.createElement('td'); if (k === 1) { const bb = document.createElement('b'); bb.textContent = v; td.appendChild(bb); } else td.textContent = v; tr.appendChild(td); });
       if (id) tr.addEventListener('click', e => { if (e.target.tagName !== 'INPUT') tr.querySelector('input').click(); });
       tb.appendChild(tr);
-      if (!id || ccSel.has(id)) ops.push(txt);
+      if (id && ccSel.has(id)) ops.push(txt);
     };
-    add(null, 'PIX ou dinheiro', '—', reaisC(dif), '*' + reaisC(dif) + ' no PIX ou dinheiro* (melhor condição)');
+    add(null, 'PIX ou dinheiro', '—', reaisC(dif), null);
     if (dif > 0) {
-      const deb = Math.ceil(dif / (1 - cc.debito / 100)); add('deb', 'Débito', '—', reaisC(deb), reaisC(deb) + ' no débito');
-      Object.keys(m.taxas).map(Number).sort((a, b2) => b2 - a).forEach(n => { const tx = m.taxas[n]; if (tx == null) return; const tot = Math.ceil(dif / (1 - tx / 100)); const par = tot / n; add(String(n), n + 'x', reaisC(par, true), reaisC(tot), n + 'x de ' + reaisC(par, true) + ' no cartão'); });
+      const deb = Math.ceil(dif / (1 - cc.debito / 100)); add('deb', 'Débito', '—', reaisC(deb), { deb: true, tot: deb });
+      Object.keys(m.taxas).map(Number).sort((a, b2) => b2 - a).forEach(n => { const tx = m.taxas[n]; if (tx == null) return; const tot = Math.ceil(dif / (1 - tx / 100)); const par = tot / n; add(String(n), n + 'x', reaisC(par, true), reaisC(tot), { n, par, tot }); });
     }
     t.appendChild(tb); box.appendChild(t);
     const nomeNovo = $c('ccNome').value.trim() || 'seu novo iPhone';
@@ -1430,14 +1430,19 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     const L = [];
     L.push('Segue sua proposta' + (cli ? ', ' + cli.charAt(0).toUpperCase() + cli.slice(1).toLowerCase() : '') + ' 👇');
     L.push('');
-    L.push('📱 *' + nomeNovo + '*' + (dif !== preco ? ' — de ' + reaisC(preco) : ''));
-    if (usado) L.push('🔄 Seu ' + usado + ' entra como parte do pagamento: *' + reaisC(aval) + '*');
-    if (ent) L.push('💵 Entrada: ' + reaisC(ent));
+    L.push('📱 *' + nomeNovo + '*' + (usado ? ' com o seu ' + usado + ' na troca' : ''));
     L.push('');
-    L.push(dif === preco ? '💰 *Formas de pagamento:*' : '💰 *Você paga só a diferença:*');
-    ops.forEach((o, k) => L.push((k ? '• ou ' : '• ') + o));
+    const parc = ops.filter(o => o.n), deb = ops.find(o => o.deb);
+    if (parc.length) {
+      L.push('💳 *' + parc[0].n + 'x de ' + reaisC(parc[0].par, true) + '* no cartão');
+      parc.slice(1).forEach(o => L.push('• ou ' + o.n + 'x de ' + reaisC(o.par, true)));
+    }
+    if (deb) L.push((parc.length ? '• ou ' : '💳 ') + reaisC(deb.tot) + ' no débito');
+    const ref = parc.length ? parc[0].tot : (deb ? deb.tot : 0);
+    if (parc.length || deb) L.push('');
+    L.push('💰 *À vista no PIX ou dinheiro: ' + reaisC(dif) + '*' + (ref > dif ? ' (' + reaisC(ref - dif) + ' de desconto)' : ''));
     L.push('');
-    if (usado) L.push('_A avaliação do seu aparelho é confirmada na vistoria aqui na loja._');
+    if (usado) L.push('_Valores sujeitos à vistoria do seu aparelho aqui na loja._');
     while (L[L.length - 1] === '') L.pop();
     ccTexto = L.join('\n');
   }
