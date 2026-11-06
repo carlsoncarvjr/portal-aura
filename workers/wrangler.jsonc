@@ -1,9 +1,0 @@
-{
-  // Worker de notificações do Portal Aura. Publicado pelo Cloudflare a partir desta pasta (Workers Builds).
-  "name": "portal-aura-avisos",
-  "main": "avisos.js",
-  "compatibility_date": "2026-11-01",
-  "kv_namespaces": [{ "binding": "AVALIACAO", "id": "88fbaabb8bee4d4f81ace41ccf177b7d" }],
-  "triggers": { "crons": ["*/15 * * * *"] },
-  "workers_dev": true
-}

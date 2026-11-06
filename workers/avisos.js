@@ -1,4 +1,5 @@
 // Worker "portal-aura-avisos" (Cloudflare). Roda a cada 15 min (cron) e manda as notificações do Portal Aura.
+// Publicado à mão no editor do Cloudflare (Workers › portal-aura-avisos). Ao mudar este arquivo, cole a nova versão lá e clique em Deploy.
 // Binding: KV AVALIACAO (mesmo namespace do portal). A chave VAPID fica no KV (gerada pelo portal).
 // Web Push (RFC 8291 aes128gcm + VAPID RFC 8292) só com WebCrypto.
 const te = new TextEncoder();
@@ -155,6 +156,6 @@ export default {
   },
   async fetch(req, env) {
     const v = await env.AVALIACAO.get('avisos:ultimo', 'json');
-    return new Response('Portal Aura avisos OK ' + (v ? v.atualizadoEm : 'sem dados'), { status: 200 });
+    return new Response('Portal Aura avisos v2 OK ' + (v ? v.atualizadoEm : 'sem dados'), { status: 200 });
   }
 };
