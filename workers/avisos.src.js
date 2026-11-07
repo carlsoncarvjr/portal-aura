@@ -1,46 +1,98 @@
-// Worker "portal-aura-avisos" (Cloudflare). Roda a cada 15 min (cron) e manda as notificações do Portal Aura.
-// Publicado à mão no editor do Cloudflare (Workers › portal-aura-avisos). Ao mudar este arquivo, cole a nova versão lá e clique em Deploy.
-// Binding: KV AVALIACAO (mesmo namespace do portal). A chave VAPID fica no KV (gerada pelo portal).
-// Web Push (RFC 8291 aes128gcm + VAPID RFC 8292) só com WebCrypto.
-const te = new TextEncoder();
-const b64u = buf => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-const unb64u = s => { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; return Uint8Array.from(atob(s), c => c.charCodeAt(0)); };
-const cat = (...a) => { const n = a.reduce((t, x) => t + x.length, 0), o = new Uint8Array(n); let i = 0; a.forEach(x => { o.set(x, i); i += x.length; }); return o; };
-async function hkdf(salt, ikm, info, len) {
-  const k = await crypto.subtle.importKey('raw', ikm, 'HKDF', false, ['deriveBits']);
-  return new Uint8Array(await crypto.subtle.deriveBits({ name: 'HKDF', hash: 'SHA-256', salt, info }, k, len * 8));
-}
-async function encrypt(sub, payload) {
-  const ua = unb64u(sub.keys.p256dh), auth = unb64u(sub.keys.auth);
-  const eph = await crypto.subtle.generateKey({ name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveBits']);
-  const asPub = new Uint8Array(await crypto.subtle.exportKey('raw', eph.publicKey));
-  const uaKey = await crypto.subtle.importKey('raw', ua, { name: 'ECDH', namedCurve: 'P-256' }, false, []);
-  const shared = new Uint8Array(await crypto.subtle.deriveBits({ name: 'ECDH', public: uaKey }, eph.privateKey, 256));
-  const ikm = await hkdf(auth, shared, cat(te.encode('WebPush: info\0'), ua, asPub), 32);
-  const salt = crypto.getRandomValues(new Uint8Array(16));
-  const cek = await hkdf(salt, ikm, te.encode('Content-Encoding: aes128gcm\0'), 16);
-  const nonce = await hkdf(salt, ikm, te.encode('Content-Encoding: nonce\0'), 12);
-  const key = await crypto.subtle.importKey('raw', cek, 'AES-GCM', false, ['encrypt']);
-  const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv: nonce }, key, cat(te.encode(payload), new Uint8Array([2]))));
-  const rs = new Uint8Array([0, 0, 16, 0]);
-  return cat(salt, rs, new Uint8Array([asPub.length]), asPub, ct);
-}
-async function vapidHeader(endpoint, vapid) {
-  const aud = new URL(endpoint).origin;
-  const head = b64u(te.encode(JSON.stringify({ typ: 'JWT', alg: 'ES256' })));
-  const body = b64u(te.encode(JSON.stringify({ aud, exp: Math.floor(Date.now() / 1000) + 12 * 3600, sub: vapid.subject })));
-  const key = await crypto.subtle.importKey('jwk', vapid.privateJwk, { name: 'ECDSA', namedCurve: 'P-256' }, false, ['sign']);
-  const sig = await crypto.subtle.sign({ name: 'ECDSA', hash: 'SHA-256' }, key, te.encode(head + '.' + body));
-  return 'vapid t=' + head + '.' + body + '.' + b64u(sig) + ', k=' + vapid.publicKey;
-}
-async function sendPush(sub, data, vapid, ttl = 43200) {
-  const body = await encrypt(sub, JSON.stringify(data));
-  return fetch(sub.endpoint, { method: 'POST', body, headers: {
-    'Content-Encoding': 'aes128gcm', 'Content-Type': 'application/octet-stream', TTL: String(ttl), Urgency: 'normal',
-    Authorization: await vapidHeader(sub.endpoint, vapid) } });
-}
+// Serviço "portal-aura-avisos" (Cloudflare Worker). Roda a cada 15 min:
+//  1) sincroniza vendas, OS e estoque direto da API do MercadoPhone (chave MP_API_KEY, somente leitura) e calcula os números do portal;
+//  2) manda as notificações (vendas, metas, story, abertura e fechamento).
+// Binding: KV AVALIACAO. Segredo: MP_API_KEY. Publicação: node workers/build.mjs gera workers/dist/avisos.js.
+import { sendPush } from '../lib/webpush.js';
+import { calcularVendas, calcularOS, calcularEstoque, normalizarOS } from '../lib/calc.js';
 
-const DADOS = 'https://raw.githubusercontent.com/carlsoncarvjr/portal-aura/main/dados.json';
+
+// ---------- Sincronização com o MercadoPhone ----------
+const API = 'https://platform.mercadophone.tech/api/v1';
+const GH = 'https://raw.githubusercontent.com/carlsoncarvjr/portal-aura/main/';
+const amanhaDe = iso => { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 1); return d.toISOString().slice(0, 10); };
+
+async function mp(env, caminho, params, unidade) {
+  const u = new URL(API + caminho);
+  Object.entries(params || {}).forEach(([k, v]) => { if (v !== undefined && v !== null) u.searchParams.set(k, v); });
+  for (let tentativa = 0; tentativa < 4; tentativa++) {
+    const r = await fetch(u, { headers: { 'X-API-Key': env.MP_API_KEY, ...(unidade ? { 'X-Unit-Id': String(unidade) } : {}), Accept: 'application/json' } });
+    if (r.status === 429) { const s = Number(r.headers.get('Retry-After') || 5); await new Promise(ok => setTimeout(ok, Math.min(s, 20) * 1000)); continue; }
+    if (!r.ok) throw new Error(caminho + ' ' + r.status);
+    return r.json();
+  }
+  throw new Error(caminho + ' limite de pedidos');
+}
+async function mpTudo(env, caminho, params, unidade) {
+  const itens = [];
+  for (let page = 1; page < 40; page++) {
+    const d = await mp(env, caminho, { ...params, limit: 300, page }, unidade);
+    const lista = d.items || d.data || (Array.isArray(d) ? d : []);
+    itens.push(...lista);
+    if (!lista.length || itens.length >= (d.total ?? itens.length)) break;
+  }
+  return itens;
+}
+async function lojas(env) {
+  const d = await mp(env, '/stores');
+  const lista = d.stores || d.items || d.data || (Array.isArray(d) ? d : []);
+  const ids = { meu: null, riachi: null };
+  for (const l of lista) { const id = l.system_unit_id ?? l.id; if (/riachi/i.test(l.name || l.nome || '')) ids.riachi = id; else ids.meu = id; }
+  return ids;
+}
+const kvJson = async (env, k) => { try { return await env.AVALIACAO.get(k, 'json'); } catch (e) { return null; } };
+const gh = async f => fetch(GH + f + '?t=' + Date.now(), { cf: { cacheTtl: 0 } }).then(r => r.ok ? r.json() : null).catch(() => null);
+
+async function sincronizar(env, forcar) {
+  if (!env.MP_API_KEY) return { ok: false, erro: 'sem chave MP_API_KEY' };
+  const t = agoraBahia();
+  const noturno = t.min < 8 * 60 || t.min >= 22 * 60;
+  if (!forcar && noturno && (t.min % 60) >= 15) return { ok: true, pulou: 'madrugada' };
+  const hoje = t.data, amanha = amanhaDe(hoje);
+  const ini = [hoje.slice(0, 8) + '01', (() => { const d = new Date(hoje + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - ((t.dia + 6) % 7)); return d.toISOString().slice(0, 10); })()].sort()[0];
+  const agora = hoje + 'T' + String(Math.floor(t.min / 60)).padStart(2, '0') + ':' + String(t.min % 60).padStart(2, '0') + ':00-03:00';
+  const ids = await lojas(env);
+  const uni = [ids.meu, ids.riachi].filter(x => x != null);
+  const erros = [];
+  // Vendas
+  try {
+    const vendas = [];
+    for (const u of uni) vendas.push(...await mpTudo(env, '/sales', { dataVendaInicial: ini, dataVendaFinal: amanha }, u));
+    const antigo = (await kvJson(env, 'calc:dados')) || (await gh('dados.json')) || {};
+    const registro = (await kvJson(env, 'calc:prevendas')) || (await gh('prevendas.json')) || {};
+    const r = calcularVendas(vendas, hoje, agora, registro, antigo);
+    await env.AVALIACAO.put('calc:dados', JSON.stringify(r.dados));
+    await env.AVALIACAO.put('calc:prevendas', JSON.stringify(r.registro));
+    for (const [n, c] of Object.entries(r.vendedores)) await env.AVALIACAO.put('calc:vendedor-' + n, JSON.stringify(c));
+  } catch (e) { erros.push('vendas: ' + e.message); }
+  // Ordens de serviço (detalhe guardado em cache quando a OS já está fechada)
+  try {
+    const mesIni = hoje.slice(0, 8) + '01', vistas = new Map();
+    for (const u of uni) for (const f of [{ dataCriacaoInicial: mesIni, dataCriacaoFinal: amanha }, { dataFinalizacaoInicial: mesIni, dataFinalizacaoFinal: amanha }])
+      for (const o of await mpTudo(env, '/service-orders', f, u)) vistas.set(u + ':' + o.id, [u, o]);
+    const lista = [];
+    for (const [k, [u, o]] of vistas) {
+      let n = await kvJson(env, 'os:' + k);
+      if (!n) {
+        const det = await mp(env, '/service-orders/' + o.id, null, u);
+        n = normalizarOS(det);
+        if (/finaliz|cancel/i.test(n.situacao)) await env.AVALIACAO.put('os:' + k, JSON.stringify(n), { expirationTtl: 70 * 86400 });
+      }
+      lista.push(n);
+    }
+    await env.AVALIACAO.put('calc:tecnico', JSON.stringify(calcularOS(lista, hoje, agora)));
+  } catch (e) { erros.push('os: ' + e.message); }
+  // Estoque (Meu iPhone: só "Em estoque (conferido)" e celulares; Riachi: tudo)
+  try {
+    const meu = ids.meu != null ? await mpTudo(env, '/inventory', { produtoDisponibilidadeId: 62709, tipoProdutoId: 6235 }, ids.meu) : [];
+    const ria = ids.riachi != null ? await mpTudo(env, '/inventory', {}, ids.riachi) : [];
+    const est = calcularEstoque(meu, ria, agora);
+    if ((meu.length && !est.porUnidade['Meu iPhone']) || (ria.length && !est.porUnidade.Riachi)) erros.push('estoque: unidade zerada, não publicado');
+    else await env.AVALIACAO.put('calc:estoque', JSON.stringify(est));
+  } catch (e) { erros.push('estoque: ' + e.message); }
+  const st = { ok: !erros.length, em: agora, lojas: ids, erros };
+  await env.AVALIACAO.put('calc:sync', JSON.stringify(st));
+  return st;
+}
 const MARCOS = [25, 50, 75, 90, 100];
 const ESCALA = 'https://raw.githubusercontent.com/carlsoncarvjr/portal-aura/main/escala.json';
 const IDEIAS = [
@@ -92,7 +144,7 @@ async function enviarComCopia(env, msg, nomes) {
 }
 
 async function vendas(env) {
-  const d = await fetch(DADOS + '?t=' + Date.now(), { cf: { cacheTtl: 0 } }).then(r => r.ok ? r.json() : null).catch(() => null);
+  const d = (await kvJson(env, 'calc:dados')) || (await gh('dados.json'));
   if (!d || !d.mes) return;
   const ant = await env.AVALIACAO.get('avisos:ultimo', 'json');
   const atual = { atualizadoEm: d.atualizadoEm, rotulo: d.mes.rotulo, iphones: d.mes.iphones, acessorios: d.mes.acessorios,
@@ -169,10 +221,10 @@ async function lembretes(env) {
 
 export default {
   async scheduled(ev, env, ctx) {
-    ctx.waitUntil(Promise.all([vendas(env).catch(() => {}), lembretes(env).catch(() => {}), stories(env).catch(() => {})]));
+    ctx.waitUntil((async () => { await sincronizar(env).catch(e => env.AVALIACAO.put('calc:sync', JSON.stringify({ ok: false, erros: [String(e && e.message || e)] }))); await Promise.all([vendas(env).catch(() => {}), lembretes(env).catch(() => {}), stories(env).catch(() => {})]); })());
   },
   async fetch(req, env) {
-    const v = await env.AVALIACAO.get('avisos:ultimo', 'json');
-    return new Response('Portal Aura avisos v4 OK ' + (v ? v.atualizadoEm : 'sem dados'), { status: 200 });
+    const st = await kvJson(env, 'calc:sync');
+    return new Response('Portal Aura avisos v5 · última sincronização: ' + (st ? (st.em || '?') + (st.ok ? ' OK' : ' com erros: ' + (st.erros || []).join('; ')) : 'ainda não rodou'), { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   }
 };
