@@ -1,4 +1,4 @@
-// Serviço "portal-aura-avisos" (Cloudflare Worker). Roda a cada 5 min (madrugada: 1 vez por hora):
+// Serviço "portal-aura-avisos" (Cloudflare Worker). Roda a cada 2 min (madrugada: 1 vez por hora):
 //  1) sincroniza vendas, OS e estoque direto da API do MercadoPhone (chave MP_API_KEY, somente leitura) e calcula os números do portal;
 //  2) manda as notificações (vendas, metas, story, abertura e fechamento).
 // Binding: KV AVALIACAO. Segredo: MP_API_KEY. Publicação: node workers/build.mjs gera workers/dist/avisos.js.

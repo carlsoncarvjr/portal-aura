@@ -1,5 +1,5 @@
 // Portal do Vendedor Aura — funciona sem internet com a última versão salva.
-const CACHE = 'aura-portal-v20';
+const CACHE = 'aura-portal-v21';
 const SHELL = [
   './',
   'index.html',
