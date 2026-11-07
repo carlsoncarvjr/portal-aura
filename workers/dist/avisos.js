@@ -257,7 +257,7 @@ function calcularEstoque(meu, riachi, agora) {
   return { atualizadoEm: agora, total: saida.length, porUnidade: { 'Meu iPhone': saida.filter(x => x.unidade === 'Meu iPhone').length, Riachi: saida.filter(x => x.unidade === 'Riachi').length }, itens: saida };
 }
 
-// Serviço "portal-aura-avisos" (Cloudflare Worker). Roda a cada 15 min:
+// Serviço "portal-aura-avisos" (Cloudflare Worker). Roda a cada 5 min (madrugada: 1 vez por hora):
 //  1) sincroniza vendas, OS e estoque direto da API do MercadoPhone (chave MP_API_KEY, somente leitura) e calcula os números do portal;
 //  2) manda as notificações (vendas, metas, story, abertura e fechamento).
 // Binding: KV AVALIACAO. Segredo: MP_API_KEY. Publicação: node workers/build.mjs gera workers/dist/avisos.js.
@@ -299,13 +299,20 @@ async function lojas(env) {
   return ids;
 }
 const kvJson = async (env, k) => { try { return await env.AVALIACAO.get(k, 'json'); } catch (e) { return null; } };
+// Grava só se o conteúdo mudou (ignorando a hora), para caber no limite diário de gravações do KV.
+const semHora = o => JSON.stringify({ ...o, atualizadoEm: null });
+async function gravar(env, k, obj) {
+  const ant = await kvJson(env, k);
+  if (ant && semHora(ant) === semHora(obj)) return false;
+  await env.AVALIACAO.put(k, JSON.stringify(obj)); return true;
+}
 const gh = async f => fetch(GH + f + '?t=' + Date.now(), { cf: { cacheTtl: 0 } }).then(r => r.ok ? r.json() : null).catch(() => null);
 
 async function sincronizar(env, forcar) {
   if (!env.MP_API_KEY) return { ok: false, erro: 'sem chave MP_API_KEY' };
   const t = agoraBahia();
   const noturno = t.min < 8 * 60 || t.min >= 22 * 60;
-  if (!forcar && noturno && (t.min % 60) >= 15) return { ok: true, pulou: 'madrugada' };
+  if (!forcar && noturno && (t.min % 60) >= 5) return { ok: true, pulou: 'madrugada' };
   const hoje = t.data, amanha = amanhaDe(hoje);
   const ini = [hoje.slice(0, 8) + '01', (() => { const d = new Date(hoje + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - ((t.dia + 6) % 7)); return d.toISOString().slice(0, 10); })()].sort()[0];
   const agora = hoje + 'T' + String(Math.floor(t.min / 60)).padStart(2, '0') + ':' + String(t.min % 60).padStart(2, '0') + ':00-03:00';
@@ -319,9 +326,9 @@ async function sincronizar(env, forcar) {
     const antigo = (await kvJson(env, 'calc:dados')) || (await gh('dados.json')) || {};
     const registro = (await kvJson(env, 'calc:prevendas')) || (await gh('prevendas.json')) || {};
     const r = calcularVendas(vendas, hoje, agora, registro, antigo);
-    await env.AVALIACAO.put('calc:dados', JSON.stringify(r.dados));
-    await env.AVALIACAO.put('calc:prevendas', JSON.stringify(r.registro));
-    for (const [n, c] of Object.entries(r.vendedores)) await env.AVALIACAO.put('calc:vendedor-' + n, JSON.stringify(c));
+    await gravar(env, 'calc:dados', r.dados);
+    await gravar(env, 'calc:prevendas', r.registro);
+    for (const [n, c] of Object.entries(r.vendedores)) await gravar(env, 'calc:vendedor-' + n, c);
   } catch (e) { erros.push('vendas: ' + e.message); }
   // Ordens de serviço (detalhe guardado em cache quando a OS já está fechada)
   try {
@@ -338,7 +345,7 @@ async function sincronizar(env, forcar) {
       }
       lista.push(n);
     }
-    await env.AVALIACAO.put('calc:tecnico', JSON.stringify(calcularOS(lista, hoje, agora)));
+    await gravar(env, 'calc:tecnico', calcularOS(lista, hoje, agora));
   } catch (e) { erros.push('os: ' + e.message); }
   // Estoque (Meu iPhone: só "Em estoque (conferido)" e celulares; Riachi: tudo)
   try {
@@ -346,7 +353,7 @@ async function sincronizar(env, forcar) {
     const ria = ids.riachi != null ? await mpTudo(env, '/inventory', {}, ids.riachi) : [];
     const est = calcularEstoque(meu, ria, agora);
     if ((meu.length && !est.porUnidade['Meu iPhone']) || (ria.length && !est.porUnidade.Riachi)) erros.push('estoque: unidade zerada, não publicado');
-    else await env.AVALIACAO.put('calc:estoque', JSON.stringify(est));
+    else await gravar(env, 'calc:estoque', est);
   } catch (e) { erros.push('estoque: ' + e.message); }
   const st = { ok: !erros.length, em: agora, lojas: ids, erros };
   await env.AVALIACAO.put('calc:sync', JSON.stringify(st));
