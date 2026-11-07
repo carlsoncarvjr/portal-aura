@@ -1680,7 +1680,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     };
     draw();
     return [sec('Quem entra no portal', 'Vendedor: use o primeiro nome igual ao do MercadoPhone, é assim que as vendas são ligadas a ele. Administrador vê tudo e abre este painel.', box),
-      E('p', { className: 'dn-nota' }, 'Pessoa nova: depois de salvar aqui, o e-mail também precisa ser liberado na tela de login (Cloudflare Access). Enquanto isso não for automático, me peça para liberar.')];
+      E('p', { className: 'dn-nota' }, 'Ao salvar, o login é atualizado sozinho: e-mail novo já pode entrar com o código, e quem sai da lista perde o acesso na hora.')];
   }
   const confirmaTirar = p => !p.email || window.confirm('Tirar ' + (p.nome || p.email) + ' do portal? A pessoa perde o acesso depois de salvar.');
 
@@ -1850,6 +1850,11 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
       const j = await enviarDono(tipo === 'salvar' ? { secao: s, dados: dn.w } : { secao: s, acao: tipo });
       dn.d = j; desenhar(true);
       status(tipo === 'salvar' ? 'Salvo ✓ Vale para todos em até 2 minutos.' : tipo === 'desfazer' ? 'Desfeito ✓' : 'Padrão restaurado ✓', 'ok');
+      const lg = j.login;
+      if (lg) {
+        if (lg.ok) { const p = []; if (lg.adicionados.length) p.push(lg.adicionados.length === 1 ? '1 e-mail liberado' : lg.adicionados.length + ' e-mails liberados'); if (lg.removidos.length) p.push(lg.removidos.length === 1 ? '1 acesso bloqueado' : lg.removidos.length + ' acessos bloqueados'); status('Salvo ✓ Login atualizado' + (p.length ? ': ' + p.join(', ') : '') + '.', 'ok'); }
+        else status(lg.semToken ? 'Salvo ✓ Mas o login não foi atualizado: falta a chave do Cloudflare.' : 'Salvo ✓ Mas o login não foi atualizado: ' + lg.erro, 'err');
+      }
       if (s === 'manutencao') mn.d = null;
       if (s === 'escala') carregarEscala();
     } catch (e) { dnSave.disabled = !dn.sujo; dnUndo.disabled = !(dn.d.desfazer && dn.d.desfazer[s]); status(e.message, 'err'); }

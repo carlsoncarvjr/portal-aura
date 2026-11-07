@@ -2,6 +2,7 @@
 // Tudo fica no KV (config:loja, config:escala, config:manutencao); o código e o site não mudam.
 import loja, { admins, emailDoLogin } from '../../lib/loja.js';
 import { fichaPadrao, validarSecao, SECOES_FICHA } from '../../lib/ficha.js';
+import { sincronizarLogin } from '../../lib/acesso.js';
 
 const ARQ = { escala: '/escala.json', manutencao: '/manutencao.json' };
 const SECOES = [...SECOES_FICHA, 'escala', 'manutencao'];
@@ -76,5 +77,6 @@ export async function onRequestPost(ctx) {
   hist.unshift({ em: new Date().toISOString(), por: nomeQuem, secao, acao });
   await kv.put('config:historico', JSON.stringify(hist.slice(0, 40)));
   if (naFicha) { const aj = (await kv.get('config:loja', 'json')) || {}; for (const k of SECOES_FICHA) loja[k] = aj[k] ? JSON.parse(JSON.stringify(aj[k])) : fichaPadrao()[k]; }
-  return json({ ok: true, ...(await tudo(ctx)) });
+  const login = secao === 'pessoas' ? await sincronizarLogin(ctx.env, loja.pessoas) : null;
+  return json({ ok: true, login, ...(await tudo(ctx)) });
 }

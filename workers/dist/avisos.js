@@ -35,6 +35,13 @@ const loja = {
     garantia30: ['2026-11', '2026-12'],   // meses em que vale o mínimo de 30% do lucro
   },
 
+  // Cloudflare: conta e regra de login (Access) que o Painel do dono mantém igual à lista da equipe.
+  // Precisa do segredo CF_ACCESS_TOKEN no projeto do portal (Pages).
+  cloudflare: {
+    conta: '8c1e47ac6af3ec3ce55411195ae36a9f',
+    politicaAcesso: '8a3e874b-75ad-44a9-807b-85af32f00476',
+  },
+
   // MercadoPhone: unidades e filtros do estoque.
   mercadophone: {
     unidades: [
