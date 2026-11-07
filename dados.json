@@ -1,5 +1,5 @@
 {
-  "atualizadoEm": "2026-11-06T12:14:25-03:00",
+  "atualizadoEm": "2026-11-06T21:11:05-03:00",
   "mes": {
     "rotulo": "Novembro 2026",
     "ano": 2026,
@@ -7,14 +7,58 @@
     "diasNoMes": 30,
     "metaIphones": 110,
     "metaAcessorios": 26000,
-    "iphones": 12,
-    "acessorios": 3057.31
+    "iphones": 16,
+    "acessorios": 3610.61
   },
   "hoje": {
     "data": "2026-11-06",
-    "iphones": 0,
-    "acessorios": 0,
-    "itens": []
+    "iphones": 4,
+    "acessorios": 553.3,
+    "itens": [
+      {
+        "hora": "14:05",
+        "tipo": "iphone",
+        "produto": "Pré-venda iPhone",
+        "vendedor": "Danilo",
+        "pre": true
+      },
+      {
+        "hora": "15:21",
+        "tipo": "acessorio",
+        "produto": "Carregador",
+        "vendedor": "Danilo"
+      },
+      {
+        "hora": "16:09",
+        "tipo": "iphone",
+        "produto": "iPhone 11 128GB White",
+        "vendedor": "Gustavo"
+      },
+      {
+        "hora": "16:31",
+        "tipo": "iphone",
+        "produto": "iPhone Xr 64GB Preto",
+        "vendedor": "Gustavo"
+      },
+      {
+        "hora": "16:48",
+        "tipo": "acessorio",
+        "produto": "Película",
+        "vendedor": "Gustavo"
+      },
+      {
+        "hora": "19:32",
+        "tipo": "iphone",
+        "produto": "iPhone 16 Pro 256GB Titânio Branco",
+        "vendedor": "Danilo"
+      },
+      {
+        "hora": "20:46",
+        "tipo": "acessorio",
+        "produto": "Carregador + Cabo + Capinha",
+        "vendedor": "Elisa"
+      }
+    ]
   },
   "ontem": {
     "data": "2026-11-05",
@@ -57,43 +101,62 @@
     "mes": [
       {
         "vendedor": "Gustavo",
-        "iphones": 4,
-        "acessorios": 1234.8,
-        "vendas": 10
+        "iphones": 6,
+        "acessorios": 1303.89,
+        "vendas": 13
+      },
+      {
+        "vendedor": "Danilo",
+        "iphones": 6,
+        "acessorios": 1015.83,
+        "vendas": 11
       },
       {
         "vendedor": "Elisa",
         "iphones": 4,
-        "acessorios": 956.69,
-        "vendas": 9
-      },
-      {
-        "vendedor": "Danilo",
-        "iphones": 4,
-        "acessorios": 865.83,
-        "vendas": 8
+        "acessorios": 1290.89,
+        "vendas": 10
       }
     ],
     "semana": [
       {
         "vendedor": "Gustavo",
-        "iphones": 4,
-        "acessorios": 1234.8,
+        "iphones": 6,
+        "acessorios": 1303.89,
+        "vendas": 13
+      },
+      {
+        "vendedor": "Danilo",
+        "iphones": 5,
+        "acessorios": 1015.83,
         "vendas": 10
       },
       {
         "vendedor": "Elisa",
         "iphones": 4,
-        "acessorios": 779.01,
-        "vendas": 8
-      },
-      {
-        "vendedor": "Danilo",
-        "iphones": 3,
-        "acessorios": 865.83,
-        "vendas": 7
+        "acessorios": 1113.21,
+        "vendas": 9
       }
     ],
-    "hoje": []
+    "hoje": [
+      {
+        "vendedor": "Danilo",
+        "iphones": 2,
+        "acessorios": 150.0,
+        "vendas": 3
+      },
+      {
+        "vendedor": "Gustavo",
+        "iphones": 2,
+        "acessorios": 69.1,
+        "vendas": 3
+      },
+      {
+        "vendedor": "Elisa",
+        "iphones": 0,
+        "acessorios": 334.2,
+        "vendas": 1
+      }
+    ]
   }
 }

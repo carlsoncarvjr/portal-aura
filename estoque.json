@@ -1,9 +1,9 @@
 {
- "atualizadoEm": "2026-11-06T12:14:25-03:00",
- "total": 65,
+ "atualizadoEm": "2026-11-06T21:11:05-03:00",
+ "total": 63,
  "porUnidade": {
-  "Meu iPhone": 49,
-  "Riachi": 16
+  "Meu iPhone": 48,
+  "Riachi": 15
  },
  "itens": [
   {
@@ -69,14 +69,6 @@
    "imei": "357100770965173",
    "bateria": 88,
    "unidade": "Meu iPhone"
-  },
-  {
-   "modelo": "iPhone 16 Pro Max",
-   "memoria": "256GB",
-   "cor": "Titânio Natural",
-   "imei": "359906321230893",
-   "bateria": 90,
-   "unidade": "Riachi"
   },
   {
    "modelo": "iPhone 16e",
@@ -489,10 +481,10 @@
   {
    "modelo": "iPhone 11",
    "memoria": "128GB",
-   "cor": "White",
-   "imei": "357778615304037",
-   "bateria": 76,
-   "unidade": "Meu iPhone"
+   "cor": "Branco",
+   "imei": "353519513877540",
+   "bateria": 83,
+   "unidade": "Riachi"
   },
   {
    "modelo": "iPhone 11",
@@ -516,14 +508,6 @@
    "cor": "Verde",
    "imei": "353916101358125",
    "bateria": 83,
-   "unidade": "Riachi"
-  },
-  {
-   "modelo": "iPhone XR",
-   "memoria": "64GB",
-   "cor": "Preto",
-   "imei": "356460109657789",
-   "bateria": 50,
    "unidade": "Riachi"
   }
  ]

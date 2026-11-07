@@ -1,5 +1,5 @@
 {
-  "atualizadoEm": "2026-11-06T12:14:25-03:00",
+  "atualizadoEm": "2026-11-06T21:11:05-03:00",
   "mes": "Novembro 2026",
   "vendedor": "Elisa",
   "iphones": 4,
@@ -11,30 +11,30 @@
     "faltam": 8
   },
   "comissaoIphones": 0,
-  "acessorios": 956.69,
+  "acessorios": 1290.89,
   "pctAcessorios": 0.0,
   "proximaFaixaAcessorios": {
     "aPartirDe": 3000,
     "pct": 3.0,
-    "faltam": 2043.31
+    "faltam": 1709.11
   },
   "comissaoAcessorios": 0.0,
   "premios": {
     "metaIphones": {
       "valor": 100,
-      "loja": 12,
+      "loja": 16,
       "meta": 110,
       "batida": false
     },
     "metaAcessorios": {
       "valor": 100,
-      "loja": 3057.31,
+      "loja": 3610.61,
       "meta": 26000,
       "batida": false
     },
     "melhorVendedor": {
       "valor": 100,
-      "posicao": 2
+      "posicao": 3
     }
   },
   "total": 0.0,
@@ -103,6 +103,13 @@
     }
   ],
   "vendas": [
+    {
+      "data": "2026-11-06",
+      "produto": "Carregador + Cabo + Capinha",
+      "tipo": "acessorio",
+      "valor": 334.2,
+      "iphones": 0
+    },
     {
       "data": "2026-11-05",
       "produto": "Capinha",
