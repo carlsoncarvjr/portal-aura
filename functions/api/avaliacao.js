@@ -1,7 +1,6 @@
 // Ajustes manuais da Tabela de avaliação, guardados no KV "AVALIACAO" (compartilhados pela equipe).
 // GET: todos logados leem. POST: só administradores ajustam.
 import { admins, emailDoLogin } from '../../lib/loja.js';
-const ADMIN = admins();
 const CHAVE = 'ajustes';
 
 function json(obj, status = 200) {
@@ -26,12 +25,12 @@ async function ler(ctx) {
 export async function onRequestGet(ctx) {
   const email = emailDoLogin(ctx.request);
   const d = await ler(ctx);
-  return json({ ...d, podeEditar: ADMIN.includes(email) && !!ctx.env.AVALIACAO });
+  return json({ ...d, podeEditar: admins().includes(email) && !!ctx.env.AVALIACAO });
 }
 
 export async function onRequestPost(ctx) {
   const email = emailDoLogin(ctx.request);
-  if (!ADMIN.includes(email)) return json({ erro: 'Só administradores ajustam a tabela.' }, 403);
+  if (!admins().includes(email)) return json({ erro: 'Só administradores ajustam a tabela.' }, 403);
   if (!ctx.env.AVALIACAO) return json({ erro: 'Armazenamento não configurado.' }, 503);
   let body;
   try { body = await ctx.request.json(); } catch (e) { return json({ erro: 'Pedido inválido.' }, 400); }

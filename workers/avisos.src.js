@@ -5,6 +5,7 @@
 import { sendPush } from '../lib/webpush.js';
 import { calcularVendas, calcularOS, calcularEstoque, normalizarOS } from '../lib/calc.js';
 import loja from '../config/loja.js';
+import { carregarFicha } from '../lib/ficha.js';
 
 
 // ---------- Sincronização com o MercadoPhone ----------
@@ -189,7 +190,7 @@ async function stories(env) {
   if (t.min - slot >= 15) return;   // só na primeira rodada de cada meia hora
   const k = 'avisos:story:' + t.data + ':' + slot;
   if (await env.AVALIACAO.get(k)) return;
-  const h = await escalaHoje(t);
+  const h = await escalaHoje(t, env);
   if (!h) return;
   const e = h.e, turnos = h.turnos;
   if (slot < hm(e.lojaAbre || '09:00') || slot >= hm(e.lojaFecha || '21:00')) return;
@@ -211,8 +212,8 @@ function turnosDoDia(e, data, dia) {
   return lista;
 }
 
-async function escalaHoje(t) {
-  const e = await fetch(ESCALA + '?t=' + Date.now(), { cf: { cacheTtl: 0 } }).then(r => r.ok ? r.json() : null).catch(() => null);
+async function escalaHoje(t, env) {
+  const e = (env && await kvJson(env, 'config:escala')) || await fetch(ESCALA + '?t=' + Date.now(), { cf: { cacheTtl: 0 } }).then(r => r.ok ? r.json() : null).catch(() => null);
   if (!e) return null;
   return { e, turnos: turnosDoDia(e, t.data, t.dia) };
 }
@@ -220,7 +221,7 @@ async function escalaHoje(t) {
 // Abertura: no início do primeiro turno do dia, para quem abre. Fechamento: 20 min antes de fechar, para quem fecha.
 async function lembretes(env) {
   const t = agoraBahia();
-  const h = await escalaHoje(t);
+  const h = await escalaHoje(t, env);
   if (!h || !h.turnos.length) return;
   const abre = Math.min(...h.turnos.map(x => hm(x[1]))), fecha = Math.max(...h.turnos.map(x => hm(x[2])));
   const itens = [
@@ -238,10 +239,11 @@ async function lembretes(env) {
 
 export default {
   async scheduled(ev, env, ctx) {
-    ctx.waitUntil((async () => { await sincronizar(env).catch(e => env.AVALIACAO.put('calc:sync', JSON.stringify({ ok: false, erros: [String(e && e.message || e)] }))); await Promise.all([vendas(env).catch(() => {}), lembretes(env).catch(() => {}), stories(env).catch(() => {})]); })());
+    ctx.waitUntil((async () => { await carregarFicha(env.AVALIACAO); await sincronizar(env).catch(e => env.AVALIACAO.put('calc:sync', JSON.stringify({ ok: false, erros: [String(e && e.message || e)] }))); await Promise.all([vendas(env).catch(() => {}), lembretes(env).catch(() => {}), stories(env).catch(() => {})]); })());
   },
   async fetch(req, env) {
+    await carregarFicha(env.AVALIACAO);
     const st = await kvJson(env, 'calc:sync');
-    return new Response('Portal Aura avisos v5 · última sincronização: ' + (st ? (st.em || '?') + (st.ok ? ' OK' : ' com erros: ' + (st.erros || []).join('; ')) : 'ainda não rodou'), { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+    return new Response('Portal Aura avisos v6 · última sincronização: ' + (st ? (st.em || '?') + (st.ok ? ' OK' : ' com erros: ' + (st.erros || []).join('; ')) : 'ainda não rodou'), { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   }
 };

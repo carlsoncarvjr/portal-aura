@@ -353,6 +353,49 @@ button.doc { font: inherit; color: inherit; text-align: left; cursor: pointer; w
 .vpage img { display: block; width: 100%; max-width: 820px; margin: 0 auto; border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,.5); background: #fff; }
 footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-top: 8px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+/* Painel do dono */
+#dnView { background: var(--ground); }
+.dn-open .ic { background: var(--grad); color: #0d1310; }
+.dn-sec { margin-bottom: 14px; }
+.dn-sec h3 { font-family: var(--f-display); font-size: 15px; font-weight: 600; margin: 0 0 4px; }
+.dn-sec > p.hint { margin: 0 0 10px; line-height: 1.5; }
+.dn-in, .dn-sel { width: 100%; min-width: 0; height: 40px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); font: inherit; font-size: 14px; padding: 0 10px; box-sizing: border-box; }
+.dn-in:focus, .dn-sel:focus { outline: 2px solid var(--lime); outline-offset: -1px; }
+.dn-in[type="number"] { font-variant-numeric: tabular-nums; }
+.dn-in[type="time"] { padding: 0 6px; }
+.dn-lbl { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 4px; }
+.dn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dn-grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.dn-pessoa { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; padding: 12px 0; border-top: 1px solid var(--line); align-items: end; }
+.dn-pessoa:first-child { border-top: 0; padding-top: 0; }
+.dn-pessoa .em { grid-column: 1 / 3; }
+.dn-x { flex: none; width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--ink-mute); font-size: 16px; cursor: pointer; }
+.dn-x:hover { color: var(--late); border-color: var(--late); }
+.dn-add { margin-top: 10px; width: 100%; min-height: 42px; border-radius: 12px; border: 1px dashed var(--line); background: transparent; color: var(--lime); font: 700 13.5px var(--f-body); cursor: pointer; }
+.dn-fx { display: grid; grid-template-columns: 1fr 1fr 1fr 40px; gap: 8px; align-items: center; margin-top: 6px; }
+.dn-fx.h { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-mute); margin-top: 0; }
+.dn-dia { padding: 12px 0; border-top: 1px solid var(--line); }
+.dn-dia:first-child { border-top: 0; padding-top: 0; }
+.dn-dia h4 { margin: 0 0 6px; font-size: 14px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; } .dn-dia h4 small { font-weight: 500; color: var(--ink-mute); font-size: 12px; }
+.dn-tn { display: grid; grid-template-columns: 1.3fr 1fr 1fr 40px; gap: 6px; align-items: center; margin-top: 6px; }
+.dn-mini { border: 0; background: none; color: var(--lime); font: 700 12.5px var(--f-body); cursor: pointer; padding: 6px 0; }
+.dn-vazio { font-size: 13px; color: var(--ink-mute); padding: 4px 0; }
+.dn-mn { display: grid; grid-template-columns: 1fr 1fr 1fr 40px; gap: 6px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
+.dn-mn .mo { grid-column: 1 / -1; } .dn-mn .mo .dn-in { background: transparent; border-color: transparent; font-weight: 700; padding: 0 2px; height: 30px; } .dn-mn .mo .dn-in:focus { border-color: var(--line); background: var(--surface-2); }
+.dn-mn.h { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-mute); border-top: 0; padding: 0 0 2px; }
+.dn-meses { display: flex; flex-wrap: wrap; gap: 6px; }
+.dn-meses button { border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft); border-radius: 999px; font: 600 12.5px var(--f-body); padding: 6px 11px; cursor: pointer; }
+.dn-meses button[aria-pressed="true"] { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+.dn-hist { list-style: none; margin: 0; padding: 0; } .dn-hist li { padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; } .dn-hist li:first-child { border-top: 0; padding-top: 0; } .dn-hist small { display: block; color: var(--ink-mute); font-size: 12px; }
+.dn-bar { display: flex; align-items: center; gap: 8px; padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); background: var(--ground); border-top: 1px solid var(--line); }
+.dn-st { flex: 1; min-width: 0; font-size: 12.5px; color: var(--ink-mute); line-height: 1.35; } .dn-st.err { color: var(--late); font-weight: 700; } .dn-st.ok { color: var(--lime); font-weight: 700; } .dn-st.sujo { color: var(--warn); font-weight: 700; }
+.dn-bar .vbtn[disabled] { opacity: .45; cursor: default; }
+.dn-nota { font-size: 12.5px; color: var(--ink-soft); background: var(--surface-2); border-radius: 10px; padding: 10px 12px; line-height: 1.5; margin-top: 10px; }
+.dn-padrao { border: 0; background: none; color: var(--ink-mute); font: 600 12.5px var(--f-body); text-decoration: underline; cursor: pointer; padding: 8px 0 0; }
+.esc-dia td:first-child { white-space: nowrap; color: var(--ink-soft); vertical-align: top; }
+.esc-dia td:last-child { white-space: normal; line-height: 1.45; }
+#shiftWeek table.esc { min-width: 0; }
+@media (max-width: 420px) { .dn-tn { grid-template-columns: 1.3fr 1fr 1fr 36px; gap: 5px; } .dn-tn .dn-sel { padding: 0 6px; } .dn-x { width: 36px; } }
 </style>
 
 </head>
@@ -417,15 +460,19 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     <div class="shift-today" id="shiftToday"></div>
     <div class="tscroll" id="shiftWeek" hidden>
       <table class="esc">
-        <thead><tr><th>Vendedor</th><th>Seg a sex</th><th>Sábado</th><th>Folga</th></tr></thead>
-        <tbody>
-          <tr><td>Gustavo</td><td>10h–19h</td><td>10h–14h</td><td>Terça</td></tr>
-          <tr><td>Danilo</td><td>13h–21h</td><td>Reveza 10h–14h / 17h–21h</td><td>Quarta</td></tr>
-          <tr><td>Elisa</td><td>17h–21h (terça de manhã)</td><td>Reveza 10h–14h / 17h–21h</td><td>Segunda</td></tr>
-        </tbody>
+        <thead><tr><th>Dia</th><th>Quem está na loja</th></tr></thead>
+        <tbody><tr><td colspan="2">Carregando…</td></tr></tbody>
       </table>
-      <p class="hint" style="margin:8px 0 0">Domingo (17h–21h): rodízio Gustavo → Danilo → Elisa. Sábado: Elisa e Danilo alternam manhã e noite a cada semana.</p>
+      <p class="hint" style="margin:8px 0 0">Próximos 7 dias, já com os rodízios de sábado e domingo. * troca ou folga marcada para o dia.</p>
     </div>
+  </section>
+
+  <section id="donoSec" data-tab="loja" hidden>
+    <button type="button" class="card rg-open dn-open" id="openDono">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></span>
+      <span><span class="n">Painel do dono</span><span class="d">Equipe, metas, comissões, escala e manutenção</span></span>
+      <span class="go" aria-hidden="true">›</span>
+    </button>
   </section>
 
   <section id="acessos" data-tab="loja">
@@ -800,6 +847,23 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
   </div>
 </div>
 
+<div class="viewer" id="dnView" hidden role="dialog" aria-modal="true" aria-labelledby="dnTitle">
+  <div class="vbar">
+    <button type="button" class="vbtn" id="dnClose" aria-label="Fechar">✕</button>
+    <div class="vt" id="dnTitle">Painel do dono</div>
+    <span class="hint" id="dnHint"></span>
+  </div>
+  <div class="vpage st-page" id="dnPage">
+    <div class="st-tools"><div class="av-gens" id="dnTabs" role="tablist" aria-label="Partes do painel"></div></div>
+    <div id="dnBody"><p class="hint">Carregando…</p></div>
+  </div>
+  <div class="dn-bar" id="dnBar" hidden>
+    <span class="dn-st" id="dnSt"></span>
+    <button type="button" class="vbtn" id="dnUndo">Desfazer</button>
+    <button type="button" class="vbtn primary" id="dnSave">Salvar</button>
+  </div>
+</div>
+
 <div class="viewer" id="mnView" hidden role="dialog" aria-modal="true" aria-labelledby="mnTitle">
   <div class="vbar">
     <button type="button" class="vbtn" id="mnClose" aria-label="Fechar">✕</button>
@@ -963,26 +1027,41 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     }
   });
 
-  // Escala: quem está na loja hoje
-  (function () {
+  // Escala: quem está na loja hoje e os próximos dias (vem do Painel do dono; sem ajuste, do escala.json)
+  const EU = fetch('/api/eu', { cache: 'no-store', credentials: 'include' }).then(r => r.ok ? r.json() : null).catch(() => null);
+  function carregarEscala() {
     const names = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
-    const VEND = ['Gustavo', 'Danilo', 'Elisa'];
     const hoje = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bahia' });
     const d = new Date(hoje + 'T12:00:00Z').getUTCDay();
     const fmtH = h => { const [a, b] = h.split(':'); return Number(a) + 'h' + (b && b !== '00' ? b : ''); };
     document.getElementById('shiftDay').textContent = 'Na loja hoje · ' + names[d];
     const box = document.getElementById('shiftToday');
     const chip = (n, txt, off) => { const c = document.createElement('span'); c.className = 'who-chip' + (off ? ' off' : ''); const b = document.createElement('b'); b.textContent = n; const sp = document.createElement('span'); sp.textContent = txt; c.append(b, sp); box.appendChild(c); };
-    fetch('escala.json', { cache: 'no-store' }).then(r => r.json()).then(e => {
-      let lista = (e.datas && e.datas[hoje]) || null;
-      if (!lista) {
-        lista = ((e.semana && e.semana[String(d)]) || []).slice();
-        (e.rodizios || []).forEach(r => { if (r.dia !== d) return; const sem = Math.round((Date.parse(hoje + 'T12:00:00Z') - Date.parse(r.ref + 'T12:00:00Z')) / 604800000); lista = lista.concat(r.turnos[((sem % r.turnos.length) + r.turnos.length) % r.turnos.length]); });
-      }
+    const doDia = (e, data, dia) => {
+      if (e.datas && e.datas[data]) return e.datas[data];
+      let lista = ((e.semana && e.semana[String(dia)]) || []).slice();
+      (e.rodizios || []).forEach(r => { if (r.dia !== dia || !r.turnos.length) return; const sem = Math.round((Date.parse(data + 'T12:00:00Z') - Date.parse(r.ref + 'T12:00:00Z')) / 604800000); lista = lista.concat(r.turnos[((sem % r.turnos.length) + r.turnos.length) % r.turnos.length]); });
+      return lista.slice().sort((x, y) => x[1] < y[1] ? -1 : x[1] > y[1] ? 1 : 0);
+    };
+    Promise.all([fetch('/api/c/escala', { cache: 'no-store', credentials: 'include' }).then(r => r.ok ? r.json() : fetch('escala.json', { cache: 'no-store' }).then(x => x.json())), EU]).then(([e, eu]) => {
+      const VEND = eu && eu.equipe && eu.equipe.length ? eu.equipe.filter(p => p.papel === 'vendedor').map(p => p.nome) : [...new Set(Object.values(e.semana || {}).flat().map(t => t[0]))];
+      const lista = doDia(e, hoje, d);
       box.innerHTML = '';
       lista.forEach(([n, a, b]) => chip(n, fmtH(a) + '–' + fmtH(b)));
       VEND.filter(n => !lista.some(x => x[0] === n)).forEach(n => chip(n, 'folga', true));
+      // Próximos 7 dias
+      const tb = document.querySelector('#shiftWeek tbody'); tb.innerHTML = '';
+      for (let i = 1; i <= 7; i++) {
+        const dt = new Date(Date.parse(hoje + 'T12:00:00Z') + i * 864e5), data = dt.toISOString().slice(0, 10), dia = dt.getUTCDay();
+        const l = doDia(e, data, dia), tr = document.createElement('tr'); tr.className = 'esc-dia';
+        const t1 = document.createElement('td'); t1.textContent = names[dia].charAt(0).toUpperCase() + names[dia].slice(1, 3) + ' ' + data.slice(8) + '/' + data.slice(5, 7) + (e.datas && e.datas[data] ? ' *' : '');
+        const t2 = document.createElement('td'); t2.textContent = l.length ? l.map(([n, a, b]) => n + ' ' + fmtH(a) + '–' + fmtH(b)).join(' · ') : 'Sem vendedor escalado';
+        tr.append(t1, t2); tb.appendChild(tr);
+      }
     }).catch(() => {});
+  }
+  carregarEscala();
+  (function () {
     const t = document.getElementById('shiftToggle'), w = document.getElementById('shiftWeek');
     t.addEventListener('click', () => { w.hidden = !w.hidden; t.setAttribute('aria-expanded', String(!w.hidden)); t.textContent = w.hidden ? 'Ver a semana' : 'Fechar'; });
   })();
@@ -1084,9 +1163,9 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
 
   // Quem entrou? (login do Cloudflare) — ajusta a tela para cada pessoa
   const brl0 = v => 'R$ ' + Number(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-  function renderTecnico(t, admin) {
+  function renderTecnico(t, admin, nomeTec) {
     const sec = document.getElementById('tecnico'); sec.hidden = false;
-    if (admin) document.getElementById('tcTitle').textContent = 'Assistência · comissão do Maiko';
+    if (admin) document.getElementById('tcTitle').textContent = 'Assistência · comissão' + (nomeTec ? ' do ' + nomeTec : ' do técnico');
     document.getElementById('tcN').textContent = t.servicos;
     document.getElementById('tcFaixa').textContent = 'Faixa atual: ' + t.faixaAtual + '%';
     document.getElementById('tcNext').innerHTML = t.proxima ? 'Faltam <b>' + t.proxima.faltam + (t.proxima.faltam === 1 ? ' serviço' : ' serviços') + '</b> para chegar aos <b>' + t.proxima.pct + '%</b>' : 'Faixa máxima atingida';
@@ -1157,7 +1236,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     const tb = document.getElementById('eqBody'); tb.innerHTML = '';
     lista.sort((a, b) => b.total - a.total).forEach(c => { const tr = document.createElement('tr'); [c.vendedor, c.iphones + (c.jbl ? ' + ' + c.jbl + ' JBL' : ''), brl0(c.acessorios), brl2(c.total)].forEach(x => { const td = document.createElement('td'); td.textContent = x; tr.appendChild(td); }); tb.appendChild(tr); });
   }
-  function aplicarPessoa(pz) {  // pz = { nome, papel, arq } vindo de /api/eu
+  function aplicarPessoa(pz, equipe) {  // pz = { nome, papel, arq } vindo de /api/eu
     if (!pz) return;
     document.querySelector('header.top .who .t').textContent = 'Olá, ' + pz.nome;
     if (pz.papel === 'tecnico') {
@@ -1167,15 +1246,15 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
       fetch('/api/d/vendedor-' + pz.arq, { cache: 'no-store', credentials: 'include' }).then(r => r.ok ? r.json() : null).then(c => { if (c) renderVendedor(c); }).catch(() => {});
     }
     if (pz.papel === 'admin') {
-      Promise.all(['gustavo', 'danilo', 'elisa'].map(n => fetch('/api/d/vendedor-' + n, { cache: 'no-store', credentials: 'include' }).then(r => r.ok ? r.json() : null).catch(() => null)))
+      document.getElementById('donoSec').hidden = false;
+      Promise.all(equipe.filter(p => p.papel === 'vendedor' && p.arq).map(p => p.arq).map(n => fetch('/api/d/vendedor-' + n, { cache: 'no-store', credentials: 'include' }).then(r => r.ok ? r.json() : null).catch(() => null)))
         .then(l => { l = l.filter(Boolean); if (l.length) renderEquipe(l); });
     }
     if (pz.papel === 'tecnico' || pz.papel === 'admin') {
-      fetch('/api/d/tecnico', { cache: 'no-store', credentials: 'include' }).then(r => r.ok ? r.json() : null).then(t => { if (t) renderTecnico(t, pz.papel === 'admin'); }).catch(() => {});
+      fetch('/api/d/tecnico', { cache: 'no-store', credentials: 'include' }).then(r => r.ok ? r.json() : null).then(t => { if (t) renderTecnico(t, pz.papel === 'admin', (equipe.find(p => p.papel === 'tecnico') || {}).nome); }).catch(() => {});
     }
   }
-  fetch('/api/eu', { cache: 'no-store', credentials: 'include' })
-    .then(r => r.ok ? r.json() : null).then(d => { if (d && d.pessoa) aplicarPessoa(d.pessoa); }).catch(() => {});
+  EU.then(d => { if (d && d.pessoa) aplicarPessoa(d.pessoa, d.equipe || []); });
 
 
   // Estoque
@@ -1517,7 +1596,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
   }
   function carregarManut() {
     if (mn.d) return drawManut();
-    fetch('manutencao.json', { cache: 'no-store' }).then(r => r.json()).then(d => {
+    fetch('/api/c/manutencao', { cache: 'no-store', credentials: 'include' }).then(r => r.ok ? r.json() : fetch('manutencao.json', { cache: 'no-store' }).then(x => x.json())).then(d => {
       mn.d = d;
       const sv = document.getElementById('mnSrv'); sv.innerHTML = '';
       [['', 'Todos'], ...d.servicos.map(([k, nome]) => [k, nome.replace('Troca de ', '').replace('Troca do ', '')])].forEach(([k, l]) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = l.charAt(0).toUpperCase() + l.slice(1); b.setAttribute('aria-pressed', k === mn.srv ? 'true' : 'false'); b.addEventListener('click', () => { mn.srv = k; sv.querySelectorAll('button').forEach(o => o.setAttribute('aria-pressed', o === b ? 'true' : 'false')); drawManut(); }); sv.appendChild(b); });
@@ -1531,6 +1610,270 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
   document.getElementById('openManut').addEventListener('click', e => { mnLast = e.currentTarget; mnView.hidden = false; document.body.style.overflow = 'hidden'; carregarManut(); document.getElementById('mnClose').focus(); });
   document.getElementById('mnClose').addEventListener('click', closeManut);
   mnView.addEventListener('keydown', e => { if (e.key === 'Escape') closeManut(); });
+  // Painel do dono (só administradores): edita a ficha da loja sem mexer no código.
+  const dn = { d: null, sec: 'pessoas', w: null, sujo: false };
+  const DN_SECOES = [['pessoas', 'Equipe'], ['vendas', 'Metas e comissão'], ['assistencia', 'Assistência'], ['escala', 'Escala'], ['manutencao', 'Manutenção'], ['historico', 'Histórico']];
+  const DN_NOME = { pessoas: 'Equipe', vendas: 'Metas e comissão', assistencia: 'Assistência', escala: 'Escala', manutencao: 'Manutenção' };
+  const DIAS_N = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+  const dnView = document.getElementById('dnView'), dnBody = document.getElementById('dnBody'), dnSt = document.getElementById('dnSt');
+  const dnSave = document.getElementById('dnSave'), dnUndo = document.getElementById('dnUndo'), dnBar = document.getElementById('dnBar');
+  let dnLast = null;
+  const cp = o => JSON.parse(JSON.stringify(o));
+  function E(tag, props, ...kids) {
+    const e = document.createElement(tag);
+    for (const [k, v] of Object.entries(props || {})) { if (v == null) continue; if (k === 'on') Object.entries(v).forEach(([ev, f]) => e.addEventListener(ev, f)); else if (k in e && k !== 'list') e[k] = v; else e.setAttribute(k, v); }
+    kids.flat().forEach(c => { if (c != null) e.append(c.nodeType ? c : document.createTextNode(String(c))); });
+    return e;
+  }
+  function status(txt, cls) { dnSt.textContent = txt || ''; dnSt.className = 'dn-st' + (cls ? ' ' + cls : ''); }
+  function mudou() { if (!dn.sujo) { dn.sujo = true; dnSave.disabled = false; status('Alterações não salvas', 'sujo'); } }
+  // Campo ligado a obj[k]. num: guarda número; vazio vira ''.
+  function campo(obj, k, opt = {}) {
+    const v = obj[k];
+    const i = E('input', { className: 'dn-in', type: opt.type || (opt.num ? 'number' : 'text'), value: v == null ? '' : (opt.mostra ? opt.mostra(v) : v), placeholder: opt.ph || '', inputMode: opt.num ? 'decimal' : null, step: opt.step || (opt.num ? 'any' : null), min: opt.num ? '0' : null, autocomplete: 'off', 'aria-label': opt.rot || k });
+    i.addEventListener('input', () => { obj[k] = opt.num ? (i.value === '' ? '' : Number(i.value)) : i.value; mudou(); });
+    return i;
+  }
+  // Horário em lista de meia em meia hora (mais fácil no celular que o relógio do sistema).
+  function horaSel(obj, k, rot, f) {
+    const hs = []; for (let h = 6; h <= 23; h++) for (const m of ['00', '30']) hs.push(String(h).padStart(2, '0') + ':' + m);
+    if (obj[k] && !hs.includes(obj[k])) { hs.push(obj[k]); hs.sort(); }
+    const sel = E('select', { className: 'dn-sel', 'aria-label': rot }, ...hs.map(h => E('option', { value: h, selected: h === obj[k] }, Number(h.slice(0, 2)) + 'h' + (h.slice(3) === '00' ? '' : h.slice(3)))));
+    sel.addEventListener('change', () => { obj[k] = sel.value; if (f) f(sel.value); mudou(); });
+    return sel;
+  }
+  const rotulo = (txt, ...kids) => E('label', null, E('span', { className: 'dn-lbl' }, txt), ...kids);
+  const xBtn = (rot, f) => E('button', { type: 'button', className: 'dn-x', 'aria-label': rot, title: rot, on: { click: f } }, '✕');
+  const addBtn = (txt, f) => E('button', { type: 'button', className: 'dn-add', on: { click: f } }, txt);
+  const sec = (titulo, dica, ...kids) => E('div', { className: 'card dn-sec' }, E('h3', null, titulo), dica ? E('p', { className: 'hint' }, dica) : null, ...kids);
+  const redraw = () => desenhar(false);
+
+  // Faixas [de, até, valor]; "até" vazio = sem limite.
+  function faixasEd(lista, cab, opt = {}) {
+    const box = E('div');
+    const draw = () => {
+      box.innerHTML = '';
+      box.append(E('div', { className: 'dn-fx h' }, E('span', null, cab[0]), E('span', null, cab[1]), E('span', null, cab[2]), E('span')));
+      lista.forEach((f, i) => {
+        const o = { a: f[0], b: f[1] >= 1e6 ? '' : f[1], v: f[2] };
+        const sync = () => { lista[i] = [o.a, o.b === '' ? 1e12 : o.b, o.v]; };
+        const ins = ['a', 'b', 'v'].map(k => { const e = campo(o, k, { num: true, ph: k === 'b' ? '∞' : '', rot: cab[['a', 'b', 'v'].indexOf(k)] }); e.addEventListener('input', sync); return e; });
+        box.append(E('div', { className: 'dn-fx' }, ...ins, xBtn('Tirar faixa', () => { lista.splice(i, 1); mudou(); draw(); })));
+      });
+      box.append(addBtn('+ Faixa', () => { const u = lista[lista.length - 1]; const ini = u ? (u[1] >= 1e6 ? u[0] + 1 : Math.floor(u[1]) + 1) : 0; if (u && u[1] >= 1e6) u[1] = ini - (opt.inteiro ? 1 : 0.01); lista.push([ini, 1e12, u ? u[2] : 0]); mudou(); draw(); }));
+    };
+    draw(); return box;
+  }
+
+  function telaPessoas(w) {
+    const box = E('div');
+    const draw = () => {
+      box.innerHTML = '';
+      w.forEach((p, i) => {
+        const sel = E('select', { className: 'dn-sel', 'aria-label': 'Função' }, ...[['vendedor', 'Vendedor'], ['tecnico', 'Técnico'], ['admin', 'Administrador']].map(([v, t]) => E('option', { value: v, selected: p.papel === v }, t)));
+        sel.addEventListener('change', () => { p.papel = sel.value; mudou(); });
+        box.append(E('div', { className: 'dn-pessoa' },
+          rotulo('Nome', campo(p, 'nome', { ph: 'Primeiro nome', rot: 'Nome' })), rotulo('Função', sel), xBtn('Tirar ' + (p.nome || 'pessoa'), () => { if (confirmaTirar(p)) { w.splice(i, 1); mudou(); draw(); } }),
+          E('div', { className: 'em' }, rotulo('E-mail de login', campo(p, 'email', { type: 'email', ph: 'nome@gmail.com', rot: 'E-mail' })))));
+      });
+      box.append(addBtn('+ Adicionar pessoa', () => { w.push({ nome: '', email: '', papel: 'vendedor' }); mudou(); draw(); const ins = box.querySelectorAll('.dn-pessoa'); const u = ins[ins.length - 1]; if (u) u.querySelector('input').focus(); }));
+    };
+    draw();
+    return [sec('Quem entra no portal', 'Vendedor: use o primeiro nome igual ao do MercadoPhone, é assim que as vendas são ligadas a ele. Administrador vê tudo e abre este painel.', box),
+      E('p', { className: 'dn-nota' }, 'Pessoa nova: depois de salvar aqui, o e-mail também precisa ser liberado na tela de login (Cloudflare Access). Enquanto isso não for automático, me peça para liberar.')];
+  }
+  const confirmaTirar = p => !p.email || window.confirm('Tirar ' + (p.nome || p.email) + ' do portal? A pessoa perde o acesso depois de salvar.');
+
+  function telaVendas(w) {
+    const pr = w.premios;
+    return [
+      sec('Metas do mês', 'Valem para a loja toda. Ao salvar, o Início e a comissão de todos se atualizam na próxima sincronização (até 2 minutos).',
+        E('div', { className: 'dn-grid' }, rotulo('iPhones', campo(w, 'metaIphones', { num: true, step: '1' })), rotulo('Acessórios (R$)', campo(w, 'metaAcessorios', { num: true })))),
+      sec('Comissão por iPhone', 'Pelo número de iPhones que o vendedor vendeu no mês. Abaixo da primeira faixa não há comissão.', faixasEd(w.faixasIphone, ['De', 'Até', 'R$ cada'], { inteiro: true })),
+      sec('Comissão de acessórios', 'Pelo valor líquido de acessórios vendidos no mês (sem JBL, iPad, Mac, Watch e serviços).', faixasEd(w.faixasAcessorios, ['De (R$)', 'Até (R$)', '%'])),
+      sec('Prêmios', 'Pagos a cada vendedor quando a loja bate a meta; o de melhor vendedor vai para o 1º do ranking.',
+        E('div', { className: 'dn-grid3' }, rotulo('Meta iPhones', campo(pr, 'metaIphones', { num: true })), rotulo('Meta acess.', campo(pr, 'metaAcessorios', { num: true })), rotulo('Melhor vend.', campo(pr, 'melhorVendedor', { num: true })))),
+    ];
+  }
+
+  function telaAssist(w) {
+    const meses = E('div', { className: 'dn-meses' });
+    const hoje = new Date(); const lista = [];
+    for (let k = -2; k < 12; k++) { const d = new Date(hoje.getFullYear(), hoje.getMonth() + k, 1); lista.push(d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')); }
+    w.garantia30.forEach(m => { if (!lista.includes(m)) lista.unshift(m); });
+    const NM = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+    lista.sort().forEach(m => {
+      const b = E('button', { type: 'button', 'aria-pressed': w.garantia30.includes(m) ? 'true' : 'false' }, NM[Number(m.slice(5)) - 1] + '/' + m.slice(2, 4));
+      b.addEventListener('click', () => { const i = w.garantia30.indexOf(m); if (i >= 0) w.garantia30.splice(i, 1); else w.garantia30.push(m); b.setAttribute('aria-pressed', i >= 0 ? 'false' : 'true'); mudou(); });
+      meses.append(b);
+    });
+    return [
+      sec('Comissão do técnico', 'Percentual sobre o lucro das OS de cliente final, pela quantidade de serviços no mês.', faixasEd(w.faixas, ['Da OS nº', 'Até', '%'], { inteiro: true })),
+      sec('Meta e mínimo', 'Serviços abaixo do valor mínimo não contam para a meta.', E('div', { className: 'dn-grid' }, rotulo('Meta de serviços', campo(w, 'meta', { num: true, step: '1' })), rotulo('Valor mínimo (R$)', campo(w, 'valorMinimo', { num: true })))),
+      sec('Garantia de 30%', 'Nos meses marcados, o técnico recebe pelo menos 30% do lucro, mesmo abaixo da faixa.', meses),
+    ];
+  }
+
+  // Lista de turnos [nome, entrada, saída].
+  function turnosEd(lista, nomes) {
+    const box = E('div');
+    const draw = () => {
+      box.innerHTML = '';
+      if (!lista.length) box.append(E('div', { className: 'dn-vazio' }, 'Ninguém escalado'));
+      lista.forEach((t, i) => {
+        const ops = nomes.includes(t[0]) || !t[0] ? nomes : [t[0], ...nomes];
+        const sel = E('select', { className: 'dn-sel', 'aria-label': 'Vendedor' }, ...ops.map(n => E('option', { value: n, selected: n === t[0] }, n)));
+        sel.addEventListener('change', () => { t[0] = sel.value; mudou(); });
+        const o = { a: t[1], b: t[2] };
+        const ia = horaSel(o, 'a', 'Entrada', v => { t[1] = v; }), ib = horaSel(o, 'b', 'Saída', v => { t[2] = v; });
+        box.append(E('div', { className: 'dn-tn' }, sel, ia, ib, xBtn('Tirar turno', () => { lista.splice(i, 1); mudou(); draw(); })));
+      });
+      box.append(E('button', { type: 'button', className: 'dn-mini', on: { click: () => { lista.push([nomes[0] || '', '10:00', '19:00']); mudou(); draw(); } } }, '+ Turno'));
+    };
+    draw(); return box;
+  }
+  const fmtData = d => d.split('-').reverse().join('/');
+  const hojeBA = () => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bahia' });
+  function telaEscala(w) {
+    const nomes = (dn.d.ficha.pessoas || []).filter(p => p.papel === 'vendedor').map(p => p.nome);
+    const out = [sec('Funcionamento da loja', 'Usado nos lembretes de story e de abertura e fechamento.', E('div', { className: 'dn-grid' }, rotulo('Abre', horaSel(w, 'lojaAbre', 'Abre')), rotulo('Fecha', horaSel(w, 'lojaFecha', 'Fecha'))))];
+    const semana = E('div');
+    [1, 2, 3, 4, 5, 6, 0].forEach(d => {
+      const k = String(d); w.semana[k] = w.semana[k] || [];
+      const rz = (w.rodizios || []).filter(r => r.dia === d).length;
+      semana.append(E('div', { className: 'dn-dia' }, E('h4', null, DIAS_N[d], rz ? E('small', null, '+ rodízio abaixo') : null), turnosEd(w.semana[k], nomes)));
+    });
+    out.push(sec('Semana fixa', 'Turnos que se repetem toda semana.', semana));
+    const rods = E('div');
+    const drawRod = () => {
+      rods.innerHTML = '';
+      (w.rodizios || []).forEach((r, ri) => {
+        const blocos = E('div');
+        const sem = Math.round((Date.parse(hojeBA() + 'T12:00:00Z') - Date.parse(r.ref + 'T12:00:00Z')) / 604800000);
+        const atual = ((sem % r.turnos.length) + r.turnos.length) % r.turnos.length;
+        r.turnos.forEach((l, j) => blocos.append(E('div', { className: 'dn-dia' }, E('h4', null, 'Semana ' + (j + 1), E('small', null, j === atual ? 'esta semana' : (j === (atual + 1) % r.turnos.length ? 'próxima' : ''))), turnosEd(l, nomes),
+          r.turnos.length > 1 ? E('button', { type: 'button', className: 'dn-padrao', on: { click: () => { r.turnos.splice(j, 1); mudou(); drawRod(); } } }, 'Tirar esta semana do rodízio') : null)));
+        const ref = { ref: r.ref };
+        const iRef = campo(ref, 'ref', { type: 'date', rot: 'Semana 1 começa em' }); iRef.addEventListener('input', () => { r.ref = ref.ref; });
+        const selDia = E('select', { className: 'dn-sel', 'aria-label': 'Dia' }, ...DIAS_N.map((n, i) => E('option', { value: i, selected: i === r.dia }, n)));
+        selDia.addEventListener('change', () => { r.dia = Number(selDia.value); mudou(); });
+        rods.append(E('div', { className: 'card dn-sec' }, E('h3', null, 'Rodízio de ' + DIAS_N[r.dia].toLowerCase()),
+          E('p', { className: 'hint' }, 'Alterna a cada semana, na ordem abaixo, somado à semana fixa. A semana 1 é a da data de referência.'),
+          E('div', { className: 'dn-grid' }, rotulo('Dia', selDia), rotulo('Data da semana 1', iRef)), blocos,
+          E('button', { type: 'button', className: 'dn-mini', on: { click: () => { r.turnos.push([]); mudou(); drawRod(); } } }, '+ Semana no rodízio'),
+          E('button', { type: 'button', className: 'dn-padrao', style: 'display:block', on: { click: () => { if (confirm('Apagar o rodízio de ' + DIAS_N[r.dia].toLowerCase() + '?')) { w.rodizios.splice(ri, 1); mudou(); drawRod(); } } } }, 'Apagar este rodízio')));
+      });
+      rods.append(addBtn('+ Novo rodízio', () => { (w.rodizios = w.rodizios || []).push({ dia: 0, ref: hojeBA(), turnos: [[], []] }); mudou(); drawRod(); }));
+    };
+    drawRod(); out.push(rods);
+    const trocas = E('div');
+    const drawTr = () => {
+      trocas.innerHTML = '';
+      const ks = Object.keys(w.datas || {}).sort();
+      if (!ks.length) trocas.append(E('div', { className: 'dn-vazio' }, 'Nenhuma troca marcada.'));
+      ks.forEach(k => trocas.append(E('div', { className: 'dn-dia' }, E('h4', null, DIAS_N[new Date(k + 'T12:00:00Z').getUTCDay()] + ', ' + fmtData(k), E('small', null, k < hojeBA() ? 'já passou' : '')), turnosEd(w.datas[k], nomes),
+        E('button', { type: 'button', className: 'dn-padrao', on: { click: () => { delete w.datas[k]; mudou(); drawTr(); } } }, 'Tirar esta troca'))));
+      const nd = { d: '' }; const iD = campo(nd, 'd', { type: 'date', rot: 'Data da troca' });
+      trocas.append(E('div', { className: 'dn-grid', style: 'margin-top:10px;align-items:end' }, rotulo('Nova troca ou folga', iD),
+        E('button', { type: 'button', className: 'vbtn', on: { click: () => {
+          if (!nd.d) { iD.focus(); return; }
+          w.datas = w.datas || {};
+          if (!w.datas[nd.d]) { const dia = new Date(nd.d + 'T12:00:00Z').getUTCDay(); w.datas[nd.d] = cp(turnosDoDia(w, nd.d, dia)); }
+          mudou(); drawTr();
+        } } }, 'Adicionar')));
+    };
+    drawTr();
+    out.push(sec('Trocas e folgas de um dia', 'Para um dia específico (troca de turno, folga, feriado). Substitui a escala normal só naquele dia. Ao adicionar, já vem preenchido com quem estaria escalado.', trocas));
+    return out;
+  }
+  function turnosDoDia(e, data, dia) {
+    if (e.datas && e.datas[data]) return e.datas[data];
+    let l = ((e.semana && e.semana[String(dia)]) || []).slice();
+    (e.rodizios || []).forEach(r => { if (r.dia !== dia || !r.turnos.length) return; const s = Math.round((Date.parse(data + 'T12:00:00Z') - Date.parse(r.ref + 'T12:00:00Z')) / 604800000); l = l.concat(r.turnos[((s % r.turnos.length) + r.turnos.length) % r.turnos.length]); });
+    return l;
+  }
+
+  function telaManut(w) {
+    const lista = E('div');
+    const draw = () => {
+      lista.innerHTML = '';
+      lista.append(E('div', { className: 'dn-mn h' }, ...w.servicos.map(([, n]) => E('span', null, n.replace(/^Troca d[eo] /, '').replace('vidro traseiro', 'Vidro').replace(/^./, c => c.toUpperCase()))), E('span')));
+      w.itens.forEach((x, i) => lista.append(E('div', { className: 'dn-mn' }, E('div', { className: 'mo' }, campo(x, 'modelo', { ph: 'Modelo (ex.: iPhone 17)', rot: 'Modelo' })), ...w.servicos.map(([k, n]) => campo(x, k, { num: true, rot: n + ' ' + x.modelo })),
+        xBtn('Tirar ' + x.modelo, () => { w.itens.splice(i, 1); mudou(); draw(); }))));
+      lista.append(addBtn('+ Modelo', () => { w.itens.push({ modelo: '' }); mudou(); draw(); }));
+    };
+    draw();
+    return [sec('Parcelamento', 'O valor parcelado é o preço à vista mais o acréscimo, dividido nas parcelas.', E('div', { className: 'dn-grid' }, rotulo('Parcelas', campo(w, 'parcelas', { num: true, step: '1' })), rotulo('Acréscimo (%)', campo(w, 'acrescimoParcelado', { num: true })))),
+      sec('Preços à vista (R$)', 'Campo vazio: serviço não aparece para aquele modelo.', lista)];
+  }
+
+  function telaHist() {
+    const h = dn.d.historico || [];
+    const AC = { salvar: 'alterou', desfazer: 'desfez a última alteração de', padrao: 'voltou ao padrão' };
+    return [sec('Últimas alterações', null, h.length ? E('ul', { className: 'dn-hist' }, ...h.map(x => E('li', null, E('b', null, x.por), ' ' + (AC[x.acao] || 'alterou') + ' ' + (DN_NOME[x.secao] || x.secao),
+      E('small', null, new Date(x.em).toLocaleString('pt-BR', { timeZone: 'America/Bahia', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }))))) : E('div', { className: 'dn-vazio' }, 'Nada alterado pelo painel ainda.'))];
+  }
+
+  function valorSecao(s) { return s === 'escala' ? dn.d.escala : s === 'manutencao' ? dn.d.manutencao : dn.d.ficha[s]; }
+  function desenhar(reset) {
+    const s = dn.sec;
+    if (reset) { dn.w = s === 'historico' ? null : cp(valorSecao(s)); dn.sujo = false; }
+    const tabs = document.getElementById('dnTabs');
+    tabs.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.s === s ? 'true' : 'false'));
+    dnBody.innerHTML = '';
+    const T = { pessoas: telaPessoas, vendas: telaVendas, assistencia: telaAssist, escala: telaEscala, manutencao: telaManut, historico: telaHist };
+    const partes = T[s](dn.w);
+    dnBody.append(...partes);
+    if (s !== 'historico' && (dn.d.personalizado[s] !== false))
+      dnBody.append(E('button', { type: 'button', className: 'dn-padrao', on: { click: () => acao('padrao') } }, s === 'escala' || s === 'manutencao' ? 'Voltar para a versão original do site' : 'Voltar para o padrão de fábrica'));
+    dnBar.hidden = s === 'historico';
+    dnSave.disabled = !dn.sujo; dnUndo.disabled = !(dn.d.desfazer && dn.d.desfazer[s]);
+    if (!dn.sujo) status(dn.d.desfazer && dn.d.desfazer[s] ? 'Tudo salvo' : '');
+  }
+  function irSecao(s) {
+    if (s === dn.sec) return;
+    if (dn.sujo && !confirm('Você tem alterações não salvas em ' + DN_NOME[dn.sec] + '. Descartar?')) return;
+    dn.sec = s; desenhar(true); document.getElementById('dnPage').scrollTop = 0;
+  }
+  async function enviarDono(corpo) {
+    const r = await fetch('/api/dono', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo) });
+    const j = await r.json().catch(() => ({ erro: 'Resposta inválida do servidor.' }));
+    if (!r.ok || j.erro) throw new Error(j.erro || 'Não foi possível salvar.');
+    return j;
+  }
+  async function acao(tipo) {
+    const s = dn.sec;
+    if (tipo === 'padrao' && !confirm('Voltar ' + DN_NOME[s] + ' para o padrão? O que foi alterado pelo painel nesta parte será descartado (dá para desfazer depois).')) return;
+    if (tipo === 'desfazer' && !confirm('Desfazer a última alteração salva em ' + DN_NOME[s] + '?')) return;
+    dnSave.disabled = true; dnUndo.disabled = true; status('Salvando…');
+    try {
+      const j = await enviarDono(tipo === 'salvar' ? { secao: s, dados: dn.w } : { secao: s, acao: tipo });
+      dn.d = j; desenhar(true);
+      status(tipo === 'salvar' ? 'Salvo ✓ Vale para todos em até 2 minutos.' : tipo === 'desfazer' ? 'Desfeito ✓' : 'Padrão restaurado ✓', 'ok');
+      if (s === 'manutencao') mn.d = null;
+      if (s === 'escala') carregarEscala();
+    } catch (e) { dnSave.disabled = !dn.sujo; dnUndo.disabled = !(dn.d.desfazer && dn.d.desfazer[s]); status(e.message, 'err'); }
+  }
+  dnSave.addEventListener('click', () => acao('salvar'));
+  dnUndo.addEventListener('click', () => acao('desfazer'));
+  function abrirDono(e) {
+    dnLast = e && e.currentTarget; dnView.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('dnClose').focus();
+    const tabs = document.getElementById('dnTabs');
+    if (!tabs.children.length) DN_SECOES.forEach(([k, n]) => tabs.append(E('button', { type: 'button', 'data-s': k, 'aria-pressed': 'false', on: { click: () => irSecao(k) } }, n)));
+    if (dn.sujo) return;
+    dnBody.innerHTML = ''; dnBody.append(E('p', { className: 'hint' }, 'Carregando…')); dnBar.hidden = true;
+    fetch('/api/dono', { cache: 'no-store', credentials: 'include' }).then(r => r.json()).then(j => {
+      if (j.erro) throw new Error(j.erro);
+      dn.d = j; desenhar(true);
+    }).catch(err => { dnBody.innerHTML = ''; dnBody.append(E('p', { className: 'hint' }, err.message || 'Não foi possível abrir o painel.')); });
+  }
+  function fecharDono() {
+    if (dn.sujo && !confirm('Fechar sem salvar as alterações em ' + DN_NOME[dn.sec] + '?')) return;
+    dn.sujo = false; dnView.hidden = true; document.body.style.overflow = ''; if (dnLast) dnLast.focus();
+  }
+  document.getElementById('openDono').addEventListener('click', abrirDono);
+  document.getElementById('dnClose').addEventListener('click', fecharDono);
+  dnView.addEventListener('keydown', e => { if (e.key === 'Escape') fecharDono(); });
   // Abas
   const ABAS = ['inicio', 'vendas', 'loja', 'docs'];
   function irPara(aba, rolar) {
