@@ -1083,14 +1083,6 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
 
 
   // Quem entrou? (login do Cloudflare) — ajusta a tela para cada pessoa
-  const PESSOAS = {
-    'carlsoncarvjr@gmail.com': { nome: 'Carlson', papel: 'admin' },
-    'guadariachi0@gmail.com': { nome: 'Guadalupe', papel: 'admin' },
-    'maikobarreto16@gmail.com': { nome: 'Maiko', papel: 'tecnico' },
-    'gusthavowork@gmail.com': { nome: 'Gustavo', papel: 'vendedor', arq: 'gustavo' },
-    'elisaprettiferrer@icloud.com': { nome: 'Elisa', papel: 'vendedor', arq: 'elisa' },
-    'danilosilvaobl@gmail.com': { nome: 'Danilo', papel: 'vendedor', arq: 'danilo' },
-  };
   const brl0 = v => 'R$ ' + Number(v || 0).toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
   function renderTecnico(t, admin) {
     const sec = document.getElementById('tecnico'); sec.hidden = false;
@@ -1165,8 +1157,7 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
     const tb = document.getElementById('eqBody'); tb.innerHTML = '';
     lista.sort((a, b) => b.total - a.total).forEach(c => { const tr = document.createElement('tr'); [c.vendedor, c.iphones + (c.jbl ? ' + ' + c.jbl + ' JBL' : ''), brl0(c.acessorios), brl2(c.total)].forEach(x => { const td = document.createElement('td'); td.textContent = x; tr.appendChild(td); }); tb.appendChild(tr); });
   }
-  function aplicarPessoa(email) {
-    const pz = PESSOAS[(email || '').toLowerCase()];
+  function aplicarPessoa(pz) {  // pz = { nome, papel, arq } vindo de /api/eu
     if (!pz) return;
     document.querySelector('header.top .who .t').textContent = 'Olá, ' + pz.nome;
     if (pz.papel === 'tecnico') {
@@ -1183,8 +1174,8 @@ footer { font-size: 12px; color: var(--ink-mute); text-align: center; padding-to
       fetch('/api/d/tecnico', { cache: 'no-store', credentials: 'include' }).then(r => r.ok ? r.json() : null).then(t => { if (t) renderTecnico(t, pz.papel === 'admin'); }).catch(() => {});
     }
   }
-  fetch('/cdn-cgi/access/get-identity', { cache: 'no-store', credentials: 'include' })
-    .then(r => r.ok ? r.json() : null).then(id => { if (id && id.email) aplicarPessoa(id.email); }).catch(() => {});
+  fetch('/api/eu', { cache: 'no-store', credentials: 'include' })
+    .then(r => r.ok ? r.json() : null).then(d => { if (d && d.pessoa) aplicarPessoa(d.pessoa); }).catch(() => {});
 
 
   // Estoque

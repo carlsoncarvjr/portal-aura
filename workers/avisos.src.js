@@ -4,6 +4,7 @@
 // Binding: KV AVALIACAO. Segredo: MP_API_KEY. Publicação: node workers/build.mjs gera workers/dist/avisos.js.
 import { sendPush } from '../lib/webpush.js';
 import { calcularVendas, calcularOS, calcularEstoque, normalizarOS } from '../lib/calc.js';
+import loja from '../config/loja.js';
 
 
 // ---------- Sincronização com o MercadoPhone ----------
@@ -32,11 +33,16 @@ async function mpTudo(env, caminho, params, unidade) {
   }
   return itens;
 }
+// Liga cada unidade do MercadoPhone a uma unidade da ficha da loja (pelo nome; a que não tem "nomeContem" fica com o resto).
 async function lojas(env) {
   const d = await mp(env, '/stores');
   const lista = d.stores || d.items || d.data || (Array.isArray(d) ? d : []);
-  const ids = { meu: null, riachi: null };
-  for (const l of lista) { const id = l.system_unit_id ?? l.id; if (/riachi/i.test(l.name || l.nome || '')) ids.riachi = id; else ids.meu = id; }
+  const ids = {};
+  for (const l of lista) {
+    const id = l.system_unit_id ?? l.id, nome = String(l.name || l.nome || '').toLowerCase();
+    const un = loja.mercadophone.unidades.find(u => u.nomeContem && nome.includes(u.nomeContem)) || loja.mercadophone.unidades.find(u => !u.nomeContem);
+    if (un && ids[un.chave] == null) ids[un.chave] = id;
+  }
   return ids;
 }
 const kvJson = async (env, k) => { try { return await env.AVALIACAO.get(k, 'json'); } catch (e) { return null; } };
@@ -58,7 +64,7 @@ async function sincronizar(env, forcar) {
   const ini = [hoje.slice(0, 8) + '01', (() => { const d = new Date(hoje + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - ((t.dia + 6) % 7)); return d.toISOString().slice(0, 10); })()].sort()[0];
   const agora = hoje + 'T' + String(Math.floor(t.min / 60)).padStart(2, '0') + ':' + String(t.min % 60).padStart(2, '0') + ':00-03:00';
   const ids = await lojas(env);
-  const uni = [ids.meu, ids.riachi].filter(x => x != null);
+  const uni = Object.values(ids).filter(x => x != null);
   const erros = [];
   // Vendas
   try {
@@ -90,10 +96,14 @@ async function sincronizar(env, forcar) {
   } catch (e) { erros.push('os: ' + e.message); }
   // Estoque (Meu iPhone: só "Em estoque (conferido)" e celulares; Riachi: tudo)
   try {
-    const meu = ids.meu != null ? await mpTudo(env, '/inventory', { produtoDisponibilidadeId: 62709, tipoProdutoId: 6235 }, ids.meu) : [];
-    const ria = ids.riachi != null ? await mpTudo(env, '/inventory', {}, ids.riachi) : [];
-    const est = calcularEstoque(meu, ria, agora);
-    if ((meu.length && !est.porUnidade['Meu iPhone']) || (ria.length && !est.porUnidade.Riachi)) erros.push('estoque: unidade zerada, não publicado');
+    const porChave = {};
+    for (const un of loja.mercadophone.unidades) {
+      if (ids[un.chave] == null) continue;
+      porChave[un.chave] = await mpTudo(env, '/inventory', un.soConferido ? { produtoDisponibilidadeId: loja.mercadophone.disponibilidadeConferido, tipoProdutoId: loja.mercadophone.tipoCelular } : {}, ids[un.chave]);
+    }
+    const est = calcularEstoque(porChave, agora);
+    const zerada = loja.mercadophone.unidades.some(u => (porChave[u.chave] || []).length && !est.porUnidade[u.rotulo]);
+    if (zerada) erros.push('estoque: unidade zerada, não publicado');
     else await gravar(env, 'calc:estoque', est);
   } catch (e) { erros.push('estoque: ' + e.message); }
   const st = { ok: !erros.length, em: agora, lojas: ids, erros };
@@ -187,7 +197,7 @@ async function stories(env) {
   await env.AVALIACAO.put(k, '1', { expirationTtl: 2 * 86400 });
   if (!nomes.length) return;
   const ideia = IDEIAS[(slot / 30) % IDEIAS.length];
-  await enviarComCopia(env, { title: '📸 Hora do story no Instagram', body: ideia + ' Poste no @somosaura.ps.', url: 'https://www.instagram.com/somosaura.ps/', tag: 'story' }, nomes);
+  await enviarComCopia(env, { title: '📸 Hora do story no Instagram', body: ideia + ' Poste no @' + loja.instagram + '.', url: 'https://www.instagram.com/' + loja.instagram + '/', tag: 'story' }, nomes);
 }
 
 function turnosDoDia(e, data, dia) {

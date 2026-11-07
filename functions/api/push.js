@@ -1,12 +1,8 @@
 // Inscrição nas notificações do portal. Guarda a inscrição no KV "AVALIACAO" (chave push:<hash>);
 // o Worker "portal-aura-avisos" lê essas inscrições e manda os avisos.
 import { sendPush, getVapid } from '../../lib/webpush.js';
+import { pessoa, emailDoLogin } from '../../lib/loja.js';
 
-const PESSOAS = {
-  'carlsoncarvjr@gmail.com': ['Carlson', 'admin'], 'guadariachi0@gmail.com': ['Guadalupe', 'admin'],
-  'maikobarreto16@gmail.com': ['Maiko', 'tecnico'], 'gusthavowork@gmail.com': ['Gustavo', 'vendedor'],
-  'elisaprettiferrer@icloud.com': ['Elisa', 'vendedor'], 'danilosilvaobl@gmail.com': ['Danilo', 'vendedor'],
-};
 
 function json(obj, status = 200) {
   return new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'private, no-store' } });
@@ -19,7 +15,7 @@ async function chave(endpoint) {
 export async function onRequestGet(ctx) {
   const kv = ctx.env.AVALIACAO;
   if (!kv) return json({ erro: 'Armazenamento não configurado.' }, 503);
-  if (!PESSOAS[emailDoLogin(ctx.request)]) return json({ erro: 'Usuário não autorizado.' }, 403);
+  if (!pessoa(emailDoLogin(ctx.request))) return json({ erro: 'Usuário não autorizado.' }, 403);
   const v = await getVapid(kv, true);
   return json({ publicKey: v.publicKey });
 }
@@ -27,7 +23,7 @@ export async function onRequestGet(ctx) {
 export async function onRequestPost(ctx) {
   const kv = ctx.env.AVALIACAO;
   if (!kv) return json({ erro: 'Armazenamento não configurado.' }, 503);
-  const email = emailDoLogin(ctx.request), p = PESSOAS[email];
+  const email = emailDoLogin(ctx.request), pz = pessoa(email), p = pz && [pz.nome, pz.papel];
   if (!p) return json({ erro: 'Usuário não autorizado.' }, 403);
   let body; try { body = await ctx.request.json(); } catch (e) { return json({ erro: 'Pedido inválido.' }, 400); }
   const sub = body.subscription;
@@ -44,14 +40,3 @@ export async function onRequestPost(ctx) {
   return json({ ok: true, inscrito: true, teste });
 }
 
-function emailDoLogin(req) {
-  const h = req.headers.get('Cf-Access-Authenticated-User-Email');
-  if (h) return h.toLowerCase();
-  const jwt = req.headers.get('Cf-Access-Jwt-Assertion') ||
-    ((req.headers.get('Cookie') || '').match(/CF_Authorization=([^;]+)/) || [])[1];
-  if (!jwt) return '';
-  try {
-    const b64 = jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-    return (JSON.parse(atob(b64)).email || '').toLowerCase();
-  } catch (e) { return ''; }
-}

@@ -1,6 +1,7 @@
 // Ajustes manuais da Tabela de avaliação, guardados no KV "AVALIACAO" (compartilhados pela equipe).
 // GET: todos logados leem. POST: só administradores ajustam.
-const ADMIN = ['carlsoncarvjr@gmail.com', 'guadariachi0@gmail.com'];
+import { admins, emailDoLogin } from '../../lib/loja.js';
+const ADMIN = admins();
 const CHAVE = 'ajustes';
 
 function json(obj, status = 200) {
@@ -47,14 +48,3 @@ export async function onRequestPost(ctx) {
   return json({ ...d, podeEditar: true });
 }
 
-function emailDoLogin(req) {
-  const h = req.headers.get('Cf-Access-Authenticated-User-Email');
-  if (h) return h.toLowerCase();
-  const jwt = req.headers.get('Cf-Access-Jwt-Assertion') ||
-    ((req.headers.get('Cookie') || '').match(/CF_Authorization=([^;]+)/) || [])[1];
-  if (!jwt) return '';
-  try {
-    const b64 = jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-    return (JSON.parse(atob(b64)).email || '').toLowerCase();
-  } catch (e) { return ''; }
-}

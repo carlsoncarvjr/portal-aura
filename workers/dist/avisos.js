@@ -1,4 +1,51 @@
 // GERADO por workers/build.mjs — não edite à mão.
+// Ficha da loja. Tudo o que é específico da Aura fica aqui; o resto do código é igual para qualquer loja.
+// Para outra loja: copiar este arquivo, trocar os dados e publicar.
+const loja = {
+  id: 'aura',
+  nome: 'Aura',
+  instagram: 'somosaura.ps',
+  fuso: 'America/Bahia',
+
+  // Quem entra no portal. papel: admin (dono/gerente), vendedor ou tecnico. arq: nome do arquivo de comissão do vendedor.
+  pessoas: [
+    { email: 'carlsoncarvjr@gmail.com', nome: 'Carlson', papel: 'admin' },
+    { email: 'guadariachi0@gmail.com', nome: 'Guadalupe', papel: 'admin' },
+    { email: 'maikobarreto16@gmail.com', nome: 'Maiko', papel: 'tecnico' },
+    { email: 'gusthavowork@gmail.com', nome: 'Gustavo', papel: 'vendedor', arq: 'gustavo' },
+    { email: 'elisaprettiferrer@icloud.com', nome: 'Elisa', papel: 'vendedor', arq: 'elisa' },
+    { email: 'danilosilvaobl@gmail.com', nome: 'Danilo', papel: 'vendedor', arq: 'danilo' },
+  ],
+
+  // Vendas e comissão dos vendedores (tabela do mês).
+  vendas: {
+    excluidos: ['JBL', 'IPAD', 'MACBOOK', 'MAC ', 'WATCH', 'SERVICO', 'SERVIÇO'],   // não contam como acessório
+    metaIphones: 110,
+    metaAcessorios: 26000,
+    faixasIphone: [[12, 16, 10], [17, 24, 15], [25, 28, 20], [29, 32, 25], [33, 36, 30], [37, 42, 35], [43, 1e6, 40]],   // [de, até, R$ por iPhone]
+    faixasAcessorios: [[3000, 4499.99, 3.0], [4500, 6499.99, 5.0], [6500, 9999.99, 7.5], [10000, 14499.99, 10.0], [14500, 1e12, 12.5]],   // [de, até, %]
+    premios: { metaIphones: 100, metaAcessorios: 100, melhorVendedor: 100 },
+  },
+
+  // Assistência técnica (comissão do técnico).
+  assistencia: {
+    faixas: [[1, 6, 25], [7, 12, 30], [13, 19, 35], [20, 1e6, 40]],   // [da OS nº, até, %]
+    meta: 15,
+    valorMinimo: 150,
+    garantia30: ['2026-11', '2026-12'],   // meses em que vale o mínimo de 30% do lucro
+  },
+
+  // MercadoPhone: unidades e filtros do estoque.
+  mercadophone: {
+    unidades: [
+      { chave: 'meu', rotulo: 'Meu iPhone', soConferido: true },   // só "Em estoque (conferido)"
+      { chave: 'riachi', rotulo: 'Riachi', nomeContem: 'riachi' },
+    ],
+    disponibilidadeConferido: 62709,
+    tipoCelular: 6235,
+  },
+};
+
 // Web Push (RFC 8291 aes128gcm + VAPID RFC 8292) só com WebCrypto.
 const te = new TextEncoder();
 const b64u = buf => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -52,20 +99,19 @@ async function getVapid(kv, criar) {
 // Cálculos do Portal Aura (mesmas regras de scripts/calcular.py, calcular_os.py e estoque.py),
 // em JavaScript para rodar no Cloudflare. Funções puras: recebem os dados do MercadoPhone e devolvem os JSONs do portal.
 
-const VENDEDORES = ['Gustavo', 'Danilo', 'Elisa'];
-const EXCLUIDOS = ['JBL', 'IPAD', 'MACBOOK', 'MAC ', 'WATCH', 'SERVICO', 'SERVIÇO'];
+
+
+const CFG = loja;
 const STATUS_CONTA = new Set(['concluido', 'orcamento']);
 const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-const FAIXAS_IPHONE = [[12, 16, 10], [17, 24, 15], [25, 28, 20], [29, 32, 25], [33, 36, 30], [37, 42, 35], [43, 1e6, 40]];
-const FAIXAS_ACESS = [[3000, 4499.99, 3.0], [4500, 6499.99, 5.0], [6500, 9999.99, 7.5], [10000, 14499.99, 10.0], [14500, 1e12, 12.5]];
-const PREMIO_META_IPHONE = 100, PREMIO_META_ACESS = 100, PREMIO_MELHOR = 100;
+const vendedoresCfg = () => CFG.pessoas.filter(p => p.papel === 'vendedor').map(p => p.nome);
 
 const r2 = x => Number(Number(x).toFixed(2)) + 0;
 function norm(s) {
   return String(s || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^\x00-\x7f]/g, '').replace(/\s+/g, ' ').trim().toUpperCase();
 }
 const ehIphone = n => { n = norm(n); return n.startsWith('IPHONE') || n.includes('PREVENDA') || n.includes('PRE-VENDA') || n.includes('PRE VENDA'); };
-const ehExcluido = n => { n = norm(n) + ' '; return EXCLUIDOS.some(x => n.includes(x)); };
+const ehExcluido = n => { n = norm(n) + ' '; return CFG.vendas.excluidos.some(x => n.includes(x)); };
 const title = s => s.toLowerCase().replace(/(^|[^\p{L}\p{N}'])(\p{L})/gu, (m, a, b) => a + b.toUpperCase());
 function vendedor(nome) { const v = String(nome || '').trim().split(/[\s/]+/)[0]; return v ? v.charAt(0).toUpperCase() + v.slice(1).toLowerCase() : '—'; }
 function nomeIphone(nome) {
@@ -91,8 +137,8 @@ function nomeAcessorios(nomes) {
   }
   return rot.length ? rot.slice(0, 3).join(' + ') : 'Acessório';
 }
-const valorIphone = n => { for (const [a, b, v] of FAIXAS_IPHONE) if (a <= n && n <= b) return v; return 0; };
-const pctAcess = v => { for (const [a, b, p] of FAIXAS_ACESS) if (a <= v && v <= b) return p; return 0; };
+const valorIphone = n => { for (const [a, b, v] of CFG.vendas.faixasIphone) if (a <= n && n <= b) return v; return 0; };
+const pctAcess = v => { for (const [a, b, p] of CFG.vendas.faixasAcessorios) if (a <= v && v <= b) return p; return 0; };
 
 // Datas como texto AAAA-MM-DD (sem fuso).
 const dIso = (y, m, d) => new Date(Date.UTC(y, m - 1, d)).toISOString().slice(0, 10);
@@ -148,13 +194,13 @@ function calcularVendas(vendasLista, hoje, agora, registro = {}, antigo = {}) {
   const periodo = (a, b, todas) => (todas ? ok : dia_).filter(v => a <= v.data && v.data <= b);
   const dia = d => { const vs = periodo(d, d).sort((a, b) => a.hora < b.hora ? -1 : a.hora > b.hora ? 1 : 0); return { data: d, iphones: vs.reduce((t, v) => t + v.iphones, 0), acessorios: r2(vs.reduce((t, v) => t + v.acessorios, 0)),
     itens: vs.map(v => ({ hora: v.hora, tipo: v.tipo, produto: v.produto, vendedor: v.vendedor, ...(v.pre ? { pre: true } : {}) })) }; };
-  const ranking = vs => { const r = {}; for (const v of vs) { if (!VENDEDORES.includes(v.vendedor)) continue; const x = r[v.vendedor] ||= { vendedor: v.vendedor, iphones: 0, acessorios: 0, vendas: 0 }; x.iphones += v.iphones; x.acessorios += v.acessorios; x.vendas++; }
+  const ranking = vs => { const r = {}; for (const v of vs) { if (!vendedoresCfg().includes(v.vendedor)) continue; const x = r[v.vendedor] ||= { vendedor: v.vendedor, iphones: 0, acessorios: 0, vendas: 0 }; x.iphones += v.iphones; x.acessorios += v.acessorios; x.vendas++; }
     const out = Object.values(r).sort((a, b) => b.iphones - a.iphones || b.acessorios - a.acessorios); out.forEach(x => { x.acessorios = r2(x.acessorios); }); return out; };
   const mesVs = periodo(iniMes, hoje);
   const am = antigo.mes || {};
   const dados = { atualizadoEm: agora,
     mes: { rotulo: `${MESES[M - 1]} ${Y}`, ano: Y, mes: M, diasNoMes: new Date(Date.UTC(Y, M, 0)).getUTCDate(),
-      metaIphones: am.metaIphones || 110, metaAcessorios: am.metaAcessorios || 25000,
+      metaIphones: am.metaIphones || CFG.vendas.metaIphones, metaAcessorios: am.metaAcessorios || CFG.vendas.metaAcessorios,
       iphones: mesVs.reduce((t, v) => t + v.iphones, 0), acessorios: r2(mesVs.reduce((t, v) => t + v.acessorios, 0)) },
     hoje: dia(hoje), ontem: dia(ontem),
     ranking: { mes: ranking(mesVs), semana: ranking(periodo(seg, hoje)), hoje: ranking(periodo(hoje, hoje)) } };
@@ -166,7 +212,9 @@ function calcularVendas(vendasLista, hoje, agora, registro = {}, antigo = {}) {
 
 function comissoes(dados, vendasMes, agora) {
   const m = dados.mes, lojaI = m.iphones, lojaA = m.acessorios, rk = dados.ranking.mes, out = {};
-  for (const nome of VENDEDORES) {
+  const FAIXAS_IPHONE = CFG.vendas.faixasIphone, FAIXAS_ACESS = CFG.vendas.faixasAcessorios;
+  const PREMIO_META_IPHONE = CFG.vendas.premios.metaIphones, PREMIO_META_ACESS = CFG.vendas.premios.metaAcessorios, PREMIO_MELHOR = CFG.vendas.premios.melhorVendedor;
+  for (const nome of vendedoresCfg()) {
     const vs = vendasMes.filter(v => v.vendedor === nome);
     const iph = vs.reduce((t, v) => t + v.iphones, 0), jbl = vs.reduce((t, v) => t + (v.jbl || 0), 0), acc = r2(vs.reduce((t, v) => t + v.acessorios, 0));
     const vi = valorIphone(iph), proxI = FAIXAS_IPHONE.find(([a]) => a > iph), pa = pctAcess(acc), proxA = FAIXAS_ACESS.find(([a]) => a > acc);
@@ -188,8 +236,7 @@ function comissoes(dados, vendasMes, agora) {
 }
 
 // ---------- Assistência (técnico) ----------
-const FAIXAS_OS = [[1, 6, 25], [7, 12, 30], [13, 19, 35], [20, 1e6, 40]];
-const pctOS = n => { for (const [a, b, p] of FAIXAS_OS) if (a <= n && n <= b) return p; return 40; };
+const pctOS = n => { const F = CFG.assistencia.faixas; for (const [a, b, p] of F) if (a <= n && n <= b) return p; return F[F.length - 1][2]; };
 function calcularOS(lista, hoje, agora) {
   const mes = hoje.slice(0, 7); const oss = [];
   for (const o of lista) {
@@ -200,7 +247,7 @@ function calcularOS(lista, hoje, agora) {
     if (tipo.includes('GARANTIA')) motivo = 'Garantia';
     else if (tipo.includes('MANUTENCAO') || tipo.includes('UPGRADE') || tipo.includes('INTERN')) motivo = 'Interna';
     else if (!sit.includes('FINALIZ')) motivo = null;
-    else if (valor < 150) motivo = 'Abaixo de R$ 150';
+    else if (valor < CFG.assistencia.valorMinimo) motivo = 'Abaixo de R$ ' + CFG.assistencia.valorMinimo;
     else if ((o.data || '').slice(0, 7) !== mes) continue;
     const conta = motivo === null && sit.includes('FINALIZ');
     oss.push({ codigo: o.codigo, data: o.data, aparelho: o.aparelho || '', servico: o.servico || '', situacao: o.situacao || '', valor: r2(valor),
@@ -210,9 +257,9 @@ function calcularOS(lista, hoje, agora) {
   const contam = oss.filter(o => o.conta).sort(ord);
   let comF = 0; contam.forEach((o, i) => { o.pct = pctOS(i + 1); comF += o.lucro * o.pct / 100; });
   const n = contam.length, lucroT = r2(contam.reduce((t, o) => t + o.lucro, 0));
-  const garantia = ['2026-11', '2026-12'].includes(mes) ? r2(lucroT * 0.30) : null;
-  const com = Math.max(comF, garantia || 0), prox = FAIXAS_OS.find(([a]) => a > n);
-  return { atualizadoEm: agora, mes: `${MESES[Number(mes.slice(5)) - 1]} ${mes.slice(0, 4)}`, meta: 15, servicos: n, faixaAtual: n ? pctOS(n) : 25,
+  const garantia = CFG.assistencia.garantia30.includes(mes) ? r2(lucroT * 0.30) : null;
+  const com = Math.max(comF, garantia || 0), prox = CFG.assistencia.faixas.find(([a]) => a > n);
+  return { atualizadoEm: agora, mes: `${MESES[Number(mes.slice(5)) - 1]} ${mes.slice(0, 4)}`, meta: CFG.assistencia.meta, servicos: n, faixaAtual: n ? pctOS(n) : 25,
     proxima: prox ? { pct: prox[2], faltam: prox[0] - n } : null, lucro: lucroT, comissaoFaixas: r2(comF), comissaoGarantia: garantia,
     comissao: r2(com), garantiaAplicada: !!(garantia && garantia > comF), os: oss.sort(ord).reverse() };
 }
@@ -238,9 +285,11 @@ function modeloEst(i) {
   return m;
 }
 function memEst(i) { let g = String(i.gbDescricao || '').toUpperCase().replace(/ /g, ''); if (!g) { const mt = String(i.descricao || '').toUpperCase().match(/(\d+)\s*(GB|TB)/); g = mt ? mt[1] + mt[2] : ''; } return g; }
-function calcularEstoque(meu, riachi, agora) {
+// porUnidade: { chave: [itens] } com as chaves de CFG.mercadophone.unidades.
+function calcularEstoque(porChave, agora) {
   const saida = [];
-  for (const [unidade, lista, soConf] of [['Meu iPhone', meu, true], ['Riachi', riachi, false]]) {
+  for (const un of CFG.mercadophone.unidades) {
+    const unidade = un.rotulo, lista = porChave[un.chave] || [], soConf = !!un.soConferido;
     const vistos = new Set();
     for (const i of lista) {
       if (vistos.has(i.id)) continue; vistos.add(i.id);
@@ -254,13 +303,14 @@ function calcularEstoque(meu, riachi, agora) {
   }
   const chave = x => { const nums = x.modelo.match(/\d+/); const ger = nums ? Number(nums[0]) : 0; const gb = Number(x.memoria.replace(/\D/g, '') || 0) * (x.memoria.includes('TB') ? 1024 : 1); return [-ger, x.modelo, gb, x.cor]; };
   saida.sort((a, b) => { const ka = chave(a), kb = chave(b); for (let k = 0; k < 4; k++) { if (ka[k] < kb[k]) return -1; if (ka[k] > kb[k]) return 1; } return 0; });
-  return { atualizadoEm: agora, total: saida.length, porUnidade: { 'Meu iPhone': saida.filter(x => x.unidade === 'Meu iPhone').length, Riachi: saida.filter(x => x.unidade === 'Riachi').length }, itens: saida };
+  return { atualizadoEm: agora, total: saida.length, porUnidade: Object.fromEntries(CFG.mercadophone.unidades.map(u => [u.rotulo, saida.filter(x => x.unidade === u.rotulo).length])), itens: saida };
 }
 
 // Serviço "portal-aura-avisos" (Cloudflare Worker). Roda a cada 2 min (madrugada: 1 vez por hora):
 //  1) sincroniza vendas, OS e estoque direto da API do MercadoPhone (chave MP_API_KEY, somente leitura) e calcula os números do portal;
 //  2) manda as notificações (vendas, metas, story, abertura e fechamento).
 // Binding: KV AVALIACAO. Segredo: MP_API_KEY. Publicação: node workers/build.mjs gera workers/dist/avisos.js.
+
 
 
 
@@ -291,11 +341,16 @@ async function mpTudo(env, caminho, params, unidade) {
   }
   return itens;
 }
+// Liga cada unidade do MercadoPhone a uma unidade da ficha da loja (pelo nome; a que não tem "nomeContem" fica com o resto).
 async function lojas(env) {
   const d = await mp(env, '/stores');
   const lista = d.stores || d.items || d.data || (Array.isArray(d) ? d : []);
-  const ids = { meu: null, riachi: null };
-  for (const l of lista) { const id = l.system_unit_id ?? l.id; if (/riachi/i.test(l.name || l.nome || '')) ids.riachi = id; else ids.meu = id; }
+  const ids = {};
+  for (const l of lista) {
+    const id = l.system_unit_id ?? l.id, nome = String(l.name || l.nome || '').toLowerCase();
+    const un = loja.mercadophone.unidades.find(u => u.nomeContem && nome.includes(u.nomeContem)) || loja.mercadophone.unidades.find(u => !u.nomeContem);
+    if (un && ids[un.chave] == null) ids[un.chave] = id;
+  }
   return ids;
 }
 const kvJson = async (env, k) => { try { return await env.AVALIACAO.get(k, 'json'); } catch (e) { return null; } };
@@ -317,7 +372,7 @@ async function sincronizar(env, forcar) {
   const ini = [hoje.slice(0, 8) + '01', (() => { const d = new Date(hoje + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - ((t.dia + 6) % 7)); return d.toISOString().slice(0, 10); })()].sort()[0];
   const agora = hoje + 'T' + String(Math.floor(t.min / 60)).padStart(2, '0') + ':' + String(t.min % 60).padStart(2, '0') + ':00-03:00';
   const ids = await lojas(env);
-  const uni = [ids.meu, ids.riachi].filter(x => x != null);
+  const uni = Object.values(ids).filter(x => x != null);
   const erros = [];
   // Vendas
   try {
@@ -349,10 +404,14 @@ async function sincronizar(env, forcar) {
   } catch (e) { erros.push('os: ' + e.message); }
   // Estoque (Meu iPhone: só "Em estoque (conferido)" e celulares; Riachi: tudo)
   try {
-    const meu = ids.meu != null ? await mpTudo(env, '/inventory', { produtoDisponibilidadeId: 62709, tipoProdutoId: 6235 }, ids.meu) : [];
-    const ria = ids.riachi != null ? await mpTudo(env, '/inventory', {}, ids.riachi) : [];
-    const est = calcularEstoque(meu, ria, agora);
-    if ((meu.length && !est.porUnidade['Meu iPhone']) || (ria.length && !est.porUnidade.Riachi)) erros.push('estoque: unidade zerada, não publicado');
+    const porChave = {};
+    for (const un of loja.mercadophone.unidades) {
+      if (ids[un.chave] == null) continue;
+      porChave[un.chave] = await mpTudo(env, '/inventory', un.soConferido ? { produtoDisponibilidadeId: loja.mercadophone.disponibilidadeConferido, tipoProdutoId: loja.mercadophone.tipoCelular } : {}, ids[un.chave]);
+    }
+    const est = calcularEstoque(porChave, agora);
+    const zerada = loja.mercadophone.unidades.some(u => (porChave[u.chave] || []).length && !est.porUnidade[u.rotulo]);
+    if (zerada) erros.push('estoque: unidade zerada, não publicado');
     else await gravar(env, 'calc:estoque', est);
   } catch (e) { erros.push('estoque: ' + e.message); }
   const st = { ok: !erros.length, em: agora, lojas: ids, erros };
@@ -446,7 +505,7 @@ async function stories(env) {
   await env.AVALIACAO.put(k, '1', { expirationTtl: 2 * 86400 });
   if (!nomes.length) return;
   const ideia = IDEIAS[(slot / 30) % IDEIAS.length];
-  await enviarComCopia(env, { title: '📸 Hora do story no Instagram', body: ideia + ' Poste no @somosaura.ps.', url: 'https://www.instagram.com/somosaura.ps/', tag: 'story' }, nomes);
+  await enviarComCopia(env, { title: '📸 Hora do story no Instagram', body: ideia + ' Poste no @' + loja.instagram + '.', url: 'https://www.instagram.com/' + loja.instagram + '/', tag: 'story' }, nomes);
 }
 
 function turnosDoDia(e, data, dia) {
